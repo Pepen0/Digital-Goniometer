@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-    setupUI();
+    // setup function done separately
+        setupUI();
 
     }
 
