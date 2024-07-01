@@ -8,11 +8,12 @@
     tools:context=".AssessmentActivity">
 
     <EditText
-        android:id="@+id/editTextAssessName"
+        android:id="@+id/AssessName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:ems="10"
+        android:hint="&quot;Guest&quot; or Assess Name"
         android:inputType="text"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAssessName" />
+        app:layout_constraintTop_toBottomOf="@+id/AssessName" />
 
     <Button
         android:id="@+id/buttonHeadRotation"
