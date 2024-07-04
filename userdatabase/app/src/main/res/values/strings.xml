@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">userdatabase</string>
+    <string name="enter_your_last_name">Enter your Last name</string>
+    <string name="enter_your_first_name">Enter your first name</string>
+    <string name="patients">Patients</string>
+    <string name="add">Add</string>
+</resources>
