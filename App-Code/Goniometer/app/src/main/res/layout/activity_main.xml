@@ -13,9 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="Connect to BT"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bluetoothButton" />
+        app:layout_constraintTop_toBottomOf="@+id/bluetoothButton"
+        app:layout_constraintVertical_bias="0.002" />
 
     <Button
         android:id="@+id/bluetoothButton"
@@ -27,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.153" />
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/textView"
@@ -43,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.066" />
 
     <Button
         android:id="@+id/buttonGuestButton"
@@ -78,8 +80,9 @@
         android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConnectionButton"
-        app:layout_constraintVertical_bias="0.176"
-        tools:layout_editor_absoluteX="68dp" />
+        app:layout_constraintVertical_bias="0.176" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.goniometer;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,21 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothProfile;
-import android.os.Handler;
-import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     protected Button buttonGuestButton;
     protected Button buttonPatientButton;
     protected Button BluetoothButton;
     protected Button ConnectionButton;
+    protected BLEManager bleManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         BluetoothButton = findViewById(R.id.bluetoothButton);
         ConnectionButton = findViewById(R.id.ConnectionButton);
         buttonPatientButton = findViewById(R.id.buttonPatientButton);
-
+        bleManager = new BLEManager(this);
 //Setting up Buttons
         BluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
+                    bleManager.startScanning();
+                }
         });
         ConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
