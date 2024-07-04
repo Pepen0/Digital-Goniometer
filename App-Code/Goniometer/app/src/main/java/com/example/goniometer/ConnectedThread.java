@@ -6,31 +6,24 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ConnectedThread {
     private static final String TAG = "Logs";
     private final BluetoothSocket cSocket;
     private final InputStream cInStream;
-    private final OutputStream cOutStream;
     private String valueRead;
 
     public ConnectedThread(BluetoothSocket socket){
         cSocket = socket;
         InputStream tmpIn = null;
-        OutputStream tmpOut = null;
-        //Get Input/Output streams
+
+        //Get Input stream
         try{
-            tmpInt = socket.getInputStream();
-        }catch (IOException e){
-            Log.e(TAG, "Error occurred when creating input stream", e)  ;
-        }try {
-            tmpOut = socket.getOutputStream();
-        }catch (IOException e){
-            Log.e(TAG, "Error occurred when creating output stream", e);
+            tmpIn = socket.getInputStream();
+        }catch (IOException e) {
+            Log.e(TAG, "Error occurred when creating input stream", e);
         }
         cInStream =tmpIn;
-        cOutStream = tmpOut;
     }
     public String getValueRead(){
         return valueRead;
@@ -46,7 +39,7 @@ public class ConnectedThread {
                 String readMessage;
 if (buffer[bytes] == '/n'){
     readMessage = new String(buffer, 0, bytes);
-    log.e(TAG, readMessage);
+    Log.e(TAG, readMessage);
     valueRead = readMessage;
     bytes = 0;
     numberOfReadings++;

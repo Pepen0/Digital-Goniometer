@@ -46,7 +46,8 @@ public class ConnectThread extends Thread {
                 Log.e(TAG,"Could not close the client socket", e);
             }
         }
-public BluetoothSocket getCSocket(){return cSocket; }
+public BluetoothSocket getCSocket(){
+            return cSocket; }
         }
 
 
