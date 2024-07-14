@@ -7,32 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".AssessmentActivity">
 
-    <EditText
-        android:id="@+id/editTextAssessName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:ems="10"
-        android:inputType="text"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="&quot;Guest&quot; or Assess Name" />
-
     <TextView
         android:id="@+id/textViewSelectDesired"
         android:layout_width="287dp"
         android:layout_height="66dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="44dp"
         android:text="Select the Desired Measurement:"
         android:textAlignment="center"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAssessName" />
+        app:layout_constraintTop_toBottomOf="@+id/PatientName" />
 
     <Button
         android:id="@+id/buttonHeadRotation"
@@ -50,10 +36,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="44dp"
         android:text="[Right Leg]"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRightArm" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonRightArm"
+        app:layout_constraintVertical_bias="0.101" />
 
     <Button
         android:id="@+id/buttonLeftArm"
@@ -62,21 +50,25 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
         android:text="[Left Arm]"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonRightArm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonLeftLeg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="109dp"
+        android:layout_height="48dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:text="[Left Leg]"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonRightLeg"
-        app:layout_constraintHorizontal_bias="0.426"
+        app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLeftArm" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLeftArm"
+        app:layout_constraintVertical_bias="0.101" />
 
     <Button
         android:id="@+id/buttonRightArm"
@@ -85,7 +77,22 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
         android:text="[Right Arm]"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonLeftArm"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/PatientName"
+        android:layout_width="158dp"
+        android:layout_height="51dp"
+        android:textAlignment="center"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088"
+        tools:text="Patient Name/Guest" />
 </androidx.constraintlayout.widget.ConstraintLayout>

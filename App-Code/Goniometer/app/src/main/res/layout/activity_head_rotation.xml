@@ -11,58 +11,67 @@
         android:id="@+id/textViewHeadRotation"
         android:layout_width="197dp"
         android:layout_height="45dp"
-        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif-black"
         android:text="HEAD ROTATION"
         android:textAlignment="center"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
 
     <Button
-        android:id="@+id/buttonStartMeasuring"
+        android:id="@+id/StartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="476dp"
         android:text="Start Measuring"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeadRotation" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeadRotation"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/buttonSaveHeadRotation"
+        android:id="@+id/SaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:text="Save Head Rotation"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLeftHeadRotation" />
+        app:layout_constraintTop_toBottomOf="@+id/RightM"
+        app:layout_constraintVertical_bias="0.371" />
 
     <TextView
-        android:id="@+id/textViewLeftHeadRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
-        android:text="Left: 23 degrees"
-        android:textSize="20sp"
+        android:id="@+id/LeftM"
+        android:layout_width="174dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="364dp"
+        android:text="Left Rotation"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/RightM"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStartMeasuring" />
+        app:layout_constraintTop_toBottomOf="@+id/StartButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/textViewRightHeadRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="16dp"
-        android:text="Right: 45 degrees"
-        android:textSize="20sp"
+        android:id="@+id/RightM"
+        android:layout_width="175dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="364dp"
+        android:text="Right Rotation"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStartMeasuring" />
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StartButton"
+        app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

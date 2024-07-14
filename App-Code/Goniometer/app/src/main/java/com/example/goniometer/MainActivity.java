@@ -1,5 +1,6 @@
 package com.example.goniometer;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected Button buttonGuestButton;
     protected Button buttonPatientButton;
+    protected Button BluetoothButton;
+    protected Button ConnectionButton;
+    protected BLEManager bleManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupUI() {
         buttonGuestButton = findViewById(R.id.buttonGuestButton);
+        BluetoothButton = findViewById(R.id.bluetoothButton);
+        ConnectionButton = findViewById(R.id.ConnectionButton);
+        buttonPatientButton = findViewById(R.id.buttonPatientButton);
+        bleManager = new BLEManager(this);
+//Setting up Buttons
+        BluetoothButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    bleManager.startScanning();
+                }
+        });
+        ConnectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         buttonGuestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,17 +63,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        buttonPatientButton = findViewById(R.id.buttonPatientButton);
+
         buttonPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPatientActivity();
+                goToPatientPage();
             }
         });
 
-    };
+    }
 
-    private void goToPatientActivity() {
+    private void goToPatientPage() {
         Intent intent = new Intent(this, PatientActivity.class);
         startActivity(intent);
     }
