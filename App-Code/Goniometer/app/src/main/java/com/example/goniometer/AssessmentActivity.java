@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,6 +32,10 @@ public class AssessmentActivity extends AppCompatActivity {
         });
 
         setupUI();
+        Toolbar toolbar =  findViewById(R.id.maintoolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Assessment Page");
 
     }
 
@@ -47,6 +52,7 @@ public class AssessmentActivity extends AppCompatActivity {
     }
         private void goToHeadRotation() {
             Intent intent = new Intent(this, HeadRotation.class);
+            intent.putExtra("isGuest", true);
             startActivity(intent);
         }
 }

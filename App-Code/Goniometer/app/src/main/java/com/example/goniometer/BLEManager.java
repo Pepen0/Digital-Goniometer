@@ -1,138 +1,148 @@
 package com.example.goniometer;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.content.pm.PackageManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.bluetooth.le.ScanResult;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-
-import java.util.UUID;
-
-import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.UUID;
+import java.util.logging.Handler;
+
 public class BLEManager {
-    private static final String Device_Name = "LED";
-    private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
+    private static final String TAG = "IMU Sensor";
+    private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
+    private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10003-E8F2-537E-4F6C-D104768A1214");
+    private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
+
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
-    private BluetoothLeScanner bluetoothLeScanner;
     private Context context;
-    private Activity activity;
+    private BluetoothGattCharacteristic yawCharacteristic;
+    private DataCallback dataCallback;
+    private ConnectionCallback connectionCallback;
 
-    public BLEManager(Activity activity) {
-        this.context = activity.getApplicationContext();
-        this.activity = activity;
-        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(context, "This Device Does Not Support BLE", Toast.LENGTH_SHORT).show();
-            return;
+    public interface DataCallback {
+        void onDataReceived(float yaw);
+    }
+
+    public interface ConnectionCallback {
+        void onConnected();
+        void onDisconnected();
+    }
+
+    private static BLEManager instance;
+
+    public static BLEManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("BLEManager not initialized");
         }
+        return instance;
+    }
+
+    public BLEManager(Context context) {
+        this.context = context;
         BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-        bluetoothAdapter = bluetoothManager.getAdapter();
-        if (bluetoothManager == null || !bluetoothAdapter.isEnabled()) {
-            Toast.makeText(context, "Enable bluetooth to proceed", Toast.LENGTH_SHORT).show();
-            return;
+        if (bluetoothManager != null) {
+            bluetoothAdapter = bluetoothManager.getAdapter();
         }
+        instance = this;
     }
 
-    public void startScanning() {
-        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            bluetoothLeScanner.startScan(scanCallback);
-        } else {
-            Toast.makeText(context, "Location permission required", Toast.LENGTH_SHORT).show();
-        }
+    public void setDataCallback(DataCallback callback) {
+        this.dataCallback = callback;
     }
 
-    private ScanCallback scanCallback = new ScanCallback() {
+    public void setConnectionCallback(ConnectionCallback callback) {
+        this.connectionCallback = callback;
+    }
+
+    public void connectToDevice(String deviceAddress) {
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
+        bluetoothGatt = device.connectGatt(context, false, gattCallback);
+    }
+
+    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            BluetoothDevice device = result.getDevice();
-            if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-
-                if (Device_Name.equals(device.getName())) {
-                    bluetoothLeScanner.stopScan(scanCallback);
-                    connectDevice(device);
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                Log.d(TAG, "Connected to GATT server.");
+                bluetoothGatt.discoverServices();
+                if (connectionCallback != null) {
+                    connectionCallback.onConnected();
+                }
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.d(TAG, "Disconnected from GATT server.");
+                if (connectionCallback != null) {
+                    connectionCallback.onDisconnected();
                 }
             }
         }
 
-        private void connectDevice(BluetoothDevice device) {
-            if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-
-                bluetoothGatt = device.connectGatt(context, false, gattCallback);
-            }
-        }
-
-        private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-            @Override
-            public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-                if (newState == BluetoothGatt.STATE_CONNECTED) {
-                    if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        gatt.discoverServices();
-                    } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-                        returnToast("Disconnected from device");
-                    }
-                }
-            }
-
-            @Override
-            public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-                if (status == BluetoothGatt.GATT_SUCCESS) {
-                    BluetoothGattService service = gatt.getService(CHARACTERISTIC_UUID);
-                    if (service != null) {
-                        BluetoothGattCharacteristic characteristic = service.getCharacteristic(CHARACTERISTIC_UUID);
-                        if (characteristic != null) {
-                            if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-
-                                gatt.readCharacteristic(characteristic);
-                            }
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                BluetoothGattService service = gatt.getService(SERVICE_UUID);
+                if (service != null) {
+                    BluetoothGattCharacteristic characteristic = service.getCharacteristic(CHARACTERISTIC_UUID);
+                    if (characteristic != null) {
+                        gatt.setCharacteristicNotification(characteristic, true);
+                        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
+                        if (descriptor != null) {
+                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                            gatt.writeDescriptor(descriptor);
                         }
                     }
-
                 } else {
-                    returnToast("Failed to discover services");
+                    Log.w(TAG, "Service not found: " + SERVICE_UUID.toString());
                 }
+            } else {
+                Log.w(TAG, "onServicesDiscovered received: " + status);
             }
-
-            @Override
-            public void onCharacteristicRead(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic, @NonNull byte[] value, int status) {
-                if (status == BluetoothGatt.GATT_SUCCESS) {
-                    String measurements = new String(characteristic.getValue());
-                    returnToast("Measurements received" + measurements);
-                } else {
-                    returnToast("Failed to read characteristic");
-                }
-            }
-        };
-
-        private void returnToast(String message) {
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
         }
 
-        @SuppressLint("MissingPermission")
-        public void stopConnection() {
-            if (bluetoothGatt != null) {
-                bluetoothGatt.disconnect();
-                bluetoothGatt.close();
-                bluetoothGatt = null;
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+                ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
+                float yaw = buffer.getFloat();
+                //final float yaw = characteristic.getFloatValue(BluetoothGattCharacteristic.FORMAT_FLOAT, 0);
+                if (dataCallback != null) {
+                    dataCallback.onDataReceived(yaw);
+                }
             }
         }
     };
+
+    public void startMeasuring() {
+        // Logic to start measurements, if any
+        if (yawCharacteristic != null) {
+            bluetoothGatt.readCharacteristic(yawCharacteristic);
+        }
+    }
+
+    public void disconnect() {
+        if (bluetoothGatt != null) {
+            bluetoothGatt.disconnect();
+            bluetoothGatt.close();
+            bluetoothGatt = null;
+        }
+    }
+
+    private void returnToast(String message) {
+        if (context instanceof Activity) {
+            ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
+        }
+    }
 }
 

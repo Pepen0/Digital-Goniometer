@@ -1,61 +1,59 @@
 package com.example.goniometer;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.widget.Toast;
 
 public class PatientActivity extends AppCompatActivity {
 
-    protected FloatingActionButton floatingAddNewPatient;
-    protected EditText editTextPatientName;
-    protected TextView textViewPatientList;
-
+    EditText etFirstName, etLastName;
+    Button btnAddPatient;
+    Button btnPatients;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_patient);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // Initialize DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
+
+        // Initialize EditTexts and Buttons
+        etFirstName = findViewById(R.id.FirstNameText);
+        etLastName = findViewById(R.id.LastNameText);
+        btnAddPatient = findViewById(R.id.AddButton);
+        btnPatients = findViewById(R.id.Patientsbutton);
+
+        // Set click listener for Add Patient button
+        btnAddPatient.setOnClickListener(v -> {
+            String firstName = etFirstName.getText().toString().trim();
+            String lastName = etLastName.getText().toString().trim();
+
+            if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                long id = dbHelper.addPatient(firstName, lastName); // Use dbHelper to add patient
+                if (id != -1) {
+                    Toast.makeText(PatientActivity.this, "Patient added with ID: " + id, Toast.LENGTH_SHORT).show();
+                    etFirstName.setText("");
+                    etLastName.setText("");
+                } else {
+                    Toast.makeText(PatientActivity.this, "Failed to add patient", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(PatientActivity.this, "Please enter both first name and last name", Toast.LENGTH_SHORT).show();
+            }
         });
 
-        setupUI();
-
-    }
-
-    private void setupUI() {
-        editTextPatientName = findViewById(R.id.editTextCurrentName);
-
-        textViewPatientList = findViewById(R.id.textViewPatientList);
-
-
-        floatingAddNewPatient = findViewById(R.id.floatingAddNewPatient);
-        floatingAddNewPatient.setOnClickListener(new View.OnClickListener() {
+        // Set click listener for Patients button
+        btnPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // connect to patient database
-                long id = -1;
-                String patientName = "First Patient";
-                PatientData patient = new PatientData(id, patientName);
-
-                /*
-                create database helper here
-                databaseHelper = new DatabaseHelper(getApplicationContext());
-                databaseHelper.insertCourse(course);
-                */
+                Intent intent = new Intent(PatientActivity.this, PatientListActivity.class);
+                startActivity(intent); // Use startActivity with the Intent object
             }
         });
     }
