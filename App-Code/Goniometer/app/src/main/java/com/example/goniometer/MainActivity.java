@@ -1,6 +1,5 @@
 package com.example.goniometer;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Toast;
+
 public class MainActivity extends AppCompatActivity {
 
     protected Button buttonGuestButton;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermissions()) {
             requestPermissions();
         }
-    setupUI();
+        setupUI();
 
     }
 
@@ -52,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
             public void onConnected() {
-                runOnUiThread(()->{
+                runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Connected to device", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(MainActivity.this, HeadRotation.class);
-//                    startActivity(intent);
+                    // Intent intent = new Intent(MainActivity.this, HeadRotation.class);
+                    // startActivity(intent);
                 });
             }
+
             @Override
             public void onDisconnected() {
                 runOnUiThread(() -> {
@@ -66,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//Setting up Buttons
-        BluetoothButton.setOnClickListener(v-> {
-                String deviceAddress = "73:B3:B7:66:20:70";
-                bleManager.connectToDevice(deviceAddress);
+        // Setting up Buttons
+        BluetoothButton.setOnClickListener(v -> {
+            String deviceAddress = "73:B3:B7:66:20:70";
+            bleManager.connectToDevice(deviceAddress);
         });
         buttonGuestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -94,20 +96,25 @@ public class MainActivity extends AppCompatActivity {
             bleManager.disconnect();
         }
     }
+
     private void goToPatientPage() {
         Intent intent = new Intent(this, PatientActivity.class);
         startActivity(intent);
     }
 
-
     private void goToAssessmentActivity() {
         Intent intent = new Intent(this, AssessmentActivity.class);
         startActivity(intent);
     }
+
     private boolean hasPermissions() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {

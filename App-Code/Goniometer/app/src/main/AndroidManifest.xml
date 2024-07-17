@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Goniometer"
         tools:targetApi="31">
         <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".HeadRotation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:parentActivityName=".AssessmentActivity">
