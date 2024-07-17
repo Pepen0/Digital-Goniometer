@@ -56,6 +56,31 @@ private final BroadcastReceiver bluetoothReceiver= new BroadcastReceiver() {
         registerReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
     }
+protected void setuptoobar(){
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        bluetoothbutton = findViewById(R.id.Bluetoothbutton);
+        updatebluetoothbutton();
+
+        bluetoothbutton.setOnClickListener(view->){
+            if (bluetoothAdapter.isEnabled()) {
+                bluetoothbutton.disable();
+            }else{
+                bluetoothAdapter.enable();
+            }
+            updatebluetoothbutton();
+    }
 
     }
+    private void updateBluetoothButton() {
+        if (bluetoothAdapter.isEnabled()) {
+            bluetoothButton.setImageResource(R.drawable.ic_bluetooth_connected);
+        } else {
+            bluetoothButton.setImageResource(R.drawable.ic_bluetooth_disabled);
+        }
+    }
+
+
+
+}
