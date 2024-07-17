@@ -34,7 +34,6 @@ public class BLEManager {
     private BluetoothGattCharacteristic yawCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
-    private float lastYawValue = 0;
     private AlertDialog startMeasuring;
 
     public interface DataCallback {
@@ -124,7 +123,6 @@ public class BLEManager {
                 float yaw = buffer.getFloat();
                 if (dataCallback != null) {
                     dataCallback.onDataReceived(yaw);
-                    lastYawValue = yaw;
                 }
             }
         }
@@ -137,12 +135,12 @@ public class BLEManager {
         }
     }
 
-    public void stopMeasuring() {
-        //Logic to stop measuring and hold the measurements until Start button is pressed again
-        if (dataCallback != null) {
-            dataCallback.onDataReceived(lastYawValue);
-        }
-    }
+//    public void stopMeasuring() {
+//        //Logic to stop measuring and hold the measurements until Start button is pressed again
+//        if (dataCallback != null) {
+//            dataCallback.onDataReceived(lastYawValue);
+//        }
+//    }
 
     public void disconnect() {
         if (bluetoothGatt != null) {

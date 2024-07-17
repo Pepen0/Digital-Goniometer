@@ -85,11 +85,8 @@ public class HeadRotation extends AppCompatActivity {
                 if (!ismeasuring) {
                     askforConfirmation();
                     if(userConfirmation){
-                        maxLeft = 0;
-                        maxRight=0;
+                        resetValues();
                         bleManager.startMeasuring();
-                        ismeasuring = true;
-                        StartButton.setText("Stop Measuring");
                     }
 
                 }else {
@@ -112,11 +109,13 @@ public class HeadRotation extends AppCompatActivity {
     private void askforConfirmation(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start Measuring Confirmation");
-        builder.setMessage("Are you sure you want to start new measurement?");
+        builder.setMessage("Are you sure you want to start a new measurement?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 userConfirmation = true;
+                ismeasuring = true;
+                StartButton.setText("Stop Measuring");
             }
         });
        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -128,5 +127,11 @@ public class HeadRotation extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private void resetValues(){
+        maxLeft = 0;
+        maxRight=0;
+        LeftM.setText("Left Rotation: " + maxLeft);
+        RightM.setText("Right Rotation: " + maxRight);
     }
 }
