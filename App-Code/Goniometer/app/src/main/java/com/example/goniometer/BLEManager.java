@@ -34,7 +34,7 @@ public class BLEManager {
     private BluetoothGattCharacteristic yawCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
-
+    private float lastYawValue = 0;
     private AlertDialog startMeasuring;
 
     public interface DataCallback {
