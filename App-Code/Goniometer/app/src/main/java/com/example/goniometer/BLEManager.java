@@ -133,7 +133,6 @@ public class BLEManager {
     public void startMeasuring() {
         // Logic to start measurements and reset values to 0 if any existed
         if (yawCharacteristic != null) {
-            lastYawValue = 0;
             bluetoothGatt.readCharacteristic(yawCharacteristic);
         }
     }

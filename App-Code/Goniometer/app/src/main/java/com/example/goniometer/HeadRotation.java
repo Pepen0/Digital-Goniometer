@@ -28,7 +28,6 @@ public class HeadRotation extends AppCompatActivity {
     private float maxLeft = 0;
     private float maxRight = 0;
     private boolean ismeasuring = false;
-    private float lastYawValue = 0;
     private boolean userConfirmation = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,22 +82,23 @@ public class HeadRotation extends AppCompatActivity {
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ismeasuring) {
-                    ismeasuring = false;
-                    StartButton.setText("Start Measuring");
-
-                }else {
-                    //Check if the user confirmed the start of a new measurement
+                if (!ismeasuring) {
+                    askforConfirmation();
                     if(userConfirmation){
+                        maxLeft = 0;
+                        maxRight=0;
                         bleManager.startMeasuring();
                         ismeasuring = true;
                         StartButton.setText("Stop Measuring");
-                    }else{
-                        askforConfirmation();
+                    }
+
+                }else {
+                        ismeasuring = false;
+                    StartButton.setText("Start Measuring");
                     }
                 }
 
-            }
+
         });
 
         SaveButton.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +117,6 @@ public class HeadRotation extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 userConfirmation = true;
-                bleManager.startMeasuring();
-                ismeasuring = true;
-                StartButton.setText("STOP MEASURING");
             }
         });
        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
