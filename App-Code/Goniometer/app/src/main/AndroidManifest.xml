@@ -24,6 +24,9 @@
 
         <!-- Existing activities -->
         <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".HeadRotation"
             android:exported="false" />
         <activity
