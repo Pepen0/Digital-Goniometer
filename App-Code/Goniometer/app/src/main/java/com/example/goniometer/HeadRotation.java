@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.content.DialogInterface;
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,7 +28,7 @@ public class HeadRotation extends AppCompatActivity {
     private float maxLeft = 0;
     private float maxRight = 0;
     private boolean ismeasuring = false;
-
+    private float lastYawValue = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +86,10 @@ public class HeadRotation extends AppCompatActivity {
                 if (ismeasuring) {
                     ismeasuring = false;
                     StartButton.setText("Start Measuring");
-                    bleManager.askforConfirmation();
+
                 }else {
                     ismeasuring = true;
+                    askforConfirmation();
                     StartButton.setText("Stop Measuring");
                 }
             }
@@ -100,5 +102,25 @@ public class HeadRotation extends AppCompatActivity {
             }
         });
 
+    }
+    private void askforConfirmation(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Start Measuring Confirmation");
+        builder.setMessage("Are you sure you want to start new measurement?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                lastYawValue = 0;
+                bleManager.startMeasuring();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

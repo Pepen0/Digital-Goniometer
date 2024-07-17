@@ -34,7 +34,7 @@ public class BLEManager {
     private BluetoothGattCharacteristic yawCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
-    private float lastYawValue = 0;
+
     private AlertDialog startMeasuring;
 
     public interface DataCallback {
@@ -156,36 +156,6 @@ public class BLEManager {
     private void returnToast(String message) {
         if (context instanceof Activity) {
             ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
-        }
-    }
-
-    public void askforConfirmation() {
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle("Start Measuring");
-            builder.setMessage("Do you want to start new measurment?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startMeasuring();
-                    dialog.dismiss();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            startMeasuring = builder.create();
-            startMeasuring.show();
-        }
-    }
-
-    public void dismissStartMeasuring() {
-        if (startMeasuring != null && startMeasuring.isShowing()) {
-            startMeasuring.dismiss();
         }
     }
 }
