@@ -29,6 +29,7 @@ public class HeadRotation extends AppCompatActivity {
     private float maxRight = 0;
     private boolean ismeasuring = false;
     private float lastYawValue = 0;
+    private boolean userConfirmation = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,16 +83,21 @@ public class HeadRotation extends AppCompatActivity {
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bleManager.startMeasuring();
                 if (ismeasuring) {
                     ismeasuring = false;
                     StartButton.setText("Start Measuring");
 
                 }else {
-                    ismeasuring = true;
-                    askforConfirmation();
-                    StartButton.setText("Stop Measuring");
+                    //Check if the user confirmed the start of a new measurement
+                    if(userConfirmation){
+                        bleManager.startMeasuring();
+                        ismeasuring = true;
+                        StartButton.setText("Stop Measuring");
+                    }else{
+                        askforConfirmation();
+                    }
                 }
+
             }
         });
 
@@ -110,13 +116,17 @@ public class HeadRotation extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                userConfirmation = true;
                 bleManager.startMeasuring();
+                ismeasuring = true;
+                StartButton.setText("STOP MEASURING");
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+       builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                userConfirmation = false;
+               dialog.dismiss();
             }
         });
         AlertDialog dialog = builder.create();

@@ -122,9 +122,9 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float yaw = buffer.getFloat();
-                lastYawValue = yaw;
                 if (dataCallback != null) {
                     dataCallback.onDataReceived(yaw);
+                    lastYawValue = yaw;
                 }
             }
         }
@@ -132,8 +132,8 @@ public class BLEManager {
 
     public void startMeasuring() {
         // Logic to start measurements and reset values to 0 if any existed
-        lastYawValue = 0;
         if (yawCharacteristic != null) {
+            lastYawValue = 0;
             bluetoothGatt.readCharacteristic(yawCharacteristic);
         }
     }
