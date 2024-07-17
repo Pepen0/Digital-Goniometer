@@ -26,7 +26,6 @@ public class HeadRotation extends AppCompatActivity {
 
     private float maxLeft = 0;
     private float maxRight = 0;
-
     private boolean ismeasuring = false;
 
     @Override
@@ -86,6 +85,7 @@ public class HeadRotation extends AppCompatActivity {
                 if (ismeasuring) {
                     ismeasuring = false;
                     StartButton.setText("Start Measuring");
+                    bleManager.askforConfirmation();
                 }else {
                     ismeasuring = true;
                     StartButton.setText("Stop Measuring");
@@ -101,11 +101,4 @@ public class HeadRotation extends AppCompatActivity {
         });
 
     }
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (bleManager != null) {
-//            bleManager.disconnect();
-//        }
-//    }
 }
