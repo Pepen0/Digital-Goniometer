@@ -168,8 +168,7 @@ void loop()
       Serial.println(AccZ);
 
       // Maintain a loop timing of 40 milliseconds
-      while (micros() - LoopTimer < 4000)
-        ;
+      while (micros() - LoopTimer < 4000);
       LoopTimer = micros(); // Reset loop timer
     }
     Serial.println("Connection Lost");
