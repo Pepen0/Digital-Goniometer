@@ -1,5 +1,7 @@
 package com.example.goniometer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -10,6 +12,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,6 +34,7 @@ public class BLEManager {
     private BluetoothGattCharacteristic yawCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
+    private AlertDialog startMeasuring;
 
     public interface DataCallback {
         void onDataReceived(float yaw);
@@ -38,6 +42,7 @@ public class BLEManager {
 
     public interface ConnectionCallback {
         void onConnected();
+
         void onDisconnected();
     }
 
@@ -116,7 +121,6 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float yaw = buffer.getFloat();
-                //final float yaw = characteristic.getFloatValue(BluetoothGattCharacteristic.FORMAT_FLOAT, 0);
                 if (dataCallback != null) {
                     dataCallback.onDataReceived(yaw);
                 }
@@ -125,11 +129,18 @@ public class BLEManager {
     };
 
     public void startMeasuring() {
-        // Logic to start measurements, if any
+        // Logic to start measurements and reset values to 0 if any existed
         if (yawCharacteristic != null) {
             bluetoothGatt.readCharacteristic(yawCharacteristic);
         }
     }
+
+//    public void stopMeasuring() {
+//        //Logic to stop measuring and hold the measurements until Start button is pressed again
+//        if (dataCallback != null) {
+//            dataCallback.onDataReceived(lastYawValue);
+//        }
+//    }
 
     public void disconnect() {
         if (bluetoothGatt != null) {
