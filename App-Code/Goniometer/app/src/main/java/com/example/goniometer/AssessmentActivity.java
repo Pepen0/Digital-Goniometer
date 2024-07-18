@@ -17,6 +17,7 @@ public class AssessmentActivity extends AppCompatActivity {
     protected EditText editTextAssessName;
     protected TextView textViewSelectDesired;
     protected Button buttonHeadRotation;
+    protected Button buttonWristRotation;
     protected Button buttonLeftArmRotation;
     protected Button buttonRightArmRotation;
     protected Button buttonLeftLegRotation;
@@ -47,6 +48,7 @@ public class AssessmentActivity extends AppCompatActivity {
         buttonRightArmRotation = findViewById(R.id.buttonRightArm);
         buttonLeftLegRotation = findViewById(R.id.buttonLeftLeg);
         buttonRightLegRotation = findViewById(R.id.buttonRightLeg);
+        buttonWristRotation = findViewById(R.id.buttonWristRotation);
 
         // Set Click Listeners
         buttonHeadRotation.setOnClickListener(v -> goToHeadRotation());
@@ -54,6 +56,13 @@ public class AssessmentActivity extends AppCompatActivity {
         buttonRightArmRotation.setOnClickListener(v -> goToRightArmRotation());
         buttonLeftLegRotation.setOnClickListener(v -> goToLeftLegRotation());
         buttonRightLegRotation.setOnClickListener(v -> goToRightLegRotation());
+        buttonWristRotation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToWristRotation();
+            }
+
+        });
     }
 
     private void goToHeadRotation() {

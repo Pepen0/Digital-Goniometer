@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WristRotation">
+
+    <TextView
+        android:id="@+id/textViewWristRotation"
+        android:layout_width="197dp"
+        android:layout_height="45dp"
+        android:text="WRIST ROTATION"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <Button
+        android:id="@+id/StartButtonWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:text="START MEASURING"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWristRotation"
+        app:layout_constraintVertical_bias="0.167" />
+
+    <TextView
+        android:id="@+id/LeftMaxWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Left Max Rotation"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="383dp" />
+
+    <TextView
+        android:id="@+id/RightMaxWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Max Rotation"
+        tools:layout_editor_absoluteX="250dp"
+        tools:layout_editor_absoluteY="378dp" />
+
+    <TextView
+        android:id="@+id/LiveDataWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Live Data Wrist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="450dp" />
+
+    <Button
+        android:id="@+id/SaveButtonWrist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Wrist Rotation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="543dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="79dp"
+        android:layout_height="26dp"
+        android:text="Left Wrist"
+        tools:layout_editor_absoluteX="213dp"
+        tools:layout_editor_absoluteY="307dp" />
+
+    <Switch
+        android:id="@+id/switchRightLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Wrist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.273"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="307dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
