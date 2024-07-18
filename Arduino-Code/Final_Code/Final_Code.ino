@@ -116,6 +116,7 @@ void setup()
   AccXCharacteristic.writeValue(0.0);  // Initial dummy value
   AccYCharacteristic.writeValue(0.0);  // Initial dummy value
   AccZCharacteristic.writeValue(0.0);  // Initial dummy value
+  
   BLE.advertise();
 
   Serial.println("Bluetooth device active, waiting for connections...");
