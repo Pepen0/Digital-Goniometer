@@ -85,7 +85,6 @@ public class HeadRotation extends AppCompatActivity {
                 if (!ismeasuring) {
                     askforConfirmation();
                     if(userConfirmation){
-                        resetValues();
                         bleManager.startMeasuring();
                     }
 
@@ -113,6 +112,7 @@ public class HeadRotation extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
                 StartButton.setText("Stop Measuring");
