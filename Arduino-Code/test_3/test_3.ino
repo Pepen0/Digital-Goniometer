@@ -30,6 +30,8 @@ BLEService imuService("19B10000-E8F2-537E-4F6C-D104768A1214");
 BLEFloatCharacteristic rollCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLENotify);
 BLEFloatCharacteristic pitchCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLENotify);
 BLEFloatCharacteristic yawCharacteristic("19B10003-E8F2-537E-4F6C-D104768A1214", BLENotify);
+BLEStringCharacteristic debugMessageCharacteristic("19B10004-E8F2-537E-4F6C-D104768A1214", BLEWrite | BLENotify, 512); // 512 is the maximum size of the debug message.
+
 String address;
 
 void checkBleInput(BLEDevice &central){
@@ -43,10 +45,18 @@ void sendBleOutput(){
   yawCharacteristic.writeValue(AngleYaw);
 }
 
+void DebugMessage(const String &message) {
+  Serial.println(message);
+  if (BLE.connected()) {
+      debugMessageCharacteristic.writeValue(message);
+  }
+}
+
+
 void startCalibrateImu(){
   sampleCounter++;
   isCalibrating = true;
-  Serial.println("Started callibration");
+  DebugMessage("Started callibration");
 }
 
 void continueCalibrateImu(){
@@ -73,10 +83,13 @@ void finishCalibrateImu(){
   sampleCounter = 0;
   sumX = 0, sumY = 0, sumZ = 0;
   isCalibrating = false;
-  isMeasuring = true;
   Roll = 0, Pitch = 0, Yaw = 0;
   lastCalibrationTime = millis();
-  Serial.println("Finished callibration");
+  DebugMessage("Finished callibration");
+  if(!isMeasuring){
+    isMeasuring = true;
+    DebugMessage("Started measuring");
+  }
 }
 
 void readIMU(){
@@ -151,6 +164,7 @@ void setup()
   imuService.addCharacteristic(rollCharacteristic);
   imuService.addCharacteristic(pitchCharacteristic);
   imuService.addCharacteristic(yawCharacteristic);
+  imuService.addCharacteristic(debugMessageCharacteristic);
   
   BLE.addService(imuService);
 
