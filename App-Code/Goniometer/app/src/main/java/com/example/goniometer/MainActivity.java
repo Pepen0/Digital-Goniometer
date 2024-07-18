@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     protected Button buttonGuestButton;
     protected Button buttonPatientButton;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions();
         }
         setupUI();
+        setupToolbar();
 
     }
 
