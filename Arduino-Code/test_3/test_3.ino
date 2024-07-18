@@ -30,11 +30,17 @@ BLEService imuService("19B10000-E8F2-537E-4F6C-D104768A1214");
 BLEFloatCharacteristic rollCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLENotify);
 BLEFloatCharacteristic pitchCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLENotify);
 BLEFloatCharacteristic yawCharacteristic("19B10003-E8F2-537E-4F6C-D104768A1214", BLENotify);
+String address;
 
-void checkBleInput(){
+void checkBleInput(BLEDevice &central){
+  address = String(central.address());
 }
 
 void sendBleOutput(){
+  // update ble
+  rollCharacteristic.writeValue(AngleRoll);
+  pitchCharacteristic.writeValue(AnglePitch);
+  yawCharacteristic.writeValue(AngleYaw);
 }
 
 void startCalibrateImu(){
@@ -100,7 +106,9 @@ void readIMU(){
 
 void printImuMeasurement(){
   // Print the measured and calculated angles to the Serial Monitor
-  Serial.print("Roll Angle [°]: ");
+  Serial.print("Connected to central: ");
+  Serial.print(address);
+  Serial.print(" | Roll Angle [°]: ");
   Serial.print(AngleRoll);
   Serial.print(" | Pitch Angle [°]: ");
   Serial.print(AnglePitch);
@@ -143,6 +151,8 @@ void setup()
   imuService.addCharacteristic(rollCharacteristic);
   imuService.addCharacteristic(pitchCharacteristic);
   imuService.addCharacteristic(yawCharacteristic);
+  
+  BLE.addService(imuService);
 
   rollCharacteristic.writeValue(0.0);  
   pitchCharacteristic.writeValue(0.0);
@@ -192,7 +202,9 @@ void loop()
     }else if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()){
       LoopTimer = micros();
 
+      checkBleInput(central);
       readIMU();
+      sendBleOutput();
       printImuMeasurement();
 
       // Maintain a loop timing of 40 milliseconds
