@@ -1,18 +1,20 @@
 package com.example.goniometer;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PatientActivity extends AppCompatActivity {
 
     EditText etFirstName, etLastName;
     Button btnAddPatient;
-    Button btnPatients;
+    Button btnDeletePatients;
+    Button btnSelectPatient;
+    Button btnviewRecords;
     DatabaseHelper dbHelper;
 
     @Override
@@ -27,7 +29,9 @@ public class PatientActivity extends AppCompatActivity {
         etFirstName = findViewById(R.id.FirstNameText);
         etLastName = findViewById(R.id.LastNameText);
         btnAddPatient = findViewById(R.id.AddButton);
-        btnPatients = findViewById(R.id.Patientsbutton);
+        btnDeletePatients = findViewById(R.id.DeletePatientbutton);
+        btnSelectPatient = findViewById(R.id.SelectPatientsbutton);
+        btnviewRecords = findViewById(R.id.ViewRecordsbutton);
 
         // Set click listener for Add Patient button
         btnAddPatient.setOnClickListener(v -> {
@@ -48,13 +52,26 @@ public class PatientActivity extends AppCompatActivity {
             }
         });
 
-        // Set click listener for Patients button
-        btnPatients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PatientActivity.this, PatientListActivity.class);
-                startActivity(intent); // Use startActivity with the Intent object
-            }
+        // Set click listener for Delete Patients button
+        btnDeletePatients.setOnClickListener(v -> {
+            Intent intent = new Intent(PatientActivity.this, PatientListActivity.class);
+            intent.putExtra("ACTION", "DELETE");
+            startActivity(intent);
+        });
+
+        // Set click listener for Select Patient button
+        btnSelectPatient.setOnClickListener(v -> {
+            Intent intent = new Intent(PatientActivity.this, PatientListActivity.class);
+            intent.putExtra("ACTION", "VIEW");
+            startActivity(intent);
+        });
+
+        // Set click listener for View Records button
+        btnviewRecords.setOnClickListener(v -> {
+            // Ensure that a patient is selected before showing records
+            Intent intent = new Intent(PatientActivity.this, PatientListActivity.class);
+            intent.putExtra("ACTION", "VIEW_MEASUREMENTS");
+            startActivity(intent);
         });
     }
 }

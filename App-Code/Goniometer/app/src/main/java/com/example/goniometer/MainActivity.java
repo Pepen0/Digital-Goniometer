@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermissions()) {
             requestPermissions();
         }
-    setupUI();
+        setupUI();
 
     }
 
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
 //Setting up Buttons
         BluetoothButton.setOnClickListener(v-> {
-                String deviceAddress = "73:B3:B7:66:20:70";
-                bleManager.connectToDevice(deviceAddress);
+            String deviceAddress = "73:B3:B7:66:20:70";
+            bleManager.connectToDevice(deviceAddress);
         });
         buttonGuestButton.setOnClickListener(new View.OnClickListener() {
             @Override
