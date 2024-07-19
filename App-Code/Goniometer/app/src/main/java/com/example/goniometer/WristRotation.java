@@ -20,7 +20,7 @@ public class WristRotation extends AppCompatActivity {
     protected TextView LeftMaxWrist;
     protected TextView RightMaxWrist;
     protected TextView LiveDataWrist;
-    protected Switch switchRightLeft;
+    //protected Switch switchRightLeft;
     private BLEManager bleManager;
 
     private float maxLeftWrist = 0;
