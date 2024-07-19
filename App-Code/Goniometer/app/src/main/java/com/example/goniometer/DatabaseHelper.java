@@ -181,27 +181,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int updatePatient(long id, String firstName, String lastName) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = 0;
-        try {
-            ContentValues values = new ContentValues();
-            values.put(KEY_FIRST_NAME, firstName);
-            values.put(KEY_LAST_NAME, lastName);
-
-            rowsAffected = db.update(TABLE_PATIENTS, values, KEY_ID + " = ?", new String[]{String.valueOf(id)});
-            if (rowsAffected > 0) {
-                Log.d(TAG, "Patient updated successfully: ID = " + id);
-            } else {
-                Log.e(TAG, "Failed to update patient with ID: " + id);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error updating patient: " + e.getMessage());
-        } finally {
-            db.close();
-        }
-        return rowsAffected;
-    }
 
     public long addMeasurement(long patientId, String measurementType, double leftAngle, double rightAngle, String timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
