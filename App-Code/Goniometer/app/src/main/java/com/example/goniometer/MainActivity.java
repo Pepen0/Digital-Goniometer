@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
             requestPermissions();
         }
         setupUI();
-        setupToolbar();
+        setupToolbar(false);//make it so there is no back button
 
     }
 

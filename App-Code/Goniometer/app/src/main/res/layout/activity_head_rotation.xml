@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HeadRotation">
-
+    <include
+        android:id="@+id/include_toolbar"
+        layout="@layout/toolbar" />
     <TextView
         android:id="@+id/textViewHeadRotation"
         android:layout_width="197dp"
