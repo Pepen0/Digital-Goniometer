@@ -53,15 +53,15 @@ public class WristRotation extends AppCompatActivity {
 
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
-            public void onDataReceived(float yaw) {
+            public void onDataReceived(float pitch) {
                 runOnUiThread(() -> {
-                    LiveDataWrist.setText(String.format("Yaw: %.2f", yaw));
+                    LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
 
-                    if (yaw < 0 && (yaw + maxRightWrist < 0) && ismeasuring) {
-                        maxRightWrist = -yaw;
+                    if (pitch < 0 && (pitch + maxRightWrist < 0) && ismeasuring) {
+                        maxRightWrist = -pitch;
                     }
-                    if (yaw > 0 && (yaw - maxLeftWrist > 0) && ismeasuring) {
-                        maxLeftWrist = yaw;
+                    if (pitch > 0 && (pitch - maxLeftWrist > 0) && ismeasuring) {
+                        maxLeftWrist = pitch;
                     }
                     LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
                     RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
