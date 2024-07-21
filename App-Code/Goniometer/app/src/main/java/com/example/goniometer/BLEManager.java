@@ -174,19 +174,19 @@ public class BLEManager {
                 if (yawCallback != null) {
                     yawCallback.onYawReceived(yaw);
                 }
-            }  if (CHARACTERISTIC_pitch.equals(characteristic.getUuid())) {
+            } else if (CHARACTERISTIC_pitch.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float pitch = buffer.getFloat();
                 if (pitchCallback != null) {
                     pitchCallback.onPitchReceived(pitch);
                 }
-            }  if (CHARACTERISTIC_roll.equals(characteristic.getUuid())) {
+            } else if (CHARACTERISTIC_roll.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float roll = buffer.getFloat();
                 if (rollCallback != null) {
                     rollCallback.onRollReceived(roll);
                 }
-            }  if (CHARACTERISTIC_debug.equals (characteristic.getUuid())) {
+            } else if (CHARACTERISTIC_debug.equals (characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String debug = new String(characteristic.getValue(), StandardCharsets.UTF_8);
                 if (debugCallback != null) {

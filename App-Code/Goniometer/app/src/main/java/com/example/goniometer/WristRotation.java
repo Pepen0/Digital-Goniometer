@@ -3,6 +3,7 @@ package com.example.goniometer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -57,6 +58,7 @@ public class WristRotation extends AppCompatActivity {
             @Override
             public void onPitchReceived(float pitch) {
                 runOnUiThread(() -> {
+                    Log.d("WristRotation", "Received pitch: " + pitch);
                     LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
 
                     if (pitch < 0 && (pitch + maxRightWrist < 0) && ismeasuring) {
