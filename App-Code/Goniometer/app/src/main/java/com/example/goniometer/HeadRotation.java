@@ -63,6 +63,35 @@ public class HeadRotation extends AppCompatActivity {
         SaveButton = findViewById(R.id.SaveButton);
         LeftM = findViewById(R.id.LeftM);
         RightM = findViewById(R.id.RightM);
+        Livedata = findViewById(R.id.Livedata);
+        bleManager = BLEManager.getInstance();
+
+        bleManager.setYawCallback(new BLEManager.YawCallback() {
+            @Override
+            public void onYawReceived(float yaw) {
+                runOnUiThread(() -> {
+                    Livedata.setText(String.format("Yaw: %.2f", yaw));
+
+                    if (yaw < 0 && (yaw + maxRight < 0) && ismeasuring) {
+                        maxRight = -yaw;
+                    }
+                    if (yaw > 0 && (yaw - maxLeft > 0) && ismeasuring) {
+                        maxLeft = yaw;
+                    }
+                    LeftM.setText("Left Rotation: " + maxLeft);
+                    RightM.setText("Right Rotation: " + maxRight);
+                });
+            }
+        });
+
+        // This will hide the save button for guests
+        Intent intent = getIntent();
+        boolean isGuest = intent.getBooleanExtra("isGuest", false);
+
+        // Hide the button if the user is a guest
+        if (isGuest) {
+            SaveButton.setVisibility(View.GONE);
+        }
 
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override

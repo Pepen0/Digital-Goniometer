@@ -44,16 +44,16 @@ public class WristRotation extends AppCompatActivity {
 
     private void setupUI() {
 
-        StartButtonWrist = findViewById(R.id.StartButton);
-        SaveButtonWrist = findViewById(R.id.SaveButton);
-        LeftMaxWrist = findViewById(R.id.LeftM);
-        RightMaxWrist = findViewById(R.id.RightM);
-        LiveDataWrist = findViewById(R.id.Livedata);
+        StartButtonWrist = findViewById(R.id.StartButtonWrist);
+        SaveButtonWrist = findViewById(R.id.SaveButtonWrist);
+        LeftMaxWrist = findViewById(R.id.LeftMaxWrist);
+        RightMaxWrist = findViewById(R.id.RightMaxWrist);
+        LiveDataWrist = findViewById(R.id.LiveDataWrist);
         bleManager = BLEManager.getInstance();
 
-        bleManager.setDataCallback(new BLEManager.DataCallback() {
+        bleManager.setPitchCallback(new BLEManager.PitchCallback() {
             @Override
-            public void onDataReceived(float pitch) {
+            public void onPitchReceived(float pitch) {
                 runOnUiThread(() -> {
                     LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
 
@@ -67,6 +67,7 @@ public class WristRotation extends AppCompatActivity {
                     RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
                 });
             }
+
         });
 
         //This will hide the save button for guests

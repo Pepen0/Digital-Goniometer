@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 
@@ -33,14 +34,29 @@ public class BLEManager {
     private BluetoothGatt bluetoothGatt;
     private final Context context;
     private BluetoothGattCharacteristic yawCharacteristic, rollCharacteristic, pitchCharacteristic, debugCharacteristic;
-    private DataCallback dataCallback;
+    private YawCallback yawCallback;
+    private PitchCallback pitchCallback;
+    private RollCallback rollCallback;
+    private DebugCallback debugCallback;
     private ConnectionCallback connectionCallback;
 
-    public interface DataCallback {
-        //interface for receiving data updates
-        void onDataReceived(float yaw);
+    public interface YawCallback {
+        //interface for receiving Yaw updates
+        void onYawReceived(float yaw);
     }
+    public interface PitchCallback {
+        //interface for receiving Pitch updates
+        void onPitchReceived(float pitch);
 
+    }
+    public interface RollCallback {
+        //interface for receiving Roll updates
+        void onRollReceived(float roll);
+    }
+    public interface DebugCallback {
+        //interface for receiving Roll updates
+        void onDebugReceived(String Debug);
+    }
     public interface ConnectionCallback {
         //interface for connection status
         void onConnected();
@@ -66,13 +82,14 @@ public class BLEManager {
         instance = this;
     }
 
-    public void setDataCallback(DataCallback callback) {
-        this.dataCallback = callback;
-    }
+    public void setYawCallback(YawCallback yawCallback) {this.yawCallback = yawCallback;}
 
-    public void setConnectionCallback(ConnectionCallback callback) {
-        this.connectionCallback = callback;
-    }
+    public void setPitchCallback(PitchCallback pitchCallback) {this.pitchCallback = pitchCallback;}
+
+    public void setRollCallback(RollCallback rollCallback) {this.rollCallback = rollCallback;}
+
+    public void setDebugCallback(DebugCallback debugCallback) {this.debugCallback = debugCallback;}
+    public void setConnectionCallback(ConnectionCallback callback) {this.connectionCallback = callback;}
 
     public void connectToDevice(String deviceAddress) {
         //Initiate connection to a BLE device
@@ -155,26 +172,26 @@ public class BLEManager {
             if (CHARACTERISTIC_yaw.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float yaw = buffer.getFloat();
-                if (dataCallback != null) {
-                    dataCallback.onDataReceived(yaw);
+                if (yawCallback != null) {
+                    yawCallback.onYawReceived(yaw);
                 }
             } else if (CHARACTERISTIC_pitch.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float pitch = buffer.getFloat();
-                if (dataCallback != null) {
-                    dataCallback.onDataReceived(pitch);
+                if (pitchCallback != null) {
+                    pitchCallback.onPitchReceived(pitch);
                 }
             } else if (CHARACTERISTIC_roll.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float roll = buffer.getFloat();
-                if (dataCallback != null) {
-                    dataCallback.onDataReceived(roll);
+                if (rollCallback != null) {
+                    rollCallback.onRollReceived(roll);
                 }
             } else if (CHARACTERISTIC_debug.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
-                float debug = buffer.getFloat();
-                if (dataCallback != null) {
-                    dataCallback.onDataReceived(debug);
+                String debug = new String(characteristic.getValue(), StandardCharsets.UTF_8);
+                if (debugCallback != null) {
+                    debugCallback.onDebugReceived(debug);
                 }
             }
         }
