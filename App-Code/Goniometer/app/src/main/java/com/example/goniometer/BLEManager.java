@@ -47,8 +47,7 @@ public class BLEManager {
     public interface PitchCallback {
         //interface for receiving Pitch updates
         void onPitchReceived(float pitch);
-
-    }
+        }
     public interface RollCallback {
         //interface for receiving Roll updates
         void onRollReceived(float roll);
@@ -131,7 +130,7 @@ public class BLEManager {
                     // Pitch Characteristic
                     BluetoothGattCharacteristic characteristic_P = service.getCharacteristic(CHARACTERISTIC_pitch);
                     if (characteristic_P != null) {
-                        gatt.setCharacteristicNotification(characteristic_P, true);
+                        gatt.setCharacteristicNotification(pitchCharacteristic, true);
                         BluetoothGattDescriptor descriptor_P = characteristic_P.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
                         if (descriptor_P != null) {
                             descriptor_P.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -140,7 +139,7 @@ public class BLEManager {
                         // Roll Characteristic
                         BluetoothGattCharacteristic characteristic_R = service.getCharacteristic(CHARACTERISTIC_roll);
                         if (characteristic_R != null) {
-                            gatt.setCharacteristicNotification(characteristic_R, true);
+                            gatt.setCharacteristicNotification(rollCharacteristic, true);
                             BluetoothGattDescriptor descriptor_R = characteristic_R.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
                             if (descriptor_R != null) {
                                 descriptor_R.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -148,9 +147,9 @@ public class BLEManager {
                             }
 
                             // Debug Characteristic
-                            BluetoothGattCharacteristic characteristic_D = service.getCharacteristic(CHARACTERISTIC_pitch);
+                            BluetoothGattCharacteristic characteristic_D = service.getCharacteristic(CHARACTERISTIC_debug);
                             if (characteristic_D != null) {
-                                gatt.setCharacteristicNotification(characteristic_D, true);
+                                gatt.setCharacteristicNotification(debugCharacteristic, true);
                                 BluetoothGattDescriptor descriptor_D = characteristic_D.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
                                 if (descriptor_D != null) {
                                     descriptor_D.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -175,19 +174,19 @@ public class BLEManager {
                 if (yawCallback != null) {
                     yawCallback.onYawReceived(yaw);
                 }
-            } else if (CHARACTERISTIC_pitch.equals(characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_pitch.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float pitch = buffer.getFloat();
                 if (pitchCallback != null) {
                     pitchCallback.onPitchReceived(pitch);
                 }
-            } else if (CHARACTERISTIC_roll.equals(characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_roll.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float roll = buffer.getFloat();
                 if (rollCallback != null) {
                     rollCallback.onRollReceived(roll);
                 }
-            } else if (CHARACTERISTIC_debug.equals(characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_debug.equals (characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String debug = new String(characteristic.getValue(), StandardCharsets.UTF_8);
                 if (debugCallback != null) {
@@ -207,12 +206,6 @@ public class BLEManager {
         }
     }
 
-//    public void stopMeasuring() {
-//        //Logic to stop measuring and hold the measurements until Start button is pressed again
-//        if (dataCallback != null) {
-//            dataCallback.onDataReceived(lastYawValue);
-//        }
-//    }
 
     public void disconnect() {
         if (bluetoothGatt != null) {
