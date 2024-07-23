@@ -116,9 +116,40 @@ public class BLEManager {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                BluetoothGattService service = gatt.getService(SERVICE_UUID);
-                if (service != null) {
-                    characteristicManager(service, CHARACTERISTIC_Yaw, true);
+                BluetoothGattService service = gatt.getService(UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214"));
+                BluetoothGattCharacteristic rollChar = service.getCharacteristic(UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214"));
+                BluetoothGattCharacteristic pitchChar = service.getCharacteristic(UUID.fromString("19B10002-E8F2-537E-4F6C-D104768A1214"));
+                BluetoothGattCharacteristic yawChar = service.getCharacteristic(UUID.fromString("19B10003-E8F2-537E-4F6C-D104768A1214"));
+          //      BluetoothGattService service = gatt.getService(SERVICE_UUID);
+                if(yawChar !=null) {
+                    bluetoothGatt.setCharacteristicNotification(yawChar, true);
+                    BluetoothGattDescriptor descriptoryaw = yawChar.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
+                    if (descriptoryaw != null) {
+                        descriptoryaw.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                        gatt.writeDescriptor(descriptoryaw);
+                    }
+                }
+                    if(pitchChar !=null) {
+                        bluetoothGatt.setCharacteristicNotification(pitchChar, true);
+                        BluetoothGattDescriptor descriptor_p = yawChar.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
+                        if (descriptor_p != null) {
+                            descriptor_p.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                            gatt.writeDescriptor(descriptor_p);
+                        }
+                    }
+                        if (rollChar != null) {
+                            bluetoothGatt.setCharacteristicNotification(rollChar, true);
+                            BluetoothGattDescriptor descriptor_r = yawChar.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
+                            if (descriptor_r != null) {
+                                descriptor_r.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                                gatt.writeDescriptor(descriptor_r);
+                            }
+                        }
+                        }
+                    }
+        /*        if (service != null) {
+                    characteristicManager(service, CHARACTERISTIC_Yaw, false);
+                    characteristicManager(service, CHARACTERISTIC_Yaw, false);
                     characteristicManager(service, CHARACTERISTIC_Pitch, false);
                     characteristicManager(service, CHARACTERISTIC_Roll, false);
                     characteristicManager(service, CHARACTERISTIC_Debug, false);
@@ -148,29 +179,32 @@ public class BLEManager {
                                 debugCharacteristic = characteristic;
                             }
                         }
-        }
+
+         */
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             // This will handle all the data streamed from arduino for each characteristic
+            UUID characteristicUuid = characteristic.getUuid();
+            Log.d(TAG, "Characteristic changed: " + characteristicUuid);
             if (CHARACTERISTIC_Yaw.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float yaw = buffer.getFloat();
                 if (yawCallback != null) {
                     yawCallback.onYawReceived(yaw);
                 }
-            } else if (CHARACTERISTIC_Pitch.equals(characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_Pitch.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float pitch = buffer.getFloat();
                 if (pitchCallback != null) {
                     pitchCallback.onPitchReceived(pitch);
                 }
-            } else if (CHARACTERISTIC_Roll.equals(characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_Roll.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 float roll = buffer.getFloat();
                 if (rollCallback != null) {
                     rollCallback.onRollReceived(roll);
                 }
-            } else if (CHARACTERISTIC_Debug.equals (characteristic.getUuid())) {
+            }  if (CHARACTERISTIC_Debug.equals (characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String debug = new String(characteristic.getValue(), StandardCharsets.UTF_8);
                 if (debugCallback != null) {
