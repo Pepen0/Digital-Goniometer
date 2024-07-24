@@ -66,20 +66,12 @@ public class HeadRotation extends AppCompatActivity {
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
-        bleManager.setYawCallback(new BLEManager.YawCallback() {
+        bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
-            public void onYawReceived(float yaw) {
+            public void onDataReceived(int Yaw, int Pitch, int Roll) {
                 runOnUiThread(() -> {
-                    Livedata.setText(String.format("Yaw: %.2f", yaw));
 
-                    if (yaw < 0 && (yaw + maxRight < 0) && ismeasuring) {
-                        maxRight = -yaw;
-                    }
-                    if (yaw > 0 && (yaw - maxLeft > 0) && ismeasuring) {
-                        maxLeft = yaw;
-                    }
-                    LeftM.setText("Left Rotation: " + maxLeft);
-                    RightM.setText("Right Rotation: " + maxRight);
+                    Livedata.setText(Yaw);
                 });
             }
         });
@@ -96,17 +88,19 @@ public class HeadRotation extends AppCompatActivity {
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bleManager.startMeasuring();
-                if (ismeasuring) {
+                if (!ismeasuring) {
+                    askforConfirmation();
+                    if (userConfirmation) {
+                        bleManager.startMeasuring();
+                    }
+
+                } else {
                     ismeasuring = false;
                     StartButton.setText("Start Measuring");
-                } else {
-                    ismeasuring = true;
-                    StartButton.setText("Stop Measuring");
                 }
             }
-        });
 
+        });
         SaveButton.setOnClickListener(v -> saveMeasurement());
     }
 
@@ -127,11 +121,35 @@ public class HeadRotation extends AppCompatActivity {
             Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
         }
     }
-    // @Override
-    // protected void onDestroy() {
-    // super.onDestroy();
-    // if (bleManager != null) {
-    // bleManager.disconnect();
-    // }
-    // }
+
+    private void askforConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Start Measuring Confirmation");
+        builder.setMessage("Are you sure you want to start a new measurement?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetValues();
+                userConfirmation = true;
+                ismeasuring = true;
+                StartButton.setText("Stop Measuring");
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                userConfirmation = false;
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void resetValues() {
+        maxLeft = 0;
+        maxRight = 0;
+        LeftM.setText("Left Rotation: " + maxLeft);
+        RightM.setText("Right Rotation: " + maxRight);
+    }
 }

@@ -1,6 +1,7 @@
-//This Class will Manage the Bluetooth Low Energy (BLE) Communication and Data stream handling
 package com.example.goniometer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -11,7 +12,8 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-
+import android.content.DialogInterface;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,45 +21,28 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-
+import java.util.logging.Handler;
 
 public class BLEManager {
     private static final String TAG = "IMU Sensor";
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
-    private static final UUID CHARACTERISTIC_Roll = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214");
-    private static final UUID CHARACTERISTIC_Pitch = UUID.fromString("19B10002-E8F2-537E-4F6C-D104768A1214");
-    private static final UUID CHARACTERISTIC_Yaw = UUID.fromString("19B10003-E8F2-537E-4F6C-D104768A1214");
-    private static final UUID CHARACTERISTIC_Debug = UUID.fromString("19B10004-E8F2-537E-4F6C-D104768A1214");
+    private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
-    private final Context context;
-    private BluetoothGattCharacteristic yawCharacteristic, rollCharacteristic, pitchCharacteristic, debugCharacteristic;
-    private YawCallback yawCallback;
-    private PitchCallback pitchCallback;
-    private RollCallback rollCallback;
-    private DebugCallback debugCallback;
+    private Context context;
+    private BluetoothGattCharacteristic yawCharacteristic;
+    private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
+    private AlertDialog startMeasuring;
+    private int LiveYaw, LivePitch, LiveRoll;
 
-    public interface YawCallback {
-        //interface for receiving Yaw updates
-        void onYawReceived(float yaw);
+    public interface DataCallback {
+        void onDataReceived(int Yaw, int Pitch, int Roll);
     }
-    public interface PitchCallback {
-        //interface for receiving Pitch updates
-        void onPitchReceived(float pitch);
-    }
-    public interface RollCallback {
-        //interface for receiving Roll updates
-        void onRollReceived(float roll);
-    }
-    public interface DebugCallback {
-        //interface for receiving Roll updates
-        void onDebugReceived(String Debug);
-    }
+
     public interface ConnectionCallback {
-        //interface for connection status
         void onConnected();
 
         void onDisconnected();
@@ -81,17 +66,15 @@ public class BLEManager {
         instance = this;
     }
 
-    public void setYawCallback(YawCallback yawCallback) {this.yawCallback = yawCallback;}
+    public void setDataCallback(DataCallback callback) {
+        this.dataCallback = callback;
+    }
 
-    public void setPitchCallback(PitchCallback pitchCallback) {this.pitchCallback = pitchCallback;}
-
-    public void setRollCallback(RollCallback rollCallback) {this.rollCallback = rollCallback;}
-
-    public void setDebugCallback(DebugCallback debugCallback) {this.debugCallback = debugCallback;}
-    public void setConnectionCallback(ConnectionCallback callback) {this.connectionCallback = callback;}
+    public void setConnectionCallback(ConnectionCallback callback) {
+        this.connectionCallback = callback;
+    }
 
     public void connectToDevice(String deviceAddress) {
-        //Initiate connection to a BLE device
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         bluetoothGatt = device.connectGatt(context, false, gattCallback);
     }
@@ -118,66 +101,40 @@ public class BLEManager {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 BluetoothGattService service = gatt.getService(SERVICE_UUID);
                 if (service != null) {
-                    characteristicManager(service, CHARACTERISTIC_Yaw, true);
-                    characteristicManager(service, CHARACTERISTIC_Pitch, false);
-                    characteristicManager(service, CHARACTERISTIC_Roll, false);
-                    characteristicManager(service, CHARACTERISTIC_Debug, false);
+                    BluetoothGattCharacteristic characteristic = service.getCharacteristic(CHARACTERISTIC_UUID);
+                    if (characteristic != null) {
+                        gatt.setCharacteristicNotification(characteristic, true);
+                        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
+                        if (descriptor != null) {
+                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                            gatt.writeDescriptor(descriptor);
+                        }
+                    }
                 } else {
-                    Log.w(TAG, "Service not found" + SERVICE_UUID.toString());
+                    Log.w(TAG, "Service not found: " + SERVICE_UUID.toString());
                 }
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-        private void characteristicManager(BluetoothGattService service, UUID uuid, boolean isYaw){
-            BluetoothGattCharacteristic characteristic = service.getCharacteristic(uuid);
-            if(characteristic !=null){
-                bluetoothGatt.setCharacteristicNotification(characteristic, true);
-                BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
-                if (descriptor !=null){
-                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                    bluetoothGatt.writeDescriptor(descriptor);
-                }
-                if(isYaw) {
-                    yawCharacteristic = characteristic;
-                } else if(uuid.equals(CHARACTERISTIC_Pitch)){
-                    pitchCharacteristic = characteristic;
-                } else if (uuid.equals(CHARACTERISTIC_Roll)){
-                    rollCharacteristic = characteristic;
-                } else if(uuid.equals(CHARACTERISTIC_Debug)){
-                    debugCharacteristic = characteristic;
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+                ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
+                String data = StandardCharsets.UTF_8.decode(buffer).toString();
+                if (dataCallback != null) {
+                    String[] Variables = data.split(", ");
+                    if(Variables.length == 3){
+                        //separating the variables from the string into 3 integers
+                        LiveYaw = Integer.parseInt(Variables[0]);
+                        LivePitch = Integer.parseInt(Variables[1]);
+                        LiveRoll = Integer.parseInt(Variables[2]);
+                    }
+                    dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
                 }
             }
         }
-        @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            // This will handle all the data streamed from arduino for each characteristic
-            if (CHARACTERISTIC_Yaw.equals(characteristic.getUuid())) {
-                float yaw = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-              //  float yaw = buffer.getFloat();
-                if (yawCallback != null) {
-                    yawCallback.onYawReceived(yaw);
-                }
-            } else if (CHARACTERISTIC_Pitch.equals(characteristic.getUuid())) {
-                float pitch = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                //float pitch = buffer_p.getFloat();
-                if (pitchCallback != null) {
-                    pitchCallback.onPitchReceived(pitch);
-                }
-            } else if (CHARACTERISTIC_Roll.equals(characteristic.getUuid())) {
-                float roll = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                //float roll = buffer_r.getFloat();
-                if (rollCallback != null) {
-                    rollCallback.onRollReceived(roll);
-                }
-            }// else if (CHARACTERISTIC_Debug.equals (characteristic.getUuid())) {
-               // String debug = new String (ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
-                //String debug = new String(characteristic.getValue(), StandardCharsets.UTF_8);
-                //if (debugCallback != null) {
-                  //  debugCallback.onDebugReceived(debug);
-               // }
-            }
-       // }
     };
 
     public void startMeasuring() {
@@ -185,17 +142,14 @@ public class BLEManager {
         if (yawCharacteristic != null) {
             bluetoothGatt.readCharacteristic(yawCharacteristic);
         }
-        if (pitchCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(pitchCharacteristic);
-        }
-        if (rollCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(rollCharacteristic);
-        }
-        if (debugCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(debugCharacteristic);
-        }
     }
 
+//    public void stopMeasuring() {
+//        //Logic to stop measuring and hold the measurements until Start button is pressed again
+//        if (dataCallback != null) {
+//            dataCallback.onDataReceived(lastYawValue);
+//        }
+//    }
 
     public void disconnect() {
         if (bluetoothGatt != null) {
@@ -211,4 +165,3 @@ public class BLEManager {
         }
     }
 }
-

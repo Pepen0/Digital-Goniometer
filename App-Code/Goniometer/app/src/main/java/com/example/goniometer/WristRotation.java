@@ -54,21 +54,22 @@ public class WristRotation extends AppCompatActivity {
         LiveDataWrist = findViewById(R.id.LiveDataWrist);
         bleManager_p = BLEManager.getInstance();
 
-        bleManager_p.setPitchCallback(new BLEManager.PitchCallback() {
+        bleManager_p.setDataCallback(new BLEManager.DataCallback() {
             @Override
-            public void onPitchReceived(float pitch) {
+            public void onDataReceived(int Yaw, int Pitch, int Roll) {
                 runOnUiThread(() -> {
-                    Log.d("WristRotation", "Received pitch: " + pitch);
-                    LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
-
-                    if (pitch < 0 && (pitch + maxRightWrist < 0) && ismeasuring) {
-                        maxRightWrist = -pitch;
-                    }
-                    if (pitch > 0 && (pitch - maxLeftWrist > 0) && ismeasuring) {
-                        maxLeftWrist = pitch;
-                    }
-                    LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-                    RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+//                    Log.d("WristRotation", "Received pitch: " + pitch);
+//                    LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
+//
+//                    if (pitch < 0 && (pitch + maxRightWrist < 0) && ismeasuring) {
+//                        maxRightWrist = -pitch;
+//                    }
+//                    if (pitch > 0 && (pitch - maxLeftWrist > 0) && ismeasuring) {
+//                        maxLeftWrist = pitch;
+//                    }
+                    //  LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
+                    // RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+                    LiveDataWrist.setText(Pitch);
                 });
             }
         });
@@ -137,3 +138,4 @@ public class WristRotation extends AppCompatActivity {
     }
 
 }
+
