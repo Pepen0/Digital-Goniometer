@@ -2,6 +2,7 @@ package com.example.goniometer;
 
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -70,9 +71,9 @@ public class HeadRotation extends AppCompatActivity {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
                 runOnUiThread(() -> {
+                    Livedata.setText("Yaw: "+ Yaw);
 
-                    Livedata.setText(Yaw);
-                });
+               });
             }
         });
 
@@ -132,6 +133,8 @@ public class HeadRotation extends AppCompatActivity {
                 resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
+                bleManager.sendDataToArduino("Reset data");
+                Log.d("Reset command sent", "Reset data");
                 StartButton.setText("Stop Measuring");
             }
         });

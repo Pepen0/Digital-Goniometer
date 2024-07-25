@@ -24,7 +24,7 @@ public class WristRotation extends AppCompatActivity {
     protected TextView RightMaxWrist;
     protected TextView LiveDataWrist;
     //protected Switch switchRightLeft;
-    private BLEManager bleManager_p;
+    private BLEManager bleManager;
     private boolean userConfirmation = false;
     private float maxLeftWrist = 0;
     private float maxRightWrist = 0;
@@ -52,12 +52,12 @@ public class WristRotation extends AppCompatActivity {
         LeftMaxWrist = findViewById(R.id.LeftMaxWrist);
         RightMaxWrist = findViewById(R.id.RightMaxWrist);
         LiveDataWrist = findViewById(R.id.LiveDataWrist);
-        bleManager_p = BLEManager.getInstance();
+        bleManager = BLEManager.getInstance();
 
-        bleManager_p.setDataCallback(new BLEManager.DataCallback() {
+        bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
-                runOnUiThread(() -> {
+              //  runOnUiThread(() -> {
 //                    Log.d("WristRotation", "Received pitch: " + pitch);
 //                    LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
 //
@@ -69,8 +69,9 @@ public class WristRotation extends AppCompatActivity {
 //                    }
                     //  LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
                     // RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
-                    LiveDataWrist.setText(Pitch);
-                });
+                Log.d("Pitch:", String.valueOf(Pitch));
+                LiveDataWrist.setText("Pitch: " + Pitch);
+          //      });
             }
         });
 
@@ -89,7 +90,7 @@ public class WristRotation extends AppCompatActivity {
                 if (!ismeasuring) {
                     askForConfirmation_p();
                     if (userConfirmation) {
-                        bleManager_p.startMeasuring();
+                        bleManager.startMeasuring();
                     }
 
                 } else {

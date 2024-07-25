@@ -32,11 +32,10 @@ public class BLEManager {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
-    private BluetoothGattCharacteristic yawCharacteristic;
+    private BluetoothGattCharacteristic dataCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
     private AlertDialog startMeasuring;
-    private int LiveYaw, LivePitch, LiveRoll;
 
     public interface DataCallback {
         void onDataReceived(int Yaw, int Pitch, int Roll);
@@ -123,24 +122,47 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-                if (dataCallback != null) {
-                    String[] Variables = data.split(", ");
-                    if(Variables.length == 3){
-                        //separating the variables from the string into 3 integers
-                        LiveYaw = Integer.parseInt(Variables[0]);
-                        LivePitch = Integer.parseInt(Variables[1]);
-                        LiveRoll = Integer.parseInt(Variables[2]);
+                try {
+                    if (dataCallback != null) {
+                        String[] Variables = data.split(",");
+                        for (int i = 0; i < Variables.length; i++) {
+                            Variables[i] = Variables[i].replaceAll(",", "");
+                        }
+                        if (Variables.length == 3) {
+                            //separating the variables from the string into 3 integers
+
+                            int LiveYaw = Integer.parseInt(Variables[0]);
+                            int LivePitch = Integer.parseInt(Variables[1]);
+                            int LiveRoll = Integer.parseInt(Variables[2]);
+                            Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
+                            dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                        }
+                    } else {
+                        // Handle the case where the string doesn't contain three parts
+                        Log.d("The String does not have 3 values", data);
                     }
-                    dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                } catch (NumberFormatException e) {
+                    // Handle any potential parsing errors
+                    Log.d("Error parsing integers: ", e.getMessage());
                 }
+
             }
         }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.d(TAG, "Arduino resetting data");
+            } else {
+                Log.e(TAG, "Failed to send data to Arduino. Status: " + 0);
+            }
+        };
     };
 
     public void startMeasuring() {
         // Logic to start measurements and reset values to 0 if any existed
-        if (yawCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(yawCharacteristic);
+        if (dataCharacteristic != null) {
+            bluetoothGatt.readCharacteristic(dataCharacteristic);
         }
     }
 
@@ -164,4 +186,13 @@ public class BLEManager {
             ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
         }
     }
+    public void sendDataToArduino(String data) {
+        if (bluetoothGatt != null && dataCharacteristic != null) {
+            dataCharacteristic.setValue(data);
+            bluetoothGatt.writeCharacteristic(dataCharacteristic);
+        } else {
+            Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
+        }
+    }
+
 }
