@@ -56,13 +56,13 @@ public class AssessmentActivity extends AppCompatActivity {
         buttonRightArmRotation.setOnClickListener(v -> goToRightArmRotation());
         buttonLeftLegRotation.setOnClickListener(v -> goToLeftLegRotation());
         buttonRightLegRotation.setOnClickListener(v -> goToRightLegRotation());
-        buttonWristRotation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToWristRotation();
-            }
+        buttonWristRotation.setOnClickListener(v ->goToWristRotation());
 
-        });
+    }
+    private void goToWristRotation(){
+        Intent intent = new Intent(this, WristRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
     }
 
     private void goToHeadRotation() {

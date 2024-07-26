@@ -74,4 +74,16 @@
         app:layout_constraintTop_toBottomOf="@+id/StartButton"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/Livedata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="296dp"
+        android:text="Yaw"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RightM" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
