@@ -32,7 +32,7 @@ public class AssessmentActivity extends AppCompatActivity {
         });
 
         setupUI();
-        Toolbar toolbar =  findViewById(R.id.maintoolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Assessment Page");

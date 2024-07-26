@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends Base_activity {
 
     protected Button buttonGuestButton;
     protected Button buttonPatientButton;
@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
             requestPermissions();
         }
         setupUI();
-        setupToolbar(false);//make it so there is no back button
+        setupToolbar();//make it so there is no back button
 
     }
 

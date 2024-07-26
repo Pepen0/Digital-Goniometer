@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HeadRotation">
-    <include
-        android:id="@+id/include_toolbar"
-        layout="@layout/toolbar" />
+
     <TextView
         android:id="@+id/textViewHeadRotation"
         android:layout_width="197dp"
@@ -76,13 +74,6 @@
         app:layout_constraintTop_toBottomOf="@+id/StartButton"
         app:layout_constraintVertical_bias="1.0" />
 
-    <include
-        android:id="@+id/maintoolbar"
-        layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
     <TextView
         android:id="@+id/Livedata"
