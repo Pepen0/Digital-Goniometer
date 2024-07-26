@@ -47,59 +47,5 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize BLEManager
-        bleManager = new BLEManager(this);
 
-        // Initialize Bluetooth
-        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-        bluetoothAdapter = bluetoothManager.getAdapter();
-
-        registerReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-    }
-
-    protected void setupToolbar(boolean showBackButton) {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (showBackButton) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem bluetoothItem = menu.findItem(R.id.action_bluetooth);
-        if (bluetoothAdapter.isEnabled()) {
-            bluetoothItem.setIcon(R.drawable.stat_sys_data_bluetooth); // Replace with your connected icon
-        } else {
-            bluetoothItem.setIcon(R.drawable.stat_sys_data_bluetooth); // Replace with your disconnected icon
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_bluetooth:
-                if (bluetoothAdapter.isEnabled()) {
-                    bluetoothAdapter.disable();
-                } else {
-                    boolean enable = bluetoothAdapter.enable();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(bluetoothReceiver);
-    }
 }
