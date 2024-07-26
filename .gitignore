@@ -5,3 +5,5 @@ App-Code/Goniometer/app/.gradle
 App-Code/Goniometer/local.properties
 App-Code/Goniometer/app/build
 .DS_Store
+Arduino-Code/.DS_Store
+App-Code/.DS_Store
