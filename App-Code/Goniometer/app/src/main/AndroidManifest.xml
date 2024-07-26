@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -23,19 +22,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Goniometer"
         tools:targetApi="31">
+
         <activity
             android:name=".Base_activity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.Goniometer">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity
-            android:name=".BaseActivity"
-            android:exported="false" />
+
         <activity
             android:name=".HeadRotation"
             android:parentActivityName=".AssessmentActivity"
@@ -77,10 +70,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
