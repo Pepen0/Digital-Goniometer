@@ -2,14 +2,12 @@ package com.example.goniometer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,6 +17,11 @@ public class AssessmentActivity extends AppCompatActivity {
     protected EditText editTextAssessName;
     protected TextView textViewSelectDesired;
     protected Button buttonHeadRotation;
+    protected Button buttonLeftArmRotation;
+    protected Button buttonRightArmRotation;
+    protected Button buttonLeftLegRotation;
+    protected Button buttonRightLegRotation;
+    private long patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,28 +34,55 @@ public class AssessmentActivity extends AppCompatActivity {
             return insets;
         });
 
-        setupUI();
-        Toolbar toolbar =  findViewById(R.id.maintoolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Assessment Page");
+        // Retrieve patient ID
+        patientId = getIntent().getLongExtra("PATIENT_ID", -1);
 
+        setupUI();
     }
 
     private void setupUI() {
-
+        // Initialize Buttons
         buttonHeadRotation = findViewById(R.id.buttonHeadRotation);
-        buttonHeadRotation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToHeadRotation();
-            }
+        buttonLeftArmRotation = findViewById(R.id.buttonLeftArm);
+        buttonRightArmRotation = findViewById(R.id.buttonRightArm);
+        buttonLeftLegRotation = findViewById(R.id.buttonLeftLeg);
+        buttonRightLegRotation = findViewById(R.id.buttonRightLeg);
 
-        });
+        // Set Click Listeners
+        buttonHeadRotation.setOnClickListener(v -> goToHeadRotation());
+        buttonLeftArmRotation.setOnClickListener(v -> goToLeftArmRotation());
+        buttonRightArmRotation.setOnClickListener(v -> goToRightArmRotation());
+        buttonLeftLegRotation.setOnClickListener(v -> goToLeftLegRotation());
+        buttonRightLegRotation.setOnClickListener(v -> goToRightLegRotation());
     }
-        private void goToHeadRotation() {
-            Intent intent = new Intent(this, HeadRotation.class);
-            intent.putExtra("isGuest", true);
-            startActivity(intent);
-        }
+
+    private void goToHeadRotation() {
+        Intent intent = new Intent(this, HeadRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToLeftArmRotation() {
+        Intent intent = new Intent(this, LeftArmRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToRightArmRotation() {
+        Intent intent = new Intent(this, RightArmRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToLeftLegRotation() {
+        Intent intent = new Intent(this, LeftLegRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToRightLegRotation() {
+        Intent intent = new Intent(this, RightLegRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
 }
