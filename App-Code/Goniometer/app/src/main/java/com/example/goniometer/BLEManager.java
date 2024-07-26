@@ -19,25 +19,26 @@ import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.logging.Handler;
 
 public class BLEManager {
     private static final String TAG = "IMU Sensor";
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
-    private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10003-E8F2-537E-4F6C-D104768A1214");
+    private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
-    private BluetoothGattCharacteristic yawCharacteristic;
+    private BluetoothGattCharacteristic dataCharacteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
     private AlertDialog startMeasuring;
 
     public interface DataCallback {
-        void onDataReceived(float yaw);
+        void onDataReceived(int Yaw, int Pitch, int Roll);
     }
 
     public interface ConnectionCallback {
@@ -120,18 +121,48 @@ public class BLEManager {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
-                float yaw = buffer.getFloat();
-                if (dataCallback != null) {
-                    dataCallback.onDataReceived(yaw);
+                String data = StandardCharsets.UTF_8.decode(buffer).toString();
+                try {
+                    if (dataCallback != null) {
+                        String[] Variables = data.split(",");
+                        for (int i = 0; i < Variables.length; i++) {
+                            Variables[i] = Variables[i].replaceAll(",", "");
+                        }
+                        if (Variables.length == 3) {
+                            //separating the variables from the string into 3 integers
+
+                            int LiveYaw = Integer.parseInt(Variables[0]);
+                            int LivePitch = Integer.parseInt(Variables[1]);
+                            int LiveRoll = Integer.parseInt(Variables[2]);
+                            Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
+                            dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                        }
+                    } else {
+                        // Handle the case where the string doesn't contain three parts
+                        Log.d("The String does not have 3 values", data);
+                    }
+                } catch (NumberFormatException e) {
+                    // Handle any potential parsing errors
+                    Log.d("Error parsing integers: ", e.getMessage());
                 }
+
             }
         }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.d(TAG, "Arduino resetting data");
+            } else {
+                Log.e(TAG, "Failed to send data to Arduino. Status: " + 0);
+            }
+        };
     };
 
     public void startMeasuring() {
         // Logic to start measurements and reset values to 0 if any existed
-        if (yawCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(yawCharacteristic);
+        if (dataCharacteristic != null) {
+            bluetoothGatt.readCharacteristic(dataCharacteristic);
         }
     }
 
@@ -155,5 +186,13 @@ public class BLEManager {
             ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
         }
     }
-}
+    public void sendDataToArduino(String data) {
+        if (bluetoothGatt != null && dataCharacteristic != null) {
+            dataCharacteristic.setValue(data);
+            bluetoothGatt.writeCharacteristic(dataCharacteristic);
+        } else {
+            Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
+        }
+    }
 
+}

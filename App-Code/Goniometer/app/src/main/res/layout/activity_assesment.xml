@@ -95,4 +95,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.088"
         tools:text="Patient Name/Guest" />
+
+    <include
+        android:id="@+id/maintoolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/buttonWristRotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WRIST ROTATION"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation" />
 </androidx.constraintlayout.widget.ConstraintLayout>
