@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity {
+public class PatientListActivity extends Base_activity {
 
     private ListView listViewPatients;
     private DatabaseHelper dbHelper;

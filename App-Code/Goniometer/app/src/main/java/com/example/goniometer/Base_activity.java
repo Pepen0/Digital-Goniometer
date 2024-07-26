@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class Base_activity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Base_activity extends AppCompatActivity {
 
     protected ImageView bluetoothStatus;
     protected BLEManager bleManager;

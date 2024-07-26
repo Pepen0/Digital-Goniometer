@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class PatientActivity extends AppCompatActivity {
+public class PatientActivity extends Base_activity {
 
     EditText etFirstName, etLastName;
     Button btnAddPatient;

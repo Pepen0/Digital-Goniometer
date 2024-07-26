@@ -15,8 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class HeadRotation extends AppCompatActivity {
-
+public class HeadRotation extends Base_activity{
     protected Button StartButton;
     protected Button SaveButton;
     protected TextView LeftM;
@@ -40,6 +39,7 @@ public class HeadRotation extends AppCompatActivity {
             return insets;
         });
         setupUI();
+        setupToolbar();
     }
 
     private void setupUI() {
