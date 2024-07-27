@@ -207,6 +207,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public String getPatientNameById(long patientId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        String fullName = null;
+
+        try {
+            // Query to select first name and last name of the patient by ID
+            String query = "SELECT " + KEY_FIRST_NAME + ", " + KEY_LAST_NAME +
+                    " FROM " + TABLE_PATIENTS +
+                    " WHERE " + KEY_ID + " = ?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(patientId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                String firstName = cursor.getString(cursor.getColumnIndex(KEY_FIRST_NAME));
+                String lastName = cursor.getString(cursor.getColumnIndex(KEY_LAST_NAME));
+                fullName = firstName + " " + lastName;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error retrieving patient name for ID: " + patientId + " - " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return fullName;
+    }
+
+
+
+
+
+
+
+
+
     public List<Measurement> getMeasurementsForPatient(long patientId) {
         List<Measurement> measurementList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_MEASUREMENTS + " WHERE " + KEY_PATIENT_ID + " = " + patientId;

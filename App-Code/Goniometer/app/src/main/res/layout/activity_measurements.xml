@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/list_background_gradient"
+    android:padding="16dp">
 
+
+    <!-- TextView to display the patient ID -->
+    <TextView
+        android:id="@+id/textViewPatientId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patient ID: "
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:paddingBottom="8dp"/>
+
+    <!-- ListView to display the measurements -->
     <ListView
         android:id="@+id/listViewMeasurements"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_measurement"
+        android:textColor="#FFFFFF"/>
+        />
+</LinearLayout>

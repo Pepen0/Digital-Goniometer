@@ -24,4 +24,7 @@ public class Patient {
     public String getLastName() {
         return lastName;
     }
+
+
+
 }

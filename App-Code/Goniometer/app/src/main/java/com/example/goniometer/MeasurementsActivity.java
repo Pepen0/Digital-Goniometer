@@ -28,18 +28,35 @@ public class MeasurementsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_measurements);
 
         listViewMeasurements = findViewById(R.id.listViewMeasurements);
-        dbHelper = new DatabaseHelper(this);
+        TextView textViewPatientId = findViewById(R.id.textViewPatientId); // Find the TextView for patient info
+        dbHelper = DatabaseHelper.getInstance(this); // Use the singleton instance
 
         // Retrieve patient ID from intent
         long patientId = getIntent().getLongExtra("PATIENT_ID", -1);
+
         Log.d(TAG, "Patient ID: " + patientId);
 
         if (patientId != -1) {
+            // Get the patient name from the database
+            String patientName = dbHelper.getPatientNameById(patientId);
+
+            if (patientName != null) {
+                // Construct and set the patient details text
+                String patientInfo = "Name: " + patientName + "\n" + "ID: " + patientId;
+                textViewPatientId.setText(patientInfo);
+            } else {
+                textViewPatientId.setText("Patient not found");
+                Log.e(TAG, "Patient not found for ID: " + patientId);
+            }
+
             displayMeasurements(patientId);
         } else {
             Log.e(TAG, "Invalid patient ID: " + patientId);
+            textViewPatientId.setText("Patient not found");
         }
     }
+
+
 
     private void displayMeasurements(long patientId) {
         try {
