@@ -54,11 +54,8 @@ public class HeadRotation extends AppCompatActivity {
         // Retrieve patientId from intent
         patientId = getIntent().getLongExtra("PATIENT_ID", -1);
         if (patientId == -1) {
-            Toast.makeText(this, "Error: No patient ID provided", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if no patient ID is passed
-            return;
+            Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
-
         setupUI();
     }
 
