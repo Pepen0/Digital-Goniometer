@@ -14,8 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class AssessmentActivity extends AppCompatActivity {
 
-    protected EditText editTextAssessName;
-    protected TextView textViewSelectDesired;
     protected Button buttonHeadRotation;
     protected Button buttonWristRotation;
     protected Button buttonLeftArmRotation;

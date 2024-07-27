@@ -13,82 +13,61 @@
 //
 //
 //
-//import androidx.activity.EdgeToEdge;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.core.graphics.Insets;
-//import androidx.core.view.ViewCompat;
-//import androidx.core.view.WindowInsetsCompat;
-//
-//public class BaseActivity extends AppCompatActivity {
-//
-//
-//    protected Toolbar toolbar;
-//    private BluetoothAdapter bluetoothAdapter;
-//    protected ImageButton bluetoothbutton;
-//    private final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            final String action = intent.getAction();
-//            if (action != null) ;
-//            {
-//                if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-//                    final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-//                    switch (state) {
-//                        case BluetoothAdapter.STATE_OFF:
-//                        case BluetoothAdapter.STATE_TURNING_OFF:
-//                            bluetoothbutton.setImageResource(R.drawable.ic_bluetooth_disabled);
-//                            break;
-//                        case BluetoothAdapter.STATE_OFF:
-//                        case BluetoothAdapter.STATE_TURNING_ON:
-//                            ;
-//                            bluetoothbutton.setImageResource(R.drawable.ic_bluetooth_connected);
-//                            break;
-//                    }
-//                }
-//
-//
-//            }
-//        }
-//
-//
-//    };
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-//        bluetoothAdapter = bluetoothManager.getAdapter();
-//
-//        registerReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-//    }
-//
-//
-//protected void setuptoobar() {
-//    toolbar = findViewById(R.id.toolbar);
-//    setSupportActionBar(toolbar);
-//
-//    bluetoothbutton = findViewById(R.id.Bluetoothbutton);
-//    updatebluetoothbutton();
-//
-//    bluetoothbutton.setOnClickListener(view ->) {
-//        if (bluetoothAdapter.isEnabled()) {
-//            bluetoothbutton.disable();
-//        } else {
-//            bluetoothAdapter.enable();
-//        }
-//        updatebluetoothbutton();
-//    }
-//}
-//    }
-//    private void updateBluetoothButton() {
-//        if (bluetoothAdapter.isEnabled()) {
-//            bluetoothButton.setImageResource(R.drawable.ic_bluetooth_connected);
-//        } else {
-//            bluetoothButton.setImageResource(R.drawable.ic_bluetooth_disabled);
-//        }
-//    }
-//
-//
-//
-//
-//
+package com.example.goniometer;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BaseActivity extends AppCompatActivity {
+
+    protected ImageView bluetoothStatus;
+    protected BLEManager bleManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Initialize BLEManager
+        bleManager = BLEManager.getInstance();
+        if (bleManager == null) {
+            bleManager = new BLEManager(this);
+        }
+
+        // Set up connection callback
+        bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
+            @Override
+            public void onConnected() {
+                runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24));
+            }
+
+            @Override
+            public void onDisconnected() {
+                runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24));
+            }
+        });
+    }
+
+    protected void setupToolbar() {
+        bluetoothStatus = findViewById(R.id.bluetooth_status);
+        ImageButton backButton = findViewById(R.id.Back_Button);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        bleManager.disconnect();
+    }
+}
