@@ -72,10 +72,10 @@ public class MeasurementsActivity extends AppCompatActivity {
                     // Set the text of the item view to display measurement details
                     TextView textView = convertView.findViewById(android.R.id.text1);
                     if (measurement != null) {
-                        textView.setText("Type: " + measurement.getMeasurementType() +
-                                ", LeftAngle: " + measurement.getLeftAngle() +
-                                ", RightAngle: " + measurement.getRightAngle() +
-                                ", Timestamp: " + measurement.getTimestamp());
+                        textView.setText("Type: " + measurement.getMeasurementType() +"\n"+
+                                "LeftAngle: " + measurement.getLeftAngle() +"\n"+
+                                "RightAngle: " + measurement.getRightAngle() +"\n"+
+                                measurement.getTimestamp());
                     } else {
                         textView.setText("No data available");
                         Log.d(TAG, "Measurement at position " + position + " is null.");

@@ -1,5 +1,7 @@
 package com.example.goniometer;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -110,8 +112,11 @@ public class HeadRotation extends AppCompatActivity {
         // Dummy data for testing
         double leftAngle = 10;
         double rightAngle = 10;
-        String measurementType = "Head";
-        String timestamp = String.valueOf(System.currentTimeMillis());
+        String measurementType = "HeadRotation";
+
+        // Format the current timestamp to include date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
+        String timestamp = sdf.format(new Date());
 
         // Add measurement to the database
         long id = dbHelper.addMeasurement(patientId, measurementType, leftAngle, rightAngle, timestamp);
