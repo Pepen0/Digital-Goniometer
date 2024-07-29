@@ -72,7 +72,14 @@ public class HeadRotation extends AppCompatActivity {
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
                 runOnUiThread(() -> {
                     Livedata.setText("Yaw: "+ Yaw);
-
+                    if (Yaw < 0 && (Yaw + maxRight < 0) && ismeasuring) {
+                        maxRight = -Yaw;
+                    }
+                    if (Yaw > 0 && (Yaw-maxLeft > 0) && ismeasuring) {
+                        maxLeft = Yaw;
+                    }
+                    LeftM.setText("Left Rotation: " + maxLeft);
+                    RightM.setText("Right Rotation: " + maxRight);
                });
             }
         });
