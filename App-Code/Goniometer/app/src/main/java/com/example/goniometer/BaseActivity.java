@@ -25,19 +25,15 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
-
     protected ImageView bluetoothStatus;
     protected BLEManager bleManager;
+    protected ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Initialize BLEManager
+        // Get the initialized BLEManager instance
         bleManager = BLEManager.getInstance();
-        if (bleManager == null) {
-            bleManager = new BLEManager(this);
-        }
 
         // Set up connection callback
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
@@ -55,19 +51,14 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setupToolbar() {
         bluetoothStatus = findViewById(R.id.bluetooth_status);
-        ImageButton backButton = findViewById(R.id.Back_Button);
+        backButton = findViewById(R.id.Back_Button);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        bleManager.disconnect();
+        //bleManager.disconnect();
     }
 }

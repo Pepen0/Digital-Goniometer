@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class AssessmentActivity extends AppCompatActivity {
+public class AssessmentActivity extends BaseActivity {
 
     protected Button buttonHeadRotation;
     protected Button buttonWristRotation;
@@ -37,6 +37,7 @@ public class AssessmentActivity extends AppCompatActivity {
         patientId = getIntent().getLongExtra("PATIENT_ID", -1);
 
         setupUI();
+        setupToolbar();
     }
 
     private void setupUI() {
