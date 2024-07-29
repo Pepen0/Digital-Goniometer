@@ -3,7 +3,7 @@
 #include <Arduino_LSM9DS1.h>
 
 // Constants for gyro sensitivity based on expected range settings
-const float GyroSensitivity = 0.0175; // Adjusted to match the sensitivity for LSM9DS1 in degrees per second per LSB
+float gyroSensitivity = 0.0175; // Adjusted to match the sensitivity for LSM9DS1 in degrees per second per LSB
 
 // Global variables for accelerometer, gyroscope data, and calculated angles
 float RateYaw, RateRoll, RatePitch;
@@ -67,9 +67,9 @@ void continueCalibrateImu()
     // Update acceleration
     float xGyro, yGyro, zGyro;
     IMU.readGyroscope(xGyro, yGyro, zGyro);
-    sumX += xGyro * GyroSensitivity;
-    sumY += yGyro * GyroSensitivity;
-    sumZ += zGyro * GyroSensitivity;
+    sumX += xGyro * gyroSensitivity;
+    sumY += yGyro * gyroSensitivity;
+    sumZ += zGyro * gyroSensitivity;
     sampleCounter++;
     delay(2);
 
@@ -111,9 +111,9 @@ void readIMU()
     IMU.readAcceleration(AccX, AccY, AccZ);
     IMU.readGyroscope(xGyro, yGyro, zGyro);
 
-    RateYaw = zGyro * GyroSensitivity;
-    RateRoll = xGyro * GyroSensitivity;
-    RatePitch = yGyro * GyroSensitivity;
+    RateYaw = zGyro * gyroSensitivity;
+    RateRoll = xGyro * gyroSensitivity;
+    RatePitch = yGyro * gyroSensitivity;
 
     // Continuous roll, pitch, and yaw update based on gyroscope data, corrected for bias
     float gx_dps = RateRoll - gx_bias;             // Calculate degrees per second
@@ -224,6 +224,8 @@ void loop()
                 {
                     bleDebugMessage += " Command received [" + String(bleCommand) + "] -";
                     resetMeasuring();
+                    bleCommand == "None";
+
                 }
 
                 readIMU();
