@@ -58,18 +58,14 @@ public class WristRotation extends AppCompatActivity {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
               //  runOnUiThread(() -> {
-//                    Log.d("WristRotation", "Received pitch: " + pitch);
-//                    LiveDataWrist.setText(String.format("pitch: %.2f", pitch));
-//
-//                    if (pitch < 0 && (pitch + maxRightWrist < 0) && ismeasuring) {
-//                        maxRightWrist = -pitch;
-//                    }
-//                    if (pitch > 0 && (pitch - maxLeftWrist > 0) && ismeasuring) {
-//                        maxLeftWrist = pitch;
-//                    }
-                    //  LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-                    // RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
-                Log.d("Pitch:", String.valueOf(Pitch));
+                if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
+                    maxRightWrist = -Pitch;
+                }
+                if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
+                    maxLeftWrist = Pitch;
+                }
+                LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
+                RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
                 LiveDataWrist.setText("Pitch: " + Pitch);
           //      });
             }
@@ -118,6 +114,8 @@ public class WristRotation extends AppCompatActivity {
                 resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
+                bleManager.sendDataToArduino("Reset data");
+                Log.d("Reset command sent", "Reset data");
                 StartButtonWrist.setText("Stop Measuring");
             }
         });

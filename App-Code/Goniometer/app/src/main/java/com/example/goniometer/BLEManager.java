@@ -32,7 +32,7 @@ public class BLEManager {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
-    private BluetoothGattCharacteristic dataCharacteristic;
+    private BluetoothGattCharacteristic characteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
     private AlertDialog startMeasuring;
@@ -100,7 +100,7 @@ public class BLEManager {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 BluetoothGattService service = gatt.getService(SERVICE_UUID);
                 if (service != null) {
-                    BluetoothGattCharacteristic characteristic = service.getCharacteristic(CHARACTERISTIC_UUID);
+                    characteristic = service.getCharacteristic(CHARACTERISTIC_UUID);
                     if (characteristic != null) {
                         gatt.setCharacteristicNotification(characteristic, true);
                         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG);
@@ -161,8 +161,8 @@ public class BLEManager {
 
     public void startMeasuring() {
         // Logic to start measurements and reset values to 0 if any existed
-        if (dataCharacteristic != null) {
-            bluetoothGatt.readCharacteristic(dataCharacteristic);
+        if (characteristic != null) {
+            bluetoothGatt.readCharacteristic(characteristic);
         }
     }
 
@@ -187,9 +187,14 @@ public class BLEManager {
         }
     }
     public void sendDataToArduino(String data) {
-        if (bluetoothGatt != null && dataCharacteristic != null) {
-            dataCharacteristic.setValue(data);
-            bluetoothGatt.writeCharacteristic(dataCharacteristic);
+        if (characteristic != null) {
+            characteristic.setValue(data);
+            boolean success = bluetoothGatt.writeCharacteristic(characteristic);
+            if(success){
+                Log.d(TAG, "Data sent successfully: " + data);
+            }else{
+                Log.e(TAG, "Failed to write characteristic");
+            }
         } else {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }

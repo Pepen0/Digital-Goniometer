@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Locale;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.content.DialogInterface;
 import android.widget.Toast;
-
+import android.util.Log;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,10 +99,7 @@ public class HeadRotation extends AppCompatActivity {
             public void onClick(View v) {
                 if (!ismeasuring) {
                     askforConfirmation();
-                    if (userConfirmation) {
-                        bleManager.startMeasuring();
-                    }
-
+                    Log.d("userConfirmation", String.valueOf(userConfirmation));
                 } else {
                     ismeasuring = false;
                     StartButton.setText("Start Measuring");
@@ -143,6 +141,7 @@ public class HeadRotation extends AppCompatActivity {
                 resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
+                bleManager.startMeasuring();
                 bleManager.sendDataToArduino("Reset data");
                 Log.d("Reset command sent", "Reset data");
                 StartButton.setText("Stop Measuring");
