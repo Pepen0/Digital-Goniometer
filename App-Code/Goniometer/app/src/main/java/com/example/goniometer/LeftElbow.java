@@ -66,14 +66,14 @@ public class LeftElbow extends AppCompatActivity {
             }
         });
 
-        //This will hide the save button for guests
-        Intent intent = getIntent();
-        boolean isGuest = intent.getBooleanExtra("isGuest", false);
-
-        // Hide the button if the user is a guest
-        if (isGuest) {
-            SaveButtonWrist.setVisibility(View.GONE);
-        }
+//        //This will hide the save button for guests
+//        Intent intent = getIntent();
+//        boolean isGuest = intent.getBooleanExtra("isGuest", false);
+//
+//        // Hide the button if the user is a guest
+//        if (isGuest) {
+//            SaveButtonWrist.setVisibility(View.GONE);
+//        }
 
         StartButtonWrist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,8 +130,5 @@ public class LeftElbow extends AppCompatActivity {
         LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
         RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
     }
-
-}
-
 
 }

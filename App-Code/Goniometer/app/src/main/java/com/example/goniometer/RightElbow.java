@@ -22,12 +22,10 @@ public class RightElbow extends AppCompatActivity {
     protected TextView LeftMaxWrist;
     protected TextView RightMaxWrist;
     protected TextView LiveDataWrist;
-    //protected Switch switchRightLeft;
     private BLEManager bleManager;
     private boolean userConfirmation = false;
     private float maxLeftWrist = 0;
     private float maxRightWrist = 0;
-
     private boolean ismeasuring = false;
 
 
@@ -35,7 +33,7 @@ public class RightElbow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_wrist_rotation);
+        setContentView(R.layout.activity_right_elbow);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -70,14 +68,14 @@ public class RightElbow extends AppCompatActivity {
             }
         });
 
-        //This will hide the save button for guests
-        Intent intent = getIntent();
-        boolean isGuest = intent.getBooleanExtra("isGuest", false);
-
-        // Hide the button if the user is a guest
-        if (isGuest) {
-            SaveButtonWrist.setVisibility(View.GONE);
-        }
+////        //This will hide the save button for guests
+////        Intent intent = getIntent();
+////        boolean isGuest = intent.getBooleanExtra("isGuest", false);
+//
+//        // Hide the button if the user is a guest
+//        if (isGuest) {
+//            SaveButtonWrist.setVisibility(View.GONE);
+//        }
 
         StartButtonWrist.setOnClickListener(new View.OnClickListener() {
             @Override

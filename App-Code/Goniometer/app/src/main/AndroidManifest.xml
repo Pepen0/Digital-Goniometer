@@ -39,7 +39,7 @@
             </intent-filter>
         </activity> <!-- Existing activities -->
         <activity
-            android:name=".WristRotation"
+            android:name=".RightElbow"
             android:exported="false"
             android:parentActivityName=".AssessmentActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

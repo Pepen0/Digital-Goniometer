@@ -9,7 +9,7 @@
     tools:context=".RightElbow">
 
     <TextView
-        android:id="@+id/textViewWristRotation"
+        android:id="@+id/TestViewRightElbow"
         android:layout_width="280dp"
         android:layout_height="51dp"
         android:text="Right Elbow ROTATION"
@@ -17,10 +17,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintVertical_bias="0.102" />
 
     <Button
         android:id="@+id/StartButtonWrist"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWristRotation"
+        app:layout_constraintTop_toBottomOf="@+id/TestViewRightElbow"
         app:layout_constraintVertical_bias="0.167" />
 
     <TextView

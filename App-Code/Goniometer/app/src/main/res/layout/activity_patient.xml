@@ -26,16 +26,16 @@
         android:id="@+id/DeletePatientbutton"
         android:layout_width="173dp"
         android:layout_height="64dp"
-        android:layout_marginBottom="72dp"
-        android:text="Delete existing Patient"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Delete existing Patient"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ViewRecordsbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/ViewRecordsbutton"
+        app:layout_constraintVertical_bias="0.306" />
 
     <EditText
         android:id="@+id/FirstNameText"
@@ -72,26 +72,30 @@
         android:layout_width="160dp"
         android:layout_height="62dp"
         android:layout_marginTop="48dp"
-        android:text="New Measurement"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="New Measurement"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddButton" />
+        app:layout_constraintTop_toBottomOf="@+id/AddButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/ViewRecordsbutton"
         android:layout_width="177dp"
         android:layout_height="61dp"
         android:layout_marginTop="48dp"
-        android:text="View All Records"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="View All Records"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelectPatientsbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/SelectPatientsbutton"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
