@@ -86,13 +86,13 @@ public class HeadRotation extends AppCompatActivity {
         });
 
         // This will hide the save button for guests
-        Intent intent = getIntent();
-        boolean isGuest = intent.getBooleanExtra("isGuest", false);
+//        Intent intent = getIntent();
+//        boolean isGuest = intent.getBooleanExtra("isGuest", false);
 
         // Hide the button if the user is a guest
-        if (isGuest) {
-            SaveButton.setVisibility(View.GONE);
-        }
+//        if (isGuest) {
+//            SaveButton.setVisibility(View.GONE);
+//        }
 
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override

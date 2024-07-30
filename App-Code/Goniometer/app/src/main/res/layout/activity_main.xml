@@ -38,35 +38,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.159" />
 
-    <Button
-        android:id="@+id/buttonGuestButton"
-        android:layout_width="105dp"
-        android:layout_height="48dp"
-        android:text="GUEST"
-        android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.287" />
 
     <Button
         android:id="@+id/buttonPatientButton"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PATIENT"
+        android:layout_marginTop="100dp"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="PATIENT"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGuestButton"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.036" />
 
     <TextView
         android:id="@+id/textView2"

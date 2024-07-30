@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,27 +15,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class WristRotation extends AppCompatActivity {
 
+public class LeftElbow extends AppCompatActivity {
     protected Button StartButtonWrist;
     protected Button SaveButtonWrist;
     protected TextView LeftMaxWrist;
     protected TextView RightMaxWrist;
     protected TextView LiveDataWrist;
-    //protected Switch switchRightLeft;
     private BLEManager bleManager;
     private boolean userConfirmation = false;
     private float maxLeftWrist = 0;
     private float maxRightWrist = 0;
 
     private boolean ismeasuring = false;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_wrist_rotation);
+        setContentView(R.layout.activity_left_elbow);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -44,7 +40,6 @@ public class WristRotation extends AppCompatActivity {
         });
         setupUI();
     }
-
     private void setupUI() {
 
         StartButtonWrist = findViewById(R.id.StartButtonWrist);
@@ -57,7 +52,7 @@ public class WristRotation extends AppCompatActivity {
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
-              //  runOnUiThread(() -> {
+                //  runOnUiThread(() -> {
                 if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
                     maxRightWrist = -Pitch;
                 }
@@ -67,7 +62,7 @@ public class WristRotation extends AppCompatActivity {
                 LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
                 RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
                 LiveDataWrist.setText("Pitch: " + Pitch);
-          //      });
+                //      });
             }
         });
 
@@ -138,3 +133,5 @@ public class WristRotation extends AppCompatActivity {
 
 }
 
+
+}

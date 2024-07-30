@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient"
-    tools:context=".WristRotation">
+    tools:context=".RightElbow">
 
     <TextView
         android:id="@+id/textViewWristRotation"
-        android:layout_width="197dp"
-        android:layout_height="45dp"
-        android:text="WRIST ROTATION"
+        android:layout_width="280dp"
+        android:layout_height="51dp"
+        android:text="Right Elbow ROTATION"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,11 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="76dp"
-        android:text="START MEASURING"
-        android:textSize="24sp"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="START MEASURING"
         android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -44,26 +44,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="120dp"
         android:text="Left Max Rotation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchRightLeft"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintTop_toBottomOf="@+id/StartButtonWrist"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/RightMaxWrist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="120dp"
         android:text="Right Max Rotation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.607"
         app:layout_constraintStart_toEndOf="@+id/LeftMaxWrist"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintTop_toBottomOf="@+id/StartButtonWrist"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/LiveDataWrist"
@@ -76,7 +77,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RightMaxWrist"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.111" />
 
     <Button
         android:id="@+id/SaveButtonWrist"
@@ -93,28 +94,4 @@
         app:layout_constraintTop_toBottomOf="@+id/LiveDataWrist"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="79dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="60dp"
-        android:text="Left Wrist"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/switchRightLeft"
-        app:layout_constraintTop_toBottomOf="@+id/StartButtonWrist"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Switch
-        android:id="@+id/switchRightLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Right Wrist"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.243"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StartButtonWrist"
-        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.example.goniometer;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,8 +11,6 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,7 +18,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.logging.Handler;
 
 public class BLEManager {
     private static final String TAG = "IMU Sensor";
@@ -42,7 +38,7 @@ public class BLEManager {
     }
 
     public interface ConnectionCallback {
-        void onConnected();
+        boolean onConnected();
 
         void onDisconnected();
     }

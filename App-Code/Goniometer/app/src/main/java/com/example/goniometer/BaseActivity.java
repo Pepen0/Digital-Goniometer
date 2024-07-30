@@ -15,10 +15,7 @@
 //
 package com.example.goniometer;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -38,8 +35,9 @@ public class BaseActivity extends AppCompatActivity {
         // Set up connection callback
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
-            public void onConnected() {
+            public boolean onConnected() {
                 runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24));
+                return false;
             }
 
             @Override

@@ -122,15 +122,30 @@
 <!--        />-->
 
     <Button
-        android:id="@+id/buttonWristRotation"
+        android:id="@+id/RightElbow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WRIST ROTATION"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Right ELBOW ROTATION"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.86"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation"
+        app:layout_constraintVertical_bias="0.357" />
+
+    <Button
+        android:id="@+id/LeftElbow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/RightElbow"
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLeftArm"
+        app:layout_constraintVertical_bias="0.18" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected Button buttonGuestButton;
     protected Button buttonPatientButton;
     protected Button BluetoothButton;
     protected BLEManager bleManager;
@@ -45,24 +44,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        buttonGuestButton = findViewById(R.id.buttonGuestButton);
         BluetoothButton = findViewById(R.id.bluetoothButton);
         buttonPatientButton = findViewById(R.id.buttonPatientButton);
         bleManager = new BLEManager(this);
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
-            public void onConnected() {
+            public boolean onConnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Connected to device", Toast.LENGTH_SHORT).show();
                     // Intent intent = new Intent(MainActivity.this, HeadRotation.class);
                     // startActivity(intent);
+                    // Hide the button if the device is connected
+                    BluetoothButton.setVisibility(View.GONE);
+                    buttonPatientButton.setVisibility(View.VISIBLE);
                 });
+                return false;
             }
 
             @Override
             public void onDisconnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Disconnected from device", Toast.LENGTH_SHORT).show();
+                    buttonPatientButton.setVisibility(View.GONE);
                 });
             }
         });
@@ -71,13 +74,6 @@ public class MainActivity extends AppCompatActivity {
         BluetoothButton.setOnClickListener(v -> {
             String deviceAddress = "73:B3:B7:66:20:70";
             bleManager.connectToDevice(deviceAddress);
-        });
-        buttonGuestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToAssessmentActivity();
-
-            }
         });
 
         buttonPatientButton.setOnClickListener(new View.OnClickListener() {
