@@ -56,7 +56,12 @@ void sendBleOutput()
 
     String data = String(YawInt) + "," + String(PitchInt) + "," + String(RollInt)+ "," + bleStatus;
     // update ble
+
+    if (bleStatus!=""){
+      bleStatus = "";
+    }
     dataCharacteristic.writeValue(data);
+
 }
 
 void startCalibrateImu()
@@ -184,7 +189,7 @@ void setup()
     BLE.setAdvertisedService(imuService);
     imuService.addCharacteristic(dataCharacteristic);
     BLE.addService(imuService);
-    dataCharacteristic.writeValue("0,0,0");
+    dataCharacteristic.writeValue("0,0,0,");
 
     BLE.advertise();
     Serial.println("IMU initialized successfully.");
@@ -235,7 +240,7 @@ void loop()
                     bleStatus = " Command received [" + String(bleCommand) + "] ";
                     resetMeasuring();
                     bleDebugMessage += "Reset data done -";
-                    bleStatus = "Reset data done";
+                    bleStatus = "Reset";
                     bleCommand = "None";
                 }
 
@@ -249,7 +254,7 @@ void loop()
     {
       isConnected = false;
       bleDebugMessage += "Disconnected from device -";
-      bleStatus = "Disconnected from device -";
+      bleStatus = "Disconnected";
       Serial.println("Disconnected from device");
     }
 
