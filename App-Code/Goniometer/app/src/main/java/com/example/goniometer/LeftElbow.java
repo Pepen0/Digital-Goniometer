@@ -49,7 +49,7 @@ public class LeftElbow extends AppCompatActivity {
 
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
-            public void onDataReceived(int Yaw, int Pitch, int Roll) {
+            public void onDataReceived(int Yaw, int Pitch, int Roll, String Debug) {
                   runOnUiThread(() -> {
                 if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
                     maxRightWrist = -Pitch;

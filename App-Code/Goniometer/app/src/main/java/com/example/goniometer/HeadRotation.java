@@ -70,7 +70,7 @@ public class HeadRotation extends AppCompatActivity {
 
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
-            public void onDataReceived(int Yaw, int Pitch, int Roll) {
+            public void onDataReceived(int Yaw, int Pitch, int Roll, String Debug) {
                 runOnUiThread(() -> {
                     Livedata.setText("Yaw: "+ Yaw);
                     if (Yaw < 0 && (Yaw + maxRight < 0) && ismeasuring) {
