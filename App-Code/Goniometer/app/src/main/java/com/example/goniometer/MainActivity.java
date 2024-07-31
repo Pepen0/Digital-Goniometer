@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                     // startActivity(intent);
                     // Hide the button if the device is connected
                     BluetoothButton.setVisibility(View.GONE);
-                    buttonPatientButton.setVisibility(View.VISIBLE);
                 });
                 return false;
             }
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDisconnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Disconnected from device", Toast.LENGTH_SHORT).show();
-                    buttonPatientButton.setVisibility(View.GONE);
                 });
             }
         });
