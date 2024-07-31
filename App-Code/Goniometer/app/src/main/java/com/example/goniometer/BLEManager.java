@@ -163,12 +163,7 @@ public class BLEManager {
                                     Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
                                 }
 
-                                if (ResetStatus) {
-
-                                    ResetStatus = false;
-                                } else {
-                                    dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
-                                }
+                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
                                 Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
                             }
                         } else {

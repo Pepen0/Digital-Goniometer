@@ -51,16 +51,20 @@ public class LeftElbow extends AppCompatActivity {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll, String Debug) {
                   runOnUiThread(() -> {
-                if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
-                    maxRightWrist = -Pitch;
-                }
-                if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
-                    maxLeftWrist = Pitch;
-                }
-                LeftMax.setText("Left Rotation: " + maxLeftWrist);
-                RightMax.setText("Right Rotation: " + maxRightWrist);
-                LiveDataWrist.setText("Pitch: " + Pitch);
-                    });
+                    if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
+                        maxRightWrist = -Pitch;
+                    }
+                    if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
+                        maxLeftWrist = Pitch;
+                    }
+                    if (Debug.equals("Reseted")){
+                        maxLeftWrist = 0;
+                        maxRightWrist = 0;
+                    }
+                    LeftMax.setText("Left Rotation: " + maxLeftWrist);
+                    RightMax.setText("Right Rotation: " + maxRightWrist);
+                    LiveDataWrist.setText("Pitch: " + Pitch);
+                  });
             }
         });
 
