@@ -1,4 +1,6 @@
 // Header
+// crossing the casme book
+// hard to isolate a mouvement {need extra reference}
 #include <ArduinoBLE.h>
 #include <Arduino_LSM9DS1.h>
 
@@ -15,7 +17,7 @@ float gz_bias = 0, gx_bias = 0, gy_bias = 0;
 
 // Calibration variable
 int sampleCounter = 0;
-int numSamples = 2000;
+int numSamples = 100;
 float sumX = 0, sumY = 0, sumZ = 0;
 
 // IMU state manager variable
@@ -26,7 +28,8 @@ bool isReseting = false;
 
 // Ble transfer variable
 BLEService imuService("19B10000-E8F2-537E-4F6C-D104768A1214");
-BLEStringCharacteristic dataCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1214", BLENotify, 512);
+BLEStringCharacteristic dataCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1214", BLENotify | BLEWrite, 512);
+
 String bleAddress;
 String bleCommand = "None";
 String bleDebugMessage = "None";
@@ -224,8 +227,7 @@ void loop()
                 {
                     bleDebugMessage += " Command received [" + String(bleCommand) + "] -";
                     resetMeasuring();
-                    bleCommand == "None";
-
+                    bleCommand = "None";
                 }
 
                 readIMU();
