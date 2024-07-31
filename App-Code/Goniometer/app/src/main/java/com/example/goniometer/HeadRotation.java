@@ -116,8 +116,8 @@ public class HeadRotation extends AppCompatActivity {
 
     private void saveMeasurement() {
         // Dummy data for testing
-        double leftAngle = 10;
-        double rightAngle = 10;
+        double leftAngle =  maxLeft;
+        double rightAngle = maxRight;
         String measurementType = "HeadRotation";
 
         // Format the current timestamp to include date and time
