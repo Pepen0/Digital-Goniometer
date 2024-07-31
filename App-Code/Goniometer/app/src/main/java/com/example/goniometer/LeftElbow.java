@@ -1,11 +1,12 @@
 package com.example.goniometer;
 
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -14,18 +15,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class LeftElbow extends AppCompatActivity {
-    protected Button StartButtonWrist;
-    protected Button SaveButtonWrist;
+    protected Button StartButtonElbow;
+    protected Button SaveButtonElbow;
     protected TextView LeftMax;
     protected TextView RightMax;
     protected TextView LiveDataWrist;
     private BLEManager bleManager;
-    private boolean userConfirmation = false;
-    private float maxLeftWrist = 0;
-    private float maxRightWrist = 0;
-    private boolean ismeasuring = false;
+    private float maxLeftElbow = 0;
+    private float maxRightElbow = 0;
+    private boolean isMeasuring = false;
+
+    private DatabaseHelper dbHelper;
+    private long patientId; // This should be passed from the previous activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,69 +43,57 @@ public class LeftElbow extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Initialize database helper
+        dbHelper = DatabaseHelper.getInstance(this);
+
+        // Retrieve patientId from intent
+        patientId = getIntent().getLongExtra("PATIENT_ID", -1);
+        if (patientId == -1) {
+            Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
+        }
         setupUI();
     }
     private void setupUI() {
 
-        StartButtonWrist = findViewById(R.id.StartButtonWrist);
-        SaveButtonWrist = findViewById(R.id.SaveButtonWrist);
+        StartButtonElbow = findViewById(R.id.StartButtonElbow);
+        SaveButtonElbow = findViewById(R.id.SaveButtonElbow);
         LeftMax = findViewById(R.id.LeftMax);
         RightMax = findViewById(R.id.RightMax);
         LiveDataWrist = findViewById(R.id.LiveDataWrist);
         bleManager = BLEManager.getInstance();
 
-        bleManager.setDataCallback(new BLEManager.DataCallback() {
-            @Override
-            public void onDataReceived(int Yaw, int Pitch, int Roll, String Debug) {
-                  runOnUiThread(() -> {
-                    if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
-                        maxRightWrist = -Pitch;
-                    }
-                    if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
-                        maxLeftWrist = Pitch;
-                    }
-                    if (Debug.equals("Reseted")){
-                        maxLeftWrist = 0;
-                        maxRightWrist = 0;
-                    }
-                    LeftMax.setText("Left Rotation: " + maxLeftWrist);
-                    RightMax.setText("Right Rotation: " + maxRightWrist);
-                    LiveDataWrist.setText("Pitch: " + Pitch);
-                  });
+        bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
+          if (Pitch < 0 && (Pitch + maxRightElbow < 0) && isMeasuring) {
+              maxRightElbow = -Pitch;
+          }
+          if (Pitch > 0 && (Pitch-maxLeftElbow > 0) && isMeasuring) {
+              maxLeftElbow = Pitch;
+          }
+          if (Debug.equals("Reset")){
+              maxLeftElbow = 0;
+              maxRightElbow = 0;
+          }
+          LeftMax.setText("Left Rotation: " + maxLeftElbow);
+          RightMax.setText("Right Rotation: " + maxRightElbow);
+          LiveDataWrist.setText("Pitch: " + Pitch);
+        }));
+
+
+        StartButtonElbow.setOnClickListener(v -> {
+            if (!isMeasuring) {
+                askForConfirmation_p();
+
+            } else {
+                isMeasuring = false;
+                StartButtonElbow.setText("Start Measuring");
+                SaveButtonElbow.setBackgroundResource(R.drawable.custom_button2);
+                SaveButtonElbow.setText("Save Measurement");
             }
         });
 
-
-//        //This will hide the save button for guests
-//        Intent intent = getIntent();
-//        boolean isGuest = intent.getBooleanExtra("isGuest", false);
-//
-//        // Hide the button if the user is a guest
-//        if (isGuest) {
-//            SaveButtonWrist.setVisibility(View.GONE);
-//        }
-
-        StartButtonWrist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ismeasuring) {
-                    askForConfirmation_p();
-//                    if (userConfirmation) {
-//                        resetValues();
-//                        bleManager.startMeasuring();
-//                    }
-
-                } else {
-                    ismeasuring = false;
-                    StartButtonWrist.setText("Start Measuring");
-                }
-            }
-        });
-
-        SaveButtonWrist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        SaveButtonElbow.setOnClickListener(v -> {
+            if(!isMeasuring) {
+                saveMeasurement();
             }
         });
     }
@@ -107,34 +102,40 @@ public class LeftElbow extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start Measuring Confirmation");
         builder.setMessage("Are you sure you want to start a new measurement?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userConfirmation = true;
-                ismeasuring = true;
-                resetValues();
-                bleManager.sendDataToArduino("Reset data");
-                Log.d("Reset command sent", "Reset data");
-                StartButtonWrist.setText("Stop Measuring");
-            }
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            isMeasuring = true;
+            bleManager.sendDataToArduino("Reset data");
+            Log.d("Reset command sent", "Reset data");
+            StartButtonElbow.setText("Stop Measuring");
+            SaveButtonElbow.setBackgroundColor(Color.GRAY);
+            SaveButtonElbow.setVisibility(View.VISIBLE);
+            SaveButtonElbow.setText("Stop Measuring To Save");
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userConfirmation = false;
-                dialog.dismiss();
-            }
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    private void resetValues(){
-        maxLeftWrist = 0;
-        maxRightWrist=0;
-        LeftMax.setText("Left Rotation: " + maxLeftWrist);
-        RightMax.setText("Right Rotation: " + maxRightWrist);
-        LiveDataWrist.setText("Pitch: 0");
-        Log.d("Reset", "UI and values reset to 0");
-    }
+    private void saveMeasurement() {
+        // Dummy data for testing
+        double leftAngle = maxLeftElbow;
+        double rightAngle = maxRightElbow;
+        String measurementType = "Left Elbow";
 
+        // Format the current timestamp to include date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
+        String timestamp = sdf.format(new Date());
+
+        // Add measurement to the database
+        long id = dbHelper.addMeasurement(patientId, measurementType, leftAngle, rightAngle, timestamp);
+
+        // Check if the insertion was successful
+        if (id != -1) {
+            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
+        }
+        SaveButtonElbow.setVisibility(View.GONE);
+    }
 }
