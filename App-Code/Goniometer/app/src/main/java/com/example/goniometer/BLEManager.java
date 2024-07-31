@@ -112,7 +112,6 @@ public class BLEManager {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
@@ -123,6 +122,7 @@ public class BLEManager {
                     Log.d(TAG, "Reset message received from Arduino");
                     return;
                 }
+
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
@@ -154,12 +154,11 @@ public class BLEManager {
                             try {
                                 if (Variables.length == 4) {
                                     DebugMessage = Variables[3].trim();
+                                    Log.d(TAG, "Debug message: " + DebugMessage);
                                 }
                             }catch (NumberFormatException e) {
                                 Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
                             }
-
-
 
                             if(ResetStatus){
                                 dataCallback.onDataReceived(0, 0, 0, "");
