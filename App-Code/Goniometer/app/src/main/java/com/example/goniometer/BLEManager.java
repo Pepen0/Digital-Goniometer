@@ -190,12 +190,12 @@ public class BLEManager {
         };
     };
 
-    public void startMeasuring() {
-        // Logic to start measurements and reset values to 0 if any existed
-        if (characteristic != null) {
-            bluetoothGatt.readCharacteristic(characteristic);
-        }
-    }
+//    public void startMeasuring() {
+//        // Logic to start measurements and reset values to 0 if any existed
+//        if (characteristic != null) {
+//            bluetoothGatt.readCharacteristic(characteristic);
+//        }
+//    }
 
 //    public void stopMeasuring() {
 //        //Logic to stop measuring and hold the measurements until Start button is pressed again
@@ -229,8 +229,5 @@ public class BLEManager {
         } else {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
-    }
-public void setReset(boolean Reset){
-        this.ResetStatus = Reset;
     }
 }

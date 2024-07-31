@@ -130,7 +130,6 @@ public class LeftElbow extends AppCompatActivity {
         LeftMax.setText("Left Rotation: " + maxLeftWrist);
         RightMax.setText("Right Rotation: " + maxRightWrist);
         LiveDataWrist.setText("Pitch: 0");
-        bleManager.setReset(true);
         Log.d("Reset", "UI and values reset to 0");
     }
 
