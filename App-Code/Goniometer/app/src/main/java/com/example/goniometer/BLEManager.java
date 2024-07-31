@@ -118,7 +118,10 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-
+                if ("Reset data done".equals(data)) {
+                    ResetStatus = true;
+                    return;
+                }
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
