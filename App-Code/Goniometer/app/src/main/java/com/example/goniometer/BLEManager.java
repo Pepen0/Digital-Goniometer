@@ -118,8 +118,9 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-                if ("Reseted".equalsIgnoreCase(data)) {
+                if ("Reseted ".equalsIgnoreCase(data)) {
                     ResetStatus = true;
+                    Log.d(TAG, "Reset message received from Arduino");
                     return;
                 }
                 try {
@@ -128,31 +129,41 @@ public class BLEManager {
                         for (int i = 0; i < Variables.length; i++) {
                             Variables[i] = Variables[i].replaceAll(",", "");
                         }
-                        if (Variables.length == 4) {
+                        if (Variables.length == 4 || Variables.length == 3) {
                             //separating the variables from the string into 3 integers
                             int LiveYaw = 0;
                             int LivePitch = 0;
                             int LiveRoll = 0;
-                            String DebugMessage = Variables[3].trim();
+                            String DebugMessage = "";
+
                             try {
                                 LiveYaw = Integer.parseInt(Variables[0]);
                             }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Yaw Value" + Variables[0]);
+                                Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
                             }
                             try {
                                 LivePitch = Integer.parseInt(Variables[1]);
                             }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Pitch Value" + Variables[1]);
+                                Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
                             }
                             try {
                                  LiveRoll = Integer.parseInt(Variables[2]);
                             }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Roll Value" + Variables[2]);
+                                Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
                             }
+                            try {
+                                if (Variables.length == 4) {
+                                    DebugMessage = Variables[3].trim();
+                                }
+                            }catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
+                            }
+
 
 
                             if(ResetStatus){
                                 dataCallback.onDataReceived(0, 0, 0, "");
+                                ResetStatus = false;
                             }else {
                                 dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
                             }
