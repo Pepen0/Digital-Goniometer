@@ -24,7 +24,7 @@ public class BLEManager {
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
-
+    private boolean ResetStatus = false;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
@@ -118,6 +118,10 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
+                if(data.equals("Reset data done")){
+                    ResetStatus = true;
+                    return;
+                }
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
@@ -130,8 +134,13 @@ public class BLEManager {
                             int LiveYaw = Integer.parseInt(Variables[0]);
                             int LivePitch = Integer.parseInt(Variables[1]);
                             int LiveRoll = Integer.parseInt(Variables[2]);
+
+                            if(ResetStatus){
+                                dataCallback.onDataReceived(0, 0, 0);
+                            }else {
+                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                            }
                             Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
-                            dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
                         }
                     } else {
                         // Handle the case where the string doesn't contain three parts

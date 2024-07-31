@@ -26,7 +26,6 @@ public class LeftElbow extends AppCompatActivity {
     private float maxLeftWrist = 0;
     private float maxRightWrist = 0;
     private boolean ismeasuring = false;
-    private int PitchL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +51,6 @@ public class LeftElbow extends AppCompatActivity {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
                   runOnUiThread(() -> {
-                      PitchL = Pitch;
                 if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
                     maxRightWrist = -Pitch;
                 }
@@ -127,7 +125,6 @@ public class LeftElbow extends AppCompatActivity {
         dialog.show();
     }
     private void resetValues(){
-        PitchL = 0;
         maxLeftWrist = 0;
         maxRightWrist=0;
         LeftMax.setText("Left Rotation: " + maxLeftWrist);
