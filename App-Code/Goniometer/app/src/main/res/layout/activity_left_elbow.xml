@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="0.167" />
 
     <TextView
-        android:id="@+id/LeftMaxWrist"
+        android:id="@+id/LeftMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -54,15 +54,15 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/RightMaxWrist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/RightMax"
+        android:layout_width="158dp"
+        android:layout_height="23dp"
         android:layout_marginTop="120dp"
         android:text="Right Max Rotation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.607"
-        app:layout_constraintStart_toEndOf="@+id/LeftMaxWrist"
+        app:layout_constraintStart_toEndOf="@+id/LeftMax"
         app:layout_constraintTop_toBottomOf="@+id/StartButtonWrist"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RightMaxWrist"
+        app:layout_constraintTop_toBottomOf="@+id/RightMax"
         app:layout_constraintVertical_bias="0.111" />
 
     <Button

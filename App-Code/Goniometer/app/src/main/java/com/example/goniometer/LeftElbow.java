@@ -1,7 +1,6 @@
 package com.example.goniometer;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class LeftElbow extends AppCompatActivity {
     protected Button StartButtonWrist;
     protected Button SaveButtonWrist;
-    protected TextView LeftMaxWrist;
-    protected TextView RightMaxWrist;
+    protected TextView LeftMax;
+    protected TextView RightMax;
     protected TextView LiveDataWrist;
     private BLEManager bleManager;
     private boolean userConfirmation = false;
@@ -44,8 +43,8 @@ public class LeftElbow extends AppCompatActivity {
 
         StartButtonWrist = findViewById(R.id.StartButtonWrist);
         SaveButtonWrist = findViewById(R.id.SaveButtonWrist);
-        LeftMaxWrist = findViewById(R.id.LeftMaxWrist);
-        RightMaxWrist = findViewById(R.id.RightMaxWrist);
+        LeftMax = findViewById(R.id.LeftMax);
+        RightMax = findViewById(R.id.RightMax);
         LiveDataWrist = findViewById(R.id.LiveDataWrist);
         bleManager = BLEManager.getInstance();
 
@@ -59,8 +58,8 @@ public class LeftElbow extends AppCompatActivity {
                 if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
                     maxLeftWrist = Pitch;
                 }
-                LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-                RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+                LeftMax.setText("Left Rotation: " + maxLeftWrist);
+                RightMax.setText("Right Rotation: " + maxRightWrist);
                 LiveDataWrist.setText("Pitch: " + Pitch);
                 //      });
             }
@@ -127,8 +126,8 @@ public class LeftElbow extends AppCompatActivity {
     private void resetValues(){
         maxLeftWrist = 0;
         maxRightWrist=0;
-        LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-        RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+        LeftMax.setText("Left Rotation: " + maxLeftWrist);
+        RightMax.setText("Right Rotation: " + maxRightWrist);
     }
 
 }

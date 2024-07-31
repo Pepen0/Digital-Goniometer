@@ -1,7 +1,6 @@
 package com.example.goniometer;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,8 +45,8 @@ public class RightElbow extends AppCompatActivity {
 
         StartButtonWrist = findViewById(R.id.StartButtonWrist);
         SaveButtonWrist = findViewById(R.id.SaveButtonWrist);
-        LeftMaxWrist = findViewById(R.id.LeftMaxWrist);
-        RightMaxWrist = findViewById(R.id.RightMaxWrist);
+        LeftMaxWrist = findViewById(R.id.LeftMax);
+        RightMaxWrist = findViewById(R.id.RightMax);
         LiveDataWrist = findViewById(R.id.LiveDataWrist);
         bleManager = BLEManager.getInstance();
 
