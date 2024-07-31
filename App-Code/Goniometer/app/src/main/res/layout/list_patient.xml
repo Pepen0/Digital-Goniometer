@@ -20,4 +20,13 @@
         android:layout_centerVertical="true"
         android:textColor="#FFFFFF"
         android:background="@drawable/baseline_delete_24" />
+
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/buttonDelete"
+        android:layout_centerVertical="true"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/baseline_add_24" />
 </RelativeLayout>

@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
 
 public class Patient_Adapter extends ArrayAdapter<Patient> {
@@ -31,21 +33,33 @@ public class Patient_Adapter extends ArrayAdapter<Patient> {
 
         TextView textViewPatientName = convertView.findViewById(R.id.textViewPatientName);
         Button buttonDelete = convertView.findViewById(R.id.buttonDelete);
+        Button buttonAdd = convertView.findViewById(R.id.buttonAdd);
 
         final Patient patient = getItem(position);
-        textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName());
+        if (patient != null) {
+            textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName());
 
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Remove the patient from the database and the list
-                dbHelper.deletePatient(patient.getId());
-                patients.remove(position);
-                notifyDataSetChanged();
-                Toast.makeText(context, "Patient deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dbHelper.deletePatient(patient.getId());
+                    patients.remove(position);
+                    notifyDataSetChanged();
+                    Toast.makeText(context, "Patient deleted", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Launch the dialog to choose an action
+                    Patient_option dialogFragment = Patient_option.newInstance(patient.getId());
+                    dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "Patient_option");
+                }
+            });
+        }
 
         return convertView;
     }
 }
+
