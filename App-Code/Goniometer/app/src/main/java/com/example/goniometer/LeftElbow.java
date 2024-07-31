@@ -79,10 +79,10 @@ public class LeftElbow extends AppCompatActivity {
             public void onClick(View v) {
                 if (!ismeasuring) {
                     askForConfirmation_p();
-                    if (userConfirmation) {
-                        resetValues();
-                        bleManager.startMeasuring();
-                    }
+//                    if (userConfirmation) {
+//                        resetValues();
+//                        bleManager.startMeasuring();
+//                    }
 
                 } else {
                     ismeasuring = false;
