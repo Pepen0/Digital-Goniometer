@@ -79,6 +79,10 @@ public class HeadRotation extends AppCompatActivity {
                     if (Yaw > 0 && (Yaw-maxLeft > 0) && ismeasuring) {
                         maxLeft = Yaw;
                     }
+                    if (Debug.equals("Reseted")) {
+                        maxLeft = 0;
+                        maxRight = 0;
+                    }
                     LeftM.setText("Left Rotation: " + maxLeft);
                     RightM.setText("Right Rotation: " + maxRight);
                });

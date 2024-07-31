@@ -60,6 +60,10 @@ public class RightElbow extends AppCompatActivity {
                 if (Pitch > 0 && (Pitch-maxLeftElbow > 0) && ismeasuring) {
                     maxLeftElbow = Pitch;
                 }
+                    if (Debug.equals("Reseted")) {
+                        maxLeftElbow = 0;
+                        maxRightElbow = 0;
+                    }
                 LeftMaxWrist.setText("Left Rotation: " + maxLeftElbow);
                 RightMaxWrist.setText("Right Rotation: " + maxRightElbow);
                 LiveDataWrist.setText("Pitch: " + Pitch);
