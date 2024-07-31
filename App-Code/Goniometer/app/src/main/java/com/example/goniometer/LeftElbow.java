@@ -51,7 +51,7 @@ public class LeftElbow extends AppCompatActivity {
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
-                //  runOnUiThread(() -> {
+                  runOnUiThread(() -> {
                 if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
                     maxRightWrist = -Pitch;
                 }
@@ -61,9 +61,10 @@ public class LeftElbow extends AppCompatActivity {
                 LeftMax.setText("Left Rotation: " + maxLeftWrist);
                 RightMax.setText("Right Rotation: " + maxRightWrist);
                 LiveDataWrist.setText("Pitch: " + Pitch);
-                //      });
+                    });
             }
         });
+
 
 //        //This will hide the save button for guests
 //        Intent intent = getIntent();

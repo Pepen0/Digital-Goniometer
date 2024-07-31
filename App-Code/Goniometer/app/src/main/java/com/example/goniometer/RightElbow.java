@@ -53,7 +53,7 @@ public class RightElbow extends AppCompatActivity {
         bleManager.setDataCallback(new BLEManager.DataCallback() {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
-              //  runOnUiThread(() -> {
+                runOnUiThread(() -> {
                 if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
                     maxRightWrist = -Pitch;
                 }
@@ -63,7 +63,7 @@ public class RightElbow extends AppCompatActivity {
                 LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
                 RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
                 LiveDataWrist.setText("Pitch: " + Pitch);
-          //      });
+               });
             }
         });
 
