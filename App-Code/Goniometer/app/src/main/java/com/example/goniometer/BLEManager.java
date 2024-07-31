@@ -118,10 +118,7 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-                if(data.equals("Reset data done")){
-                    ResetStatus = true;
-                    return;
-                }
+
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
@@ -130,11 +127,26 @@ public class BLEManager {
                         }
                         if (Variables.length == 4) {
                             //separating the variables from the string into 3 integers
+                            int LiveYaw = 0;
+                            int LivePitch = 0;
+                            int LiveRoll = 0;
+                            String DebugMessage = Variables[3].trim();
+                            try {
+                                LiveYaw = Integer.parseInt(Variables[0]);
+                            }catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Yaw Value" + Variables[0]);
+                            }
+                            try {
+                                LivePitch = Integer.parseInt(Variables[1]);
+                            }catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Pitch Value" + Variables[1]);
+                            }
+                            try {
+                                 LiveRoll = Integer.parseInt(Variables[2]);
+                            }catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Roll Value" + Variables[2]);
+                            }
 
-                            int LiveYaw = Integer.parseInt(Variables[0]);
-                            int LivePitch = Integer.parseInt(Variables[1]);
-                            int LiveRoll = Integer.parseInt(Variables[2]);
-                            String DebugMessage = Variables[3];
 
                             if(ResetStatus){
                                 dataCallback.onDataReceived(0, 0, 0, "");
