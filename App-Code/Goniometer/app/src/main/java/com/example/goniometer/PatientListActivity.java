@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity  {
+public class PatientListActivity extends AppCompatActivity {
 
     private ListView listViewPatients;
     private DatabaseHelper dbHelper;
@@ -69,32 +69,15 @@ public class PatientListActivity extends AppCompatActivity  {
         });
     }
 
-
-        private void displayPatients () {
+    private void displayPatients() {
         List<Patient> patients = dbHelper.getAllPatients();
-
-        // Create a custom ArrayAdapter to display patient names
-        adapter = new ArrayAdapter<Patient>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, patients) {
-
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-                // Get the patient at the current position
-                Patient patient = getItem(position);
-
-                // Set the text of the item view to display patient information
-                TextView textView = view.findViewById(android.R.id.text1);
-                textView.setText(patient.getFirstName() + " " + patient.getLastName());
-
-                return view;
-            }
-        };
-
+        adapter = new Patient_Adapter(this, patients, dbHelper);
         listViewPatients.setAdapter(adapter);
     }
 
-        private void deletePatient ( long patientId){
+
+
+    private void deletePatient(long patientId) {
         dbHelper.deletePatient(patientId);
         adapter.clear();
         adapter.addAll(dbHelper.getAllPatients());
@@ -104,16 +87,16 @@ public class PatientListActivity extends AppCompatActivity  {
         Toast.makeText(this, "Patient " + patientId + " deleted", Toast.LENGTH_SHORT).show();
     }
 
-        private void goToAssessmentPage ( long patientId){
+    private void goToAssessmentPage(long patientId) {
         Intent intent = new Intent(PatientListActivity.this, AssessmentActivity.class);
         intent.putExtra("PATIENT_ID", patientId);
         startActivity(intent);
     }
 
-        private void viewMeasurements ( long patientId){
+    private void viewMeasurements(long patientId) {
         Intent intent = new Intent(PatientListActivity.this, MeasurementsActivity.class);
         intent.putExtra("PATIENT_ID", patientId);
         startActivity(intent);
     }
 
-    }
+}
