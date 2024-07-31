@@ -34,7 +34,7 @@ public class BLEManager {
     private AlertDialog startMeasuring;
 
     public interface DataCallback {
-        void onDataReceived(int Yaw, int Pitch, int Roll);
+        void onDataReceived(int Yaw, int Pitch, int Roll, String Debug);
     }
 
     public interface ConnectionCallback {
@@ -128,17 +128,18 @@ public class BLEManager {
                         for (int i = 0; i < Variables.length; i++) {
                             Variables[i] = Variables[i].replaceAll(",", "");
                         }
-                        if (Variables.length == 3) {
+                        if (Variables.length == 4) {
                             //separating the variables from the string into 3 integers
 
                             int LiveYaw = Integer.parseInt(Variables[0]);
                             int LivePitch = Integer.parseInt(Variables[1]);
                             int LiveRoll = Integer.parseInt(Variables[2]);
+                            String DebugMessage = Variables[3];
 
                             if(ResetStatus){
-                                dataCallback.onDataReceived(0, 0, 0);
+                                dataCallback.onDataReceived(0, 0, 0, "");
                             }else {
-                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
                             }
                             Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
                         }
