@@ -106,9 +106,9 @@ public class LeftElbow extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               // resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
+                resetValues();
                 bleManager.sendDataToArduino("Reset data");
                 Log.d("Reset command sent", "Reset data");
                 StartButtonWrist.setText("Stop Measuring");

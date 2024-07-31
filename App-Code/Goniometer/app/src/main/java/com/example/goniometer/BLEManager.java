@@ -120,64 +120,67 @@ public class BLEManager {
                 if ("Reseted ".equalsIgnoreCase(data)) {
                     ResetStatus = true;
                     Log.d(TAG, "Reset message received from Arduino");
+                    if(dataCallback !=null){
+                        dataCallback.onDataReceived(0, 0, 0, "");
+                    }
                     return;
                 }
 
-                try {
-                    if (dataCallback != null) {
-                        String[] Variables = data.split(",");
-                        for (int i = 0; i < Variables.length; i++) {
-                            Variables[i] = Variables[i].replaceAll(",", "");
-                        }
-                        if (Variables.length == 4 || Variables.length == 3) {
-                            //separating the variables from the string into 3 integers
-                            int LiveYaw = 0;
-                            int LivePitch = 0;
-                            int LiveRoll = 0;
-                            String DebugMessage = "";
+                    try {
+                        if (dataCallback != null) {
+                            String[] Variables = data.split(",");
+                            for (int i = 0; i < Variables.length; i++) {
+                                Variables[i] = Variables[i].replaceAll(",", "");
+                            }
+                            if (Variables.length == 4 || Variables.length == 3) {
+                                //separating the variables from the string into 3 integers
+                                int LiveYaw = 0;
+                                int LivePitch = 0;
+                                int LiveRoll = 0;
+                                String DebugMessage = "";
 
-                            try {
-                                LiveYaw = Integer.parseInt(Variables[0]);
-                            }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
-                            }
-                            try {
-                                LivePitch = Integer.parseInt(Variables[1]);
-                            }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
-                            }
-                            try {
-                                 LiveRoll = Integer.parseInt(Variables[2]);
-                            }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
-                            }
-                            try {
-                                if (Variables.length == 4) {
-                                    DebugMessage = Variables[3].trim();
-                                    Log.d(TAG, "Debug message: " + DebugMessage);
+                                try {
+                                    LiveYaw = Integer.parseInt(Variables[0]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
                                 }
-                            }catch (NumberFormatException e) {
-                                Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
-                            }
+                                try {
+                                    LivePitch = Integer.parseInt(Variables[1]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
+                                }
+                                try {
+                                    LiveRoll = Integer.parseInt(Variables[2]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
+                                }
+                                try {
+                                    if (Variables.length == 4) {
+                                        DebugMessage = Variables[3].trim();
+                                        Log.d(TAG, "Debug message: " + DebugMessage);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
+                                }
 
-                            if(ResetStatus){
-                                dataCallback.onDataReceived(0, 0, 0, "");
-                                ResetStatus = false;
-                            }else {
-                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
+                                if (ResetStatus) {
+
+                                    ResetStatus = false;
+                                } else {
+                                    dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
+                                }
+                                Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
                             }
-                            Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
+                        } else {
+                            // Handle the case where the string doesn't contain three parts
+                            Log.d("The String does not have 3 values", data);
                         }
-                    } else {
-                        // Handle the case where the string doesn't contain three parts
-                        Log.d("The String does not have 3 values", data);
+                    } catch (NumberFormatException e) {
+                        // Handle any potential parsing errors
+                        Log.d("Error parsing integers: ", e.getMessage());
                     }
-                } catch (NumberFormatException e) {
-                    // Handle any potential parsing errors
-                    Log.d("Error parsing integers: ", e.getMessage());
                 }
 
-            }
         }
 
         @Override
