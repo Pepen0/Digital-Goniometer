@@ -163,5 +163,6 @@ public class HeadRotation extends AppCompatActivity {
         maxRight = 0;
         LeftM.setText("Left Rotation: " + maxLeft);
         RightM.setText("Right Rotation: " + maxRight);
+        bleManager.setReset(true);
     }
 }

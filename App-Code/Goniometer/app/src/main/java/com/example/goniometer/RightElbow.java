@@ -131,6 +131,7 @@ public class RightElbow extends AppCompatActivity {
         maxRightElbow=0;
         LeftMaxWrist.setText("Left Rotation: " + maxLeftElbow);
         RightMaxWrist.setText("Right Rotation: " + maxRightElbow);
+        bleManager.setReset(true);
     }
 
 }

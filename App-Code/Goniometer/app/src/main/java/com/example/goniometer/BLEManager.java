@@ -204,5 +204,7 @@ public class BLEManager {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
     }
-
+public void setReset(boolean Reset){
+        this.ResetStatus = Reset;
+    }
 }
