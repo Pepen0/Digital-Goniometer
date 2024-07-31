@@ -33,6 +33,7 @@ BLEStringCharacteristic dataCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1214
 String bleAddress;
 String bleCommand = "None";
 String bleDebugMessage = "None";
+String bleStatus = "";
 
 void checkBleInput(BLEDevice &central)
 {
@@ -53,7 +54,7 @@ void sendBleOutput()
     int PitchInt = (int)AnglePitch;
     int RollInt = (int)AngleRoll;
 
-    String data = String(YawInt) + "," + String(PitchInt) + "," + String(RollInt);
+    String data = String(YawInt) + "," + String(PitchInt) + "," + String(RollInt)+ "," + bleStatus;
     // update ble
     dataCharacteristic.writeValue(data);
 }
@@ -63,6 +64,7 @@ void startCalibrateImu()
     sampleCounter++;
     isCalibrating = true;
     bleDebugMessage += " Started callibration -";
+    bleStatus = " Started callibration ";
 }
 
 void continueCalibrateImu()
@@ -93,10 +95,13 @@ void finishCalibrateImu()
     isCalibrating = false;
     Roll = 0, Pitch = 0, Yaw = 0;
     bleDebugMessage += " Finished callibration -";
+    bleStatus = " Finished callibration ";
+
     if (!isMeasuring)
     {
         isMeasuring = true;
         bleDebugMessage += " Started measuring -";
+        bleStatus = " Started measuring ";
     }
 }
 
@@ -104,7 +109,8 @@ void resetMeasuring()
 {
     // Set values to zero
     Roll = 0, Pitch = 0, Yaw = 0;
-    bleDebugMessage = " Resetted Angles -";
+    bleDebugMessage += " Resetted Angles -";
+    bleStatus = " Resetted Angles ";
 }
 
 void readIMU()
@@ -226,7 +232,10 @@ void loop()
                 if (bleCommand == "Reset data")
                 {
                     bleDebugMessage += " Command received [" + String(bleCommand) + "] -";
+                    bleStatus = " Command received [" + String(bleCommand) + "] ";
                     resetMeasuring();
+                    bleDebugMessage += "Reset data done -";
+                    bleStatus = "Reset data done";
                     bleCommand = "None";
                 }
 
@@ -238,8 +247,10 @@ void loop()
     }
     else if (isConnected)
     {
-        isConnected = false;
-        Serial.println("Disconnected from device");
+      isConnected = false;
+      bleDebugMessage += "Disconnected from device -";
+      bleStatus = "Disconnected from device -";
+      Serial.println("Disconnected from device");
     }
 
     // Maintain a loop timing of 40 milliseconds
