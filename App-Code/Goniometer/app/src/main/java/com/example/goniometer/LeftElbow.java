@@ -81,6 +81,7 @@ public class LeftElbow extends AppCompatActivity {
                 if (!ismeasuring) {
                     askForConfirmation_p();
                     if (userConfirmation) {
+                        resetValues();
                         bleManager.startMeasuring();
                     }
 
@@ -106,7 +107,7 @@ public class LeftElbow extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                resetValues();
+               // resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
                 bleManager.sendDataToArduino("Reset data");

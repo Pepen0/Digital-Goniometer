@@ -23,8 +23,8 @@ public class RightElbow extends AppCompatActivity {
     protected TextView LiveDataWrist;
     private BLEManager bleManager;
     private boolean userConfirmation = false;
-    private float maxLeftWrist = 0;
-    private float maxRightWrist = 0;
+    private float maxLeftElbow = 0;
+    private float maxRightElbow = 0;
     private boolean ismeasuring = false;
 
 
@@ -54,14 +54,14 @@ public class RightElbow extends AppCompatActivity {
             @Override
             public void onDataReceived(int Yaw, int Pitch, int Roll) {
                 runOnUiThread(() -> {
-                if (Pitch < 0 && (Pitch + maxRightWrist < 0) && ismeasuring) {
-                    maxRightWrist = -Pitch;
+                if (Pitch < 0 && (Pitch + maxRightElbow < 0) && ismeasuring) {
+                    maxRightElbow = -Pitch;
                 }
-                if (Pitch > 0 && (Pitch-maxLeftWrist > 0) && ismeasuring) {
-                    maxLeftWrist = Pitch;
+                if (Pitch > 0 && (Pitch-maxLeftElbow > 0) && ismeasuring) {
+                    maxLeftElbow = Pitch;
                 }
-                LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-                RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+                LeftMaxWrist.setText("Left Rotation: " + maxLeftElbow);
+                RightMaxWrist.setText("Right Rotation: " + maxRightElbow);
                 LiveDataWrist.setText("Pitch: " + Pitch);
                });
             }
@@ -82,6 +82,7 @@ public class RightElbow extends AppCompatActivity {
                 if (!ismeasuring) {
                     askForConfirmation_p();
                     if (userConfirmation) {
+                        resetValues();
                         bleManager.startMeasuring();
                     }
 
@@ -107,7 +108,7 @@ public class RightElbow extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                resetValues();
+               // resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
                 bleManager.sendDataToArduino("Reset data");
@@ -126,10 +127,10 @@ public class RightElbow extends AppCompatActivity {
         dialog.show();
     }
     private void resetValues(){
-        maxLeftWrist = 0;
-        maxRightWrist=0;
-        LeftMaxWrist.setText("Left Rotation: " + maxLeftWrist);
-        RightMaxWrist.setText("Right Rotation: " + maxRightWrist);
+        maxLeftElbow = 0;
+        maxRightElbow=0;
+        LeftMaxWrist.setText("Left Rotation: " + maxLeftElbow);
+        RightMaxWrist.setText("Right Rotation: " + maxRightElbow);
     }
 
 }
