@@ -141,7 +141,6 @@ public class HeadRotation extends AppCompatActivity {
                 resetValues();
                 userConfirmation = true;
                 ismeasuring = true;
-                bleManager.startMeasuring();
                 bleManager.sendDataToArduino("Reset data");
                 Log.d("Reset command sent", "Reset data");
                 StartButton.setText("Stop Measuring");
@@ -163,6 +162,5 @@ public class HeadRotation extends AppCompatActivity {
         maxRight = 0;
         LeftM.setText("Left Rotation: " + maxLeft);
         RightM.setText("Right Rotation: " + maxRight);
-        bleManager.setReset(true);
     }
 }
