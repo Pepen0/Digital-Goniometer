@@ -58,7 +58,7 @@ public class RightArmAbduction extends AppCompatActivity {
         StartButtonElbow = findViewById(R.id.StartButtonElbow);
         SaveButton = findViewById(R.id.SaveButton);
         RightAbductionM = findViewById(R.id.RightAbductionM);
-        LiveRoll = findViewById(R.id.Roll);
+        LiveRoll = findViewById(R.id.RRoll);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
