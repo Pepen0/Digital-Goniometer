@@ -27,8 +27,8 @@ public class LeftElbow extends AppCompatActivity {
     protected TextView RightMax;
     protected TextView LiveDataWrist;
     private BLEManager bleManager;
-    private float maxLeftElbow = 0;
-    private float maxRightElbow = 0;
+    private int maxLeftElbow = 0;
+    private int maxRightElbow = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
@@ -118,7 +118,6 @@ public class LeftElbow extends AppCompatActivity {
         dialog.show();
     }
     private void saveMeasurement() {
-        // Dummy data for testing
         double leftAngle = maxLeftElbow;
         double rightAngle = maxRightElbow;
         String measurementType = "Left Elbow";

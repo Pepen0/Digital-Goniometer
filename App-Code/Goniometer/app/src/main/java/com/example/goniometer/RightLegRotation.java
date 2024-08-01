@@ -2,7 +2,6 @@ package com.example.goniometer;
 
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,8 +48,8 @@ public class RightLegRotation extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.LeftM);
-        RightM = findViewById(R.id.RightM);
+        LeftM = findViewById(R.id.RightAbductionM);
+        RightM = findViewById(R.id.RRoll);
 
         StartButton.setOnClickListener(v -> {
             // Your logic to start measurement
