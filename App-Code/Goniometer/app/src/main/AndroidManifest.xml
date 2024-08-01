@@ -69,10 +69,10 @@
             android:exported="false">
         </activity> <!-- New activities for measurements -->
         <activity
-            android:name=".LeftArmRotation"
+            android:name=".LeftArmAbduction"
             android:exported="false" />
         <activity
-            android:name=".RightArmRotation"
+            android:name=".RightArmAbduction"
             android:exported="false" />
         <activity
             android:name=".LeftLegRotation"
