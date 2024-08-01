@@ -67,8 +67,8 @@ public class RightElbow extends AppCompatActivity {
                 maxLeftElbow = 0;
                 maxRightElbow = 0;
             }
-            LeftMax.setText("Left Rotation: " + maxLeftElbow);
-            RightMax.setText("Right Rotation: " + maxRightElbow);
+            LeftMax.setText("Pronation: " + maxLeftElbow);
+            RightMax.setText("Supination: " + maxRightElbow);
             LiveDataElbow.setText("Pitch: " + Pitch);
         }));
 

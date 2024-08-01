@@ -92,10 +92,17 @@ public class MeasurementsActivity extends AppCompatActivity {
                         if (measurement.getMeasurementType().equals("Head Rotation") ||
                                 measurement.getMeasurementType().equals("Right Elbow Rotation") ||
                                 measurement.getMeasurementType().equals("Left Elbow Rotation")) {
-                            textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                    "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
-                                    "RightAngle: " + measurement.getRightAngle()+ "°" + "\n" +
-                                    measurement.getTimestamp());
+                            if(!measurement.getMeasurementType().equals("Head Rotation") ){
+                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                        "Pronation : " + measurement.getLeftAngle() + "°" + "\n" +
+                                        "Supination : " + measurement.getRightAngle()+ "°" + "\n" +
+                                        measurement.getTimestamp());
+                            }else {
+                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                        "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
+                                        "RightAngle: " + measurement.getRightAngle() + "°" + "\n" +
+                                        measurement.getTimestamp());
+                            }
                         }else{
                             textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
                                     "AbductionAngle: " + measurement.getLeftAngle() +"°" + "\n" +
