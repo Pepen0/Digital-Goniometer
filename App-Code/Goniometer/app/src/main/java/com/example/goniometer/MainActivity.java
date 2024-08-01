@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         bleManager = new BLEManager(this);
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
-            public boolean onConnected() {
+            public void onConnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Connected to device", Toast.LENGTH_SHORT).show();
                     // Intent intent = new Intent(MainActivity.this, HeadRotation.class);
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     // Hide the button if the device is connected
                     BluetoothButton.setVisibility(View.GONE);
                 });
-                return false;
             }
 
             @Override

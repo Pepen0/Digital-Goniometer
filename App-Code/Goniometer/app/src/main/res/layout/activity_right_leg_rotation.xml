@@ -24,8 +24,8 @@
 
     <Button
         android:id="@+id/StartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="476dp"
         android:text="Start Measuring"
         android:textSize="24sp"
@@ -40,10 +40,11 @@
 
     <Button
         android:id="@+id/SaveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
         android:text="Save Right Leg Rotation"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:background="@drawable/custom_button2"
         app:backgroundTint="@null"
         android:textColor="#FFFFFF"

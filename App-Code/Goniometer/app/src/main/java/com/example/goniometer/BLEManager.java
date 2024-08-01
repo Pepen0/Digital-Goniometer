@@ -1,6 +1,4 @@
 package com.example.goniometer;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,7 +10,6 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -24,21 +21,19 @@ public class BLEManager {
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
-    private boolean ResetStatus = false;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
     private BluetoothGattCharacteristic characteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
-    private AlertDialog startMeasuring;
 
     public interface DataCallback {
         void onDataReceived(int Yaw, int Pitch, int Roll, String Debug);
     }
 
     public interface ConnectionCallback {
-        boolean onConnected();
+        void onConnected();
 
         void onDisconnected();
     }
@@ -117,14 +112,14 @@ public class BLEManager {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-                if ("Reseted ".equalsIgnoreCase(data)) {
-                    ResetStatus = true;
-                    Log.d(TAG, "Reset message received from Arduino");
-                    if(dataCallback !=null){
-                        dataCallback.onDataReceived(0, 0, 0, "");
-                    }
-                    return;
-                }
+//                if ("Reset".equalsIgnoreCase(data)) {
+//                    ResetStatus = true;
+//                    Log.d(TAG, "Reset message received from Arduino");
+//                    if(dataCallback !=null){
+//                        dataCallback.onDataReceived(0, 0, 0, "");
+//                    }
+//                    return;
+//                }
 
                     try {
                         if (dataCallback != null) {
@@ -164,7 +159,7 @@ public class BLEManager {
                                 }
 
                                 dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
-                                Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
+//                                Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
                             }
                         } else {
                             // Handle the case where the string doesn't contain three parts
@@ -185,22 +180,8 @@ public class BLEManager {
             } else {
                 Log.e(TAG, "Failed to send data to Arduino. Status: " + 0);
             }
-        };
+        }
     };
-
-//    public void startMeasuring() {
-//        // Logic to start measurements and reset values to 0 if any existed
-//        if (characteristic != null) {
-//            bluetoothGatt.readCharacteristic(characteristic);
-//        }
-//    }
-
-//    public void stopMeasuring() {
-//        //Logic to stop measuring and hold the measurements until Start button is pressed again
-//        if (dataCallback != null) {
-//            dataCallback.onDataReceived(lastYawValue);
-//        }
-//    }
 
     public void disconnect() {
         if (bluetoothGatt != null) {
@@ -210,11 +191,6 @@ public class BLEManager {
         }
     }
 
-    private void returnToast(String message) {
-        if (context instanceof Activity) {
-            ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
-        }
-    }
     public void sendDataToArduino(String data) {
         if (characteristic != null) {
             characteristic.setValue(data);

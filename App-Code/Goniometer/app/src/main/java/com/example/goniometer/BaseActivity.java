@@ -35,9 +35,8 @@ public class BaseActivity extends AppCompatActivity {
         // Set up connection callback
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
-            public boolean onConnected() {
+            public void onConnected() {
                 runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24));
-                return false;
             }
 
             @Override
