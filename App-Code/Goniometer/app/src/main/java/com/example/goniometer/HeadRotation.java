@@ -58,8 +58,8 @@ public class HeadRotation extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.LeftM);
-        RightM = findViewById(R.id.RightM);
+        LeftM = findViewById(R.id.RightAbductionM);
+        RightM = findViewById(R.id.RRoll);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
@@ -85,7 +85,8 @@ public class HeadRotation extends AppCompatActivity {
                 askForConfirmation();
             } else {
                 isMeasuring = false;
-                StartButton.setText("Start Measuring");
+                StartButton.setText("START");
+                StartButton.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButton.setBackgroundResource(R.drawable.custom_button2);
                 SaveButton.setText("Save Measurement");
             }
@@ -127,7 +128,8 @@ public class HeadRotation extends AppCompatActivity {
             isMeasuring = true;
             bleManager.sendDataToArduino("Reset data");
             Log.d("Reset command sent", "Reset data");
-            StartButton.setText("Stop Measuring");
+            StartButton.setText("STOP");
+            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
             SaveButton.setBackgroundColor(Color.GRAY);
             SaveButton.setVisibility(View.VISIBLE);
             SaveButton.setText("Stop Measuring To Save");

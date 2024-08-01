@@ -76,13 +76,13 @@ public class AssessmentActivity extends BaseActivity {
     }
 
     private void goToLeftArmRotation() {
-        Intent intent = new Intent(this, LeftArmRotation.class);
+        Intent intent = new Intent(this, LeftArmAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
     private void goToRightArmRotation() {
-        Intent intent = new Intent(this, RightArmRotation.class);
+        Intent intent = new Intent(this, RightArmAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
