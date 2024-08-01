@@ -26,8 +26,8 @@ public class HeadRotation extends AppCompatActivity {
     protected TextView Livedata;
     private BLEManager bleManager;
 
-    private float maxLeft = 0;
-    private float maxRight = 0;
+    private double maxLeft = 0;
+    private double maxRight = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
@@ -58,8 +58,8 @@ public class HeadRotation extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.RightAbductionM);
-        RightM = findViewById(R.id.RRoll);
+        LeftM = findViewById(R.id.rightRotation);
+        RightM = findViewById(R.id.leftRotation);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
@@ -82,7 +82,20 @@ public class HeadRotation extends AppCompatActivity {
 
         StartButton.setOnClickListener(v -> {
             if (!isMeasuring) {
-                askForConfirmation();
+                FunctionsController.askForConfirmation(this,
+                        "Start Measuring Confirmation",
+                        "Are you sure you want to start a new measurement?",
+                        "Yes",()-> {
+                            isMeasuring = true;
+                            bleManager.sendDataToArduino("Reset data");
+                            Log.d("Reset command sent", "Reset data");
+                            StartButton.setText("STOP");
+                            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+                            SaveButton.setBackgroundColor(Color.GRAY);
+                            SaveButton.setVisibility(View.VISIBLE);
+                            SaveButton.setText("Stop Measuring To Save");
+                        }
+                );
             } else {
                 isMeasuring = false;
                 StartButton.setText("START");
@@ -93,49 +106,8 @@ public class HeadRotation extends AppCompatActivity {
         });
         SaveButton.setOnClickListener(v ->{
             if(!isMeasuring) {
-                saveMeasurement();
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation", maxLeft, maxRight, SaveButton);
             }
         });
-    }
-
-    private void saveMeasurement() {
-        // Dummy data for testing
-        double leftAngle = maxLeft;
-        double rightAngle = maxRight;
-        String measurementType = "HeadRotation";
-
-        // Format the current timestamp to include date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
-        String timestamp = sdf.format(new Date());
-
-        // Add measurement to the database
-        long id = dbHelper.addMeasurement(patientId, measurementType, leftAngle, rightAngle, timestamp);
-
-        // Check if the insertion was successful
-        if (id != -1) {
-            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
-        }
-        SaveButton.setVisibility(View.GONE);
-    }
-
-    private void askForConfirmation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Start Measuring Confirmation");
-        builder.setMessage("Are you sure you want to start a new measurement?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            isMeasuring = true;
-            bleManager.sendDataToArduino("Reset data");
-            Log.d("Reset command sent", "Reset data");
-            StartButton.setText("STOP");
-            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
-            SaveButton.setBackgroundColor(Color.GRAY);
-            SaveButton.setVisibility(View.VISIBLE);
-            SaveButton.setText("Stop Measuring To Save");
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

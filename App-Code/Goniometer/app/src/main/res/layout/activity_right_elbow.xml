@@ -24,7 +24,7 @@
         tools:ignore="TextSizeCheck" />
 
     <Button
-        android:id="@+id/StartButtonElbow"
+        android:id="@+id/StartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/circular_button_start"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StartButtonElbow"
+        app:layout_constraintTop_toBottomOf="@+id/StartButton"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Left Max Rotation" />
 
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.607"
         app:layout_constraintStart_toEndOf="@+id/LeftMax"
-        app:layout_constraintTop_toBottomOf="@+id/StartButtonElbow"
+        app:layout_constraintTop_toBottomOf="@+id/StartButton"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

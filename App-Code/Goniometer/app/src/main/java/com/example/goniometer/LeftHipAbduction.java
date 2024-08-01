@@ -33,7 +33,7 @@ public class LeftHipAbduction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_left_arm_abduction);
+        setContentView(R.layout.activity_left_hip_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -97,30 +97,9 @@ public class LeftHipAbduction extends AppCompatActivity {
 
         SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                saveMeasurement();
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Abduction",AbductionMax, 0 , SaveButton);
             }
         });
-    }
-
-    private void saveMeasurement() {
-        double AbductionAngle = AbductionMax;
-        double NotUsed = 0;
-        String measurementType = "Left Abduction";
-
-        // Format the current timestamp to include date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
-        String timestamp = sdf.format(new Date());
-
-        // Add measurement to the database
-        long id = dbHelper.addMeasurement(patientId, measurementType, AbductionAngle,NotUsed, timestamp);
-
-        // Check if the insertion was successful
-        if (id != -1) {
-            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
-        }
-        SaveButton.setVisibility(View.GONE);
     }
 
 }

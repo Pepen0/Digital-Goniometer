@@ -9,15 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 
 public class LeftElbow extends AppCompatActivity {
@@ -27,8 +22,8 @@ public class LeftElbow extends AppCompatActivity {
     protected TextView RightMax;
     protected TextView LiveDataElbow;
     private BLEManager bleManager;
-    private int maxLeftElbow = 0;
-    private int maxRightElbow = 0;
+    private double maxLeftElbow = 0;
+    private double maxRightElbow = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
@@ -55,7 +50,7 @@ public class LeftElbow extends AppCompatActivity {
     }
     private void setupUI() {
 
-        StartButtonElbow = findViewById(R.id.StartButtonElbow);
+        StartButtonElbow = findViewById(R.id.StartButton);
         SaveButtonElbow = findViewById(R.id.SaveButtonElbow);
         LeftMax = findViewById(R.id.LeftMax);
         RightMax = findViewById(R.id.RightMax);
@@ -81,7 +76,20 @@ public class LeftElbow extends AppCompatActivity {
 
         StartButtonElbow.setOnClickListener(v -> {
             if (!isMeasuring) {
-                askForConfirmation_p();
+                FunctionsController.askForConfirmation(this,
+                        "Start Measuring Confirmation",
+                        "Are you sure you want to start a new measurement?",
+                        "Yes",()-> {
+                            isMeasuring = true;
+                            bleManager.sendDataToArduino("Reset data");
+                            Log.d("Reset command sent", "Reset data");
+                            StartButtonElbow.setText("STOP");
+                            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
+                            SaveButtonElbow.setBackgroundColor(Color.GRAY);
+                            SaveButtonElbow.setVisibility(View.VISIBLE);
+                            SaveButtonElbow.setText("Stop Measuring To Save");
+                        }
+                );
 
             } else {
                 isMeasuring = false;
@@ -94,49 +102,8 @@ public class LeftElbow extends AppCompatActivity {
 
         SaveButtonElbow.setOnClickListener(v -> {
             if(!isMeasuring) {
-                saveMeasurement();
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
             }
         });
-    }
-
-    private void askForConfirmation_p() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Start Measuring Confirmation");
-        builder.setMessage("Are you sure you want to start a new measurement?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            isMeasuring = true;
-            bleManager.sendDataToArduino("Reset data");
-            Log.d("Reset command sent", "Reset data");
-            StartButtonElbow.setText("STOP");
-            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
-            SaveButtonElbow.setBackgroundColor(Color.GRAY);
-            SaveButtonElbow.setVisibility(View.VISIBLE);
-            SaveButtonElbow.setText("Stop Measuring To Save");
-        });
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss();
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-    private void saveMeasurement() {
-        double leftAngle = maxLeftElbow;
-        double rightAngle = maxRightElbow;
-        String measurementType = "Left Elbow";
-
-        // Format the current timestamp to include date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
-        String timestamp = sdf.format(new Date());
-
-        // Add measurement to the database
-        long id = dbHelper.addMeasurement(patientId, measurementType, leftAngle, rightAngle, timestamp);
-
-        // Check if the insertion was successful
-        if (id != -1) {
-            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
-        }
-        SaveButtonElbow.setVisibility(View.GONE);
     }
 }

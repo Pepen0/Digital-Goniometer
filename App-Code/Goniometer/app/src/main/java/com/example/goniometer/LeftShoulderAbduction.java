@@ -19,15 +19,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RightHipAbduction extends AppCompatActivity {
+public class LeftShoulderAbduction extends AppCompatActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
-    protected TextView rightAbductionM ;
+    protected TextView AbductionM;
+    protected TextView LiveRoll;
+    private BLEManager bleManager;
     private int AbductionMax = 0;
     private boolean isMeasuring = false;
-    private BLEManager bleManager;
-    protected TextView LiveRoll;
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
 
@@ -35,7 +35,7 @@ public class RightHipAbduction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_right_hip_abduction);
+        setContentView(R.layout.activity_left_shoulder_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,8 +57,8 @@ public class RightHipAbduction extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        rightAbductionM = findViewById(R.id.leftRotation);
-        LiveRoll = findViewById(R.id.rightRotation);
+        AbductionM = findViewById(R.id.AbductionM);
+        LiveRoll = findViewById(R.id.Roll);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
@@ -68,7 +68,7 @@ public class RightHipAbduction extends AppCompatActivity {
             if (Debug.equals("Reset")){
                 AbductionMax = 0;
             }
-            rightAbductionM.setText("Right Abduction: " + AbductionMax);
+            AbductionM.setText("Left Abduction: " + AbductionMax);
             LiveRoll.setText("Roll: " + Roll);
         }));
         StartButton.setOnClickListener(v -> {
@@ -103,5 +103,4 @@ public class RightHipAbduction extends AppCompatActivity {
             }
         });
     }
-
 }
