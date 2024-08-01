@@ -3,11 +3,8 @@ package com.example.goniometer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -15,7 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class AssessmentActivity extends BaseActivity {
 
     protected Button buttonHeadRotation;
-    protected Button buttonWristRotation;
+    protected Button RightElbow;
+    protected Button LeftElbow;
     protected Button buttonLeftArmRotation;
     protected Button buttonRightArmRotation;
     protected Button buttonLeftLegRotation;
@@ -47,7 +45,8 @@ public class AssessmentActivity extends BaseActivity {
         buttonRightArmRotation = findViewById(R.id.buttonRightArm);
         buttonLeftLegRotation = findViewById(R.id.buttonLeftLeg);
         buttonRightLegRotation = findViewById(R.id.buttonRightLeg);
-        buttonWristRotation = findViewById(R.id.buttonWristRotation);
+        RightElbow= findViewById(R.id.RightElbow);
+        LeftElbow= findViewById(R.id.LeftElbow);
 
         // Set Click Listeners
         buttonHeadRotation.setOnClickListener(v -> goToHeadRotation());
@@ -55,11 +54,17 @@ public class AssessmentActivity extends BaseActivity {
         buttonRightArmRotation.setOnClickListener(v -> goToRightArmRotation());
         buttonLeftLegRotation.setOnClickListener(v -> goToLeftLegRotation());
         buttonRightLegRotation.setOnClickListener(v -> goToRightLegRotation());
-        buttonWristRotation.setOnClickListener(v ->goToWristRotation());
+        RightElbow.setOnClickListener(v -> goToRightElbow());
+        LeftElbow.setOnClickListener(v -> goToLeftElbow());
 
     }
-    private void goToWristRotation(){
-        Intent intent = new Intent(this, WristRotation.class);
+    private void goToRightElbow(){
+        Intent intent = new Intent(this, RightElbow.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+    private void goToLeftElbow(){
+        Intent intent = new Intent(this, LeftElbow.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
@@ -71,13 +76,13 @@ public class AssessmentActivity extends BaseActivity {
     }
 
     private void goToLeftArmRotation() {
-        Intent intent = new Intent(this, LeftArmRotation.class);
+        Intent intent = new Intent(this, LeftArmAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
     private void goToRightArmRotation() {
-        Intent intent = new Intent(this, RightArmRotation.class);
+        Intent intent = new Intent(this, RightArmAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }

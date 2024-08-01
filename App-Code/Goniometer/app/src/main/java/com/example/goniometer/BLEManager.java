@@ -1,7 +1,4 @@
 package com.example.goniometer;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,33 +9,27 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.logging.Handler;
 
 public class BLEManager {
     private static final String TAG = "IMU Sensor";
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
-
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGatt bluetoothGatt;
     private Context context;
     private BluetoothGattCharacteristic characteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
-    private AlertDialog startMeasuring;
 
     public interface DataCallback {
-        void onDataReceived(int Yaw, int Pitch, int Roll);
+        void onDataReceived(int Yaw, int Pitch, int Roll, String Debug);
     }
 
     public interface ConnectionCallback {
@@ -116,37 +107,70 @@ public class BLEManager {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-                try {
-                    if (dataCallback != null) {
-                        String[] Variables = data.split(",");
-                        for (int i = 0; i < Variables.length; i++) {
-                            Variables[i] = Variables[i].replaceAll(",", "");
-                        }
-                        if (Variables.length == 3) {
-                            //separating the variables from the string into 3 integers
+//                if ("Reset".equalsIgnoreCase(data)) {
+//                    ResetStatus = true;
+//                    Log.d(TAG, "Reset message received from Arduino");
+//                    if(dataCallback !=null){
+//                        dataCallback.onDataReceived(0, 0, 0, "");
+//                    }
+//                    return;
+//                }
 
-                            int LiveYaw = Integer.parseInt(Variables[0]);
-                            int LivePitch = Integer.parseInt(Variables[1]);
-                            int LiveRoll = Integer.parseInt(Variables[2]);
-                            Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
-                            dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll);
+                    try {
+                        if (dataCallback != null) {
+                            String[] Variables = data.split(",");
+                            for (int i = 0; i < Variables.length; i++) {
+                                Variables[i] = Variables[i].replaceAll(",", "");
+                            }
+                            if (Variables.length == 4 || Variables.length == 3) {
+                                //separating the variables from the string into 3 integers
+                                int LiveYaw = 0;
+                                int LivePitch = 0;
+                                int LiveRoll = 0;
+                                String DebugMessage = "";
+
+                                try {
+                                    LiveYaw = Integer.parseInt(Variables[0]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
+                                }
+                                try {
+                                    LivePitch = Integer.parseInt(Variables[1]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
+                                }
+                                try {
+                                    LiveRoll = Integer.parseInt(Variables[2]);
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
+                                }
+                                try {
+                                    if (Variables.length == 4) {
+                                        DebugMessage = Variables[3].trim();
+                                        Log.d(TAG, "Debug message: " + DebugMessage);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
+                                }
+
+                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
+//                                Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
+                            }
+                        } else {
+                            // Handle the case where the string doesn't contain three parts
+                            Log.d("The String does not have 3 values", data);
                         }
-                    } else {
-                        // Handle the case where the string doesn't contain three parts
-                        Log.d("The String does not have 3 values", data);
+                    } catch (NumberFormatException e) {
+                        // Handle any potential parsing errors
+                        Log.d("Error parsing integers: ", e.getMessage());
                     }
-                } catch (NumberFormatException e) {
-                    // Handle any potential parsing errors
-                    Log.d("Error parsing integers: ", e.getMessage());
                 }
 
-            }
         }
 
         @Override
@@ -156,22 +180,8 @@ public class BLEManager {
             } else {
                 Log.e(TAG, "Failed to send data to Arduino. Status: " + 0);
             }
-        };
-    };
-
-    public void startMeasuring() {
-        // Logic to start measurements and reset values to 0 if any existed
-        if (characteristic != null) {
-            bluetoothGatt.readCharacteristic(characteristic);
         }
-    }
-
-//    public void stopMeasuring() {
-//        //Logic to stop measuring and hold the measurements until Start button is pressed again
-//        if (dataCallback != null) {
-//            dataCallback.onDataReceived(lastYawValue);
-//        }
-//    }
+    };
 
     public void disconnect() {
         if (bluetoothGatt != null) {
@@ -181,11 +191,6 @@ public class BLEManager {
         }
     }
 
-    private void returnToast(String message) {
-        if (context instanceof Activity) {
-            ((Activity) context).runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_LONG).show());
-        }
-    }
     public void sendDataToArduino(String data) {
         if (characteristic != null) {
             characteristic.setValue(data);
@@ -199,5 +204,4 @@ public class BLEManager {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
     }
-
 }

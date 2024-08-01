@@ -1,3 +1,5 @@
+
+
 package com.example.goniometer;
 
 import android.content.Intent;
@@ -11,9 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity {
+public class PatientListActivity extends AppCompatActivity  {
 
     private ListView listViewPatients;
     private DatabaseHelper dbHelper;
@@ -47,9 +51,26 @@ public class PatientListActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Set up the FAB to open the dialog for adding a patient
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            Newpatient dialogFragment = new Newpatient();
+            dialogFragment.setOnNewPatientListener((firstName, lastName) -> {
+                long id = dbHelper.addPatient(firstName, lastName);
+                if (id != -1) {
+                    Toast.makeText(PatientListActivity.this, "Patient added with ID: " + id, Toast.LENGTH_SHORT).show();
+                    displayPatients(); // Refresh the list
+                } else {
+                    Toast.makeText(PatientListActivity.this, "Failed to add patient", Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialogFragment.show(getSupportFragmentManager(), "NewPatientDialogFragment");
+        });
     }
 
-    private void displayPatients() {
+
+        private void displayPatients () {
         List<Patient> patients = dbHelper.getAllPatients();
 
         // Create a custom ArrayAdapter to display patient names
@@ -73,7 +94,7 @@ public class PatientListActivity extends AppCompatActivity {
         listViewPatients.setAdapter(adapter);
     }
 
-    private void deletePatient(long patientId) {
+        private void deletePatient ( long patientId){
         dbHelper.deletePatient(patientId);
         adapter.clear();
         adapter.addAll(dbHelper.getAllPatients());
@@ -83,16 +104,16 @@ public class PatientListActivity extends AppCompatActivity {
         Toast.makeText(this, "Patient " + patientId + " deleted", Toast.LENGTH_SHORT).show();
     }
 
-    private void goToAssessmentPage(long patientId) {
+        private void goToAssessmentPage ( long patientId){
         Intent intent = new Intent(PatientListActivity.this, AssessmentActivity.class);
         intent.putExtra("PATIENT_ID", patientId);
         startActivity(intent);
     }
 
-    private void viewMeasurements(long patientId) {
+        private void viewMeasurements ( long patientId){
         Intent intent = new Intent(PatientListActivity.this, MeasurementsActivity.class);
         intent.putExtra("PATIENT_ID", patientId);
         startActivity(intent);
     }
 
-}
+    }

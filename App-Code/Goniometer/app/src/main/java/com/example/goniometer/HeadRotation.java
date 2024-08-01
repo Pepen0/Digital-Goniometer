@@ -2,23 +2,20 @@ package com.example.goniometer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
-import android.nfc.Tag;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.DialogInterface;
 import android.widget.Toast;
-import android.util.Log;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.view.View;
 
 public class HeadRotation extends AppCompatActivity {
 
@@ -26,14 +23,12 @@ public class HeadRotation extends AppCompatActivity {
     protected Button SaveButton;
     protected TextView LeftM;
     protected TextView RightM;
-    BluetoothAdapter adapter;
     protected TextView Livedata;
     private BLEManager bleManager;
 
     private float maxLeft = 0;
     private float maxRight = 0;
-    private boolean ismeasuring = false;
-    private boolean userConfirmation = false;
+    private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
@@ -63,57 +58,50 @@ public class HeadRotation extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.LeftM);
-        RightM = findViewById(R.id.RightM);
+        LeftM = findViewById(R.id.RightAbductionM);
+        RightM = findViewById(R.id.RRoll);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
-        bleManager.setDataCallback(new BLEManager.DataCallback() {
-            @Override
-            public void onDataReceived(int Yaw, int Pitch, int Roll) {
-                runOnUiThread(() -> {
-                    Livedata.setText("Yaw: "+ Yaw);
-                    if (Yaw < 0 && (Yaw + maxRight < 0) && ismeasuring) {
-                        maxRight = -Yaw;
-                    }
-                    if (Yaw > 0 && (Yaw-maxLeft > 0) && ismeasuring) {
-                        maxLeft = Yaw;
-                    }
-                    LeftM.setText("Left Rotation: " + maxLeft);
-                    RightM.setText("Right Rotation: " + maxRight);
-               });
+        bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
+            if (Yaw < 0 && (Yaw + maxRight < 0) && isMeasuring) {
+                maxRight = -Yaw;
+            }
+            if (Yaw > 0 && (Yaw-maxLeft > 0) && isMeasuring) {
+                maxLeft = Yaw;
+            }
+            if (Debug.equals("Reset")) {
+                maxLeft = 0;
+                maxRight = 0;
+            }
+            LeftM.setText("Left Rotation: " + maxLeft);
+            RightM.setText("Right Rotation: " + maxRight);
+            Livedata.setText("Yaw: "+ Yaw);
+       }));
+
+
+        StartButton.setOnClickListener(v -> {
+            if (!isMeasuring) {
+                askForConfirmation();
+            } else {
+                isMeasuring = false;
+                StartButton.setText("START");
+                StartButton.setBackgroundResource(R.drawable.circular_button_start);
+                SaveButton.setBackgroundResource(R.drawable.custom_button2);
+                SaveButton.setText("Save Measurement");
             }
         });
-
-        // This will hide the save button for guests
-        Intent intent = getIntent();
-        boolean isGuest = intent.getBooleanExtra("isGuest", false);
-
-        // Hide the button if the user is a guest
-        if (isGuest) {
-            SaveButton.setVisibility(View.GONE);
-        }
-
-        StartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ismeasuring) {
-                    askforConfirmation();
-                    Log.d("userConfirmation", String.valueOf(userConfirmation));
-                } else {
-                    ismeasuring = false;
-                    StartButton.setText("Start Measuring");
-                }
+        SaveButton.setOnClickListener(v ->{
+            if(!isMeasuring) {
+                saveMeasurement();
             }
-
         });
-        SaveButton.setOnClickListener(v -> saveMeasurement());
     }
 
     private void saveMeasurement() {
         // Dummy data for testing
-        double leftAngle = 10;
-        double rightAngle = 10;
+        double leftAngle = maxLeft;
+        double rightAngle = maxRight;
         String measurementType = "HeadRotation";
 
         // Format the current timestamp to include date and time
@@ -129,39 +117,25 @@ public class HeadRotation extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
         }
+        SaveButton.setVisibility(View.GONE);
     }
 
-    private void askforConfirmation() {
+    private void askForConfirmation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start Measuring Confirmation");
         builder.setMessage("Are you sure you want to start a new measurement?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                resetValues();
-                userConfirmation = true;
-                ismeasuring = true;
-                bleManager.startMeasuring();
-                bleManager.sendDataToArduino("Reset data");
-                Log.d("Reset command sent", "Reset data");
-                StartButton.setText("Stop Measuring");
-            }
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            isMeasuring = true;
+            bleManager.sendDataToArduino("Reset data");
+            Log.d("Reset command sent", "Reset data");
+            StartButton.setText("STOP");
+            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+            SaveButton.setBackgroundColor(Color.GRAY);
+            SaveButton.setVisibility(View.VISIBLE);
+            SaveButton.setText("Stop Measuring To Save");
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userConfirmation = false;
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void resetValues() {
-        maxLeft = 0;
-        maxRight = 0;
-        LeftM.setText("Left Rotation: " + maxLeft);
-        RightM.setText("Right Rotation: " + maxRight);
     }
 }
