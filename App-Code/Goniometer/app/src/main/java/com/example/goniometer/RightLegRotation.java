@@ -5,7 +5,10 @@ import java.util.Locale;
 
 import android.graphics.Color;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+>>>>>>> 2cc1387 (added new measurement)
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,8 +61,9 @@ public class RightLegRotation extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.LeftM);
-        RightM = findViewById(R.id.RightM);
+<<<<<<< HEAD
+        LeftM = findViewById(R.id.AbductionM);
+        RightM = findViewById(R.id.Roll);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
@@ -79,6 +83,10 @@ public class RightLegRotation extends AppCompatActivity {
             Livedata.setText("Yaw: "+ Yaw);
         }));
 
+=======
+        LeftM = findViewById(R.id.RightAbductionM);
+        RightM = findViewById(R.id.RRoll);
+>>>>>>> 2cc1387 (added new measurement)
 
         StartButton.setOnClickListener(v -> {
             if (!isMeasuring) {
