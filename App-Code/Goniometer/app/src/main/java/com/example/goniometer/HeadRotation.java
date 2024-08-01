@@ -1,7 +1,4 @@
 package com.example.goniometer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,8 +22,8 @@ public class HeadRotation extends AppCompatActivity {
     protected TextView Livedata;
     private BLEManager bleManager;
 
-    private double maxLeft = 0;
-    private double maxRight = 0;
+    private int maxLeft = 0;
+    private int maxRight = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;

@@ -4,12 +4,12 @@ public class Measurement {
     private final long id;
     private final long patientId;
     private final String measurementType;
-    private final double leftAngle;
-    private final double rightAngle;
+    private final int leftAngle;
+    private final int rightAngle;
     private final String timestamp;
 
     // Constructor
-    public Measurement(long id, long patientId, String measurementType, double leftAngle, double rightAngle, String timestamp) {
+    public Measurement(long id, long patientId, String measurementType, int leftAngle, int rightAngle, String timestamp) {
         this.id = id;
         this.patientId = patientId;
         this.measurementType = measurementType;
@@ -31,11 +31,11 @@ public class Measurement {
         return measurementType;
     }
 
-    public double getLeftAngle() {
+    public int getLeftAngle() {
         return leftAngle;
     }
 
-    public double getRightAngle() {
+    public int getRightAngle() {
         return rightAngle;
     }
 

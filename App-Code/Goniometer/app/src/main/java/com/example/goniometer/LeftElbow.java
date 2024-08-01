@@ -22,8 +22,8 @@ public class LeftElbow extends AppCompatActivity {
     protected TextView RightMax;
     protected TextView LiveDataElbow;
     private BLEManager bleManager;
-    private double maxLeftElbow = 0;
-    private double maxRightElbow = 0;
+    private int maxLeftElbow = 0;
+    private int maxRightElbow = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
@@ -102,7 +102,7 @@ public class LeftElbow extends AppCompatActivity {
 
         SaveButtonElbow.setOnClickListener(v -> {
             if(!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Elbow Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
             }
         });
     }

@@ -30,8 +30,8 @@ public class FunctionsController {
                                  DatabaseHelper dbHelper,
                                  long patientId,
                                  String measurementType,
-                                 double leftAngle,
-                                 double rightAngle , Button SaveButton) {
+                                 int leftAngle,
+                                 int rightAngle , Button SaveButton) {
 
         // Format the current timestamp to include date and time
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format

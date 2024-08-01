@@ -9,15 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class LeftShoulderAbduction extends AppCompatActivity {
 
@@ -99,7 +95,7 @@ public class LeftShoulderAbduction extends AppCompatActivity {
 
         SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation", AbductionMax, 0, SaveButton);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Shoulder Abduction", AbductionMax, 0, SaveButton);
             }
         });
     }

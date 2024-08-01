@@ -83,17 +83,18 @@
 
     <Button
         android:id="@+id/SaveButtonElbow"
-        android:visibility="gone"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="84dp"
-        android:text="Save Wrist Rotation"
+        android:layout_marginTop="54dp"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Save Wrist Rotation"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
+        android:visibility="gone"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LiveDataElbow"
         app:layout_constraintVertical_bias="0.0" />

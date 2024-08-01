@@ -9,16 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 
 public class RightElbow extends AppCompatActivity {
     protected Button StartButtonElbow;
@@ -27,8 +21,8 @@ public class RightElbow extends AppCompatActivity {
     protected TextView RightMax;
     protected TextView LiveDataElbow;
     private BLEManager bleManager;
-    private float maxLeftElbow = 0;
-    private float maxRightElbow = 0;
+    private int maxLeftElbow = 0;
+    private int maxRightElbow = 0;
     private boolean isMeasuring = false;
 
     private DatabaseHelper dbHelper;
@@ -107,7 +101,7 @@ public class RightElbow extends AppCompatActivity {
 
         SaveButtonElbow.setOnClickListener(v -> {
             if (!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Right Elbow Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
             }
         });
     }

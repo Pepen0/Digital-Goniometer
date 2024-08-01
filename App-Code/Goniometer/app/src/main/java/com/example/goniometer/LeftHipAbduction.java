@@ -13,10 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class LeftHipAbduction extends AppCompatActivity {
 
     protected Button StartButton;
@@ -97,7 +93,7 @@ public class LeftHipAbduction extends AppCompatActivity {
 
         SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Abduction",AbductionMax, 0 , SaveButton);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Hip Abduction",AbductionMax, 0 , SaveButton);
             }
         });
     }

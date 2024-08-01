@@ -94,7 +94,7 @@ public class RightShoulderAbduction extends AppCompatActivity {
 
         SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Head Rotation",AbductionMax, 0, SaveButton);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Right Shoulder Abduction",AbductionMax, 0, SaveButton);
             }
         });
     }
