@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MeasurementsActivity extends AppCompatActivity {
@@ -70,6 +71,9 @@ public class MeasurementsActivity extends AppCompatActivity {
                 measurements = new ArrayList<>();
             }
 
+            // Reverse the list to show the most recent measurements first
+            Collections.reverse(measurements);
+
             // Create a custom ArrayAdapter to display measurements
             adapter = new ArrayAdapter<Measurement>(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, measurements) {
@@ -89,9 +93,9 @@ public class MeasurementsActivity extends AppCompatActivity {
                     // Set the text of the item view to display measurement details
                     TextView textView = convertView.findViewById(android.R.id.text1);
                     if (measurement != null) {
-                        textView.setText("Type: " + measurement.getMeasurementType() +"\n"+
-                                "LeftAngle: " + measurement.getLeftAngle() +"\n"+
-                                "RightAngle: " + measurement.getRightAngle() +"\n"+
+                        textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                "LeftAngle: " + measurement.getLeftAngle() + "\n" +
+                                "RightAngle: " + measurement.getRightAngle() + "\n" +
                                 measurement.getTimestamp());
                     } else {
                         textView.setText("No data available");
