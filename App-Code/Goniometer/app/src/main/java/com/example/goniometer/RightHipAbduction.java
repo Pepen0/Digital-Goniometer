@@ -1,35 +1,33 @@
 package com.example.goniometer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.view.View;
 
-public class LeftLegRotation extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-    protected Button StartButton;
+public class RightHipAbduction extends AppCompatActivity {
+
+    protected Button StartButtonElbow;
     protected Button SaveButton;
-    protected TextView LeftM;
-    protected TextView RightM;
-    protected TextView Livedata;
-    private BLEManager bleManager;
-
-    private float maxLeft = 0;
-    private float maxRight = 0;
+    protected TextView RightAbductionM ;
+    private int AbductionMax = 0;
     private boolean isMeasuring = false;
-
+    private BLEManager bleManager;
+    protected TextView LiveRoll;
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
 
@@ -37,7 +35,7 @@ public class LeftLegRotation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_left_leg_rotation);
+        setContentView(R.layout.activity_right_arm_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -52,49 +50,41 @@ public class LeftLegRotation extends AppCompatActivity {
         if (patientId == -1) {
             Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
+
         setupUI();
     }
 
     private void setupUI() {
-        StartButton = findViewById(R.id.StartButton);
+        StartButtonElbow = findViewById(R.id.StartButtonElbow);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.AbductionM);
-        RightM = findViewById(R.id.Roll);
-        Livedata = findViewById(R.id.Livedata);
+        RightAbductionM = findViewById(R.id.RightAbductionM);
+        LiveRoll = findViewById(R.id.RRoll);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
-            if (Yaw < 0 && (Yaw + maxRight < 0) && isMeasuring) {
-                maxRight = -Yaw;
+            if (Roll > 0 && (Roll - AbductionMax > 0) && isMeasuring) {
+                AbductionMax = Roll;
             }
-            if (Yaw > 0 && (Yaw-maxLeft > 0) && isMeasuring) {
-                maxLeft = Yaw;
+            if (Debug.equals("Reset")){
+                AbductionMax = 0;
             }
-            if (Debug.equals("Reset")) {
-                maxLeft = 0;
-                maxRight = 0;
-            }
-            LeftM.setText("Left Rotation: " + maxLeft);
-            RightM.setText("Right Rotation: " + maxRight);
-            Livedata.setText("Yaw: "+ Yaw);
+            RightAbductionM.setText("Left Abduction: " + AbductionMax);
+            LiveRoll.setText("Roll: " + Roll);
         }));
-
-        LeftM = findViewById(R.id.RightAbductionM);
-        RightM = findViewById(R.id.RRoll);
-
-
-        StartButton.setOnClickListener(v -> {
+        StartButtonElbow.setOnClickListener(v -> {
             if (!isMeasuring) {
-                askForConfirmation();
+                askForConfirmation_r();
+
             } else {
                 isMeasuring = false;
-                StartButton.setText("START");
-                StartButton.setBackgroundResource(R.drawable.circular_button_start);
+                StartButtonElbow.setText("START");
+                StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButton.setBackgroundResource(R.drawable.custom_button2);
                 SaveButton.setText("Save Measurement");
             }
         });
-        SaveButton.setOnClickListener(v ->{
+
+        SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
                 saveMeasurement();
             }
@@ -102,17 +92,16 @@ public class LeftLegRotation extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-        // Dummy data for testing
-        double leftAngle = maxLeft;
-        double rightAngle = maxRight;
-        String measurementType = "Left Leg";
+        double AbductionAngle = AbductionMax;
+        double NotUsed = 0;
+        String measurementType = "Left Abduction";
 
         // Format the current timestamp to include date and time
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
         String timestamp = sdf.format(new Date());
 
         // Add measurement to the database
-        long id = dbHelper.addMeasurement(patientId, measurementType, leftAngle, rightAngle, timestamp);
+        long id = dbHelper.addMeasurement(patientId, measurementType, AbductionAngle,NotUsed, timestamp);
 
         // Check if the insertion was successful
         if (id != -1) {
@@ -122,8 +111,7 @@ public class LeftLegRotation extends AppCompatActivity {
         }
         SaveButton.setVisibility(View.GONE);
     }
-
-    private void askForConfirmation() {
+    private void askForConfirmation_r() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start Measuring Confirmation");
         builder.setMessage("Are you sure you want to start a new measurement?");
@@ -131,13 +119,15 @@ public class LeftLegRotation extends AppCompatActivity {
             isMeasuring = true;
             bleManager.sendDataToArduino("Reset data");
             Log.d("Reset command sent", "Reset data");
-            StartButton.setText("STOP");
-            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+            StartButtonElbow.setText("STOP");
+            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
             SaveButton.setBackgroundColor(Color.GRAY);
             SaveButton.setVisibility(View.VISIBLE);
             SaveButton.setText("Stop Measuring To Save");
         });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
