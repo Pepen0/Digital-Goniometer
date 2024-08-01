@@ -35,7 +35,7 @@ public class LeftArmAbduction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_left_arm_rotation);
+        setContentView(R.layout.activity_left_arm_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,7 +57,7 @@ public class LeftArmAbduction extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        AbductionM = findViewById(R.id.RRoll);
+        AbductionM = findViewById(R.id.AbductionM);
         LiveRoll = findViewById(R.id.Roll);
         bleManager = BLEManager.getInstance();
 
@@ -77,56 +77,56 @@ public class LeftArmAbduction extends AppCompatActivity {
 
             } else {
                 isMeasuring = false;
-                StartButton.setText("Start Measuring");
+                StartButton.setText("START");
+                StartButton.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButton.setBackgroundResource(R.drawable.custom_button2);
                 SaveButton.setText("Save Measurement");
             }
         });
 
-            SaveButton.setOnClickListener(v -> {
-                if(!isMeasuring) {
-                    saveMeasurement();
-                }
-            });
-        }
-
-        private void saveMeasurement() {
-            double AbductionAngle = AbductionMax;
-            double NotUsed = 0;
-            String measurementType = "Left Abduction";
-
-            // Format the current timestamp to include date and time
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
-            String timestamp = sdf.format(new Date());
-
-            // Add measurement to the database
-            long id = dbHelper.addMeasurement(patientId, measurementType, AbductionAngle,NotUsed, timestamp);
-
-            // Check if the insertion was successful
-            if (id != -1) {
-                Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
+        SaveButton.setOnClickListener(v -> {
+            if(!isMeasuring) {
+                saveMeasurement();
             }
-            SaveButton.setVisibility(View.GONE);
+        });
+    }
+
+    private void saveMeasurement() {
+        double AbductionAngle = AbductionMax;
+        double NotUsed = 0;
+        String measurementType = "Left Abduction";
+
+        // Format the current timestamp to include date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
+        String timestamp = sdf.format(new Date());
+
+        // Add measurement to the database
+        long id = dbHelper.addMeasurement(patientId, measurementType, AbductionAngle,NotUsed, timestamp);
+
+        // Check if the insertion was successful
+        if (id != -1) {
+            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
         }
-private void askForConfirmation_r() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle("Start Measuring Confirmation");
-    builder.setMessage("Are you sure you want to start a new measurement?");
-    builder.setPositiveButton("Yes", (dialog, which) -> {
-        isMeasuring = true;
-        bleManager.sendDataToArduino("Reset data");
-        Log.d("Reset command sent", "Reset data");
-        StartButton.setText("Stop Measuring");
-        SaveButton.setBackgroundColor(Color.GRAY);
-        SaveButton.setVisibility(View.VISIBLE);
-        SaveButton.setText("Stop Measuring To Save");
-    });
-    builder.setNegativeButton("No", (dialog, which) -> {
-        dialog.dismiss();
-    });
-    AlertDialog dialog = builder.create();
-    dialog.show();
-}
+        SaveButton.setVisibility(View.GONE);
+    }
+    private void askForConfirmation_r() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Start Measuring Confirmation");
+        builder.setMessage("Are you sure you want to start a new measurement?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            isMeasuring = true;
+            bleManager.sendDataToArduino("Reset data");
+            Log.d("Reset command sent", "Reset data");
+            StartButton.setText("STOP");
+            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+            SaveButton.setBackgroundColor(Color.GRAY);
+            SaveButton.setVisibility(View.VISIBLE);
+            SaveButton.setText("Stop Measuring To Save");
+        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

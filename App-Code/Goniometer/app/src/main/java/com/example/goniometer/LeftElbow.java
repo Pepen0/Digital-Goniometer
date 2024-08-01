@@ -25,7 +25,7 @@ public class LeftElbow extends AppCompatActivity {
     protected Button SaveButtonElbow;
     protected TextView LeftMax;
     protected TextView RightMax;
-    protected TextView LiveDataWrist;
+    protected TextView LiveDataElbow;
     private BLEManager bleManager;
     private int maxLeftElbow = 0;
     private int maxRightElbow = 0;
@@ -59,7 +59,7 @@ public class LeftElbow extends AppCompatActivity {
         SaveButtonElbow = findViewById(R.id.SaveButtonElbow);
         LeftMax = findViewById(R.id.LeftMax);
         RightMax = findViewById(R.id.RightMax);
-        LiveDataWrist = findViewById(R.id.LiveDataWrist);
+        LiveDataElbow = findViewById(R.id.LiveDataElbow);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
@@ -75,7 +75,7 @@ public class LeftElbow extends AppCompatActivity {
           }
           LeftMax.setText("Left Rotation: " + maxLeftElbow);
           RightMax.setText("Right Rotation: " + maxRightElbow);
-          LiveDataWrist.setText("Pitch: " + Pitch);
+          LiveDataElbow.setText("Pitch: " + Pitch);
         }));
 
 
@@ -85,7 +85,8 @@ public class LeftElbow extends AppCompatActivity {
 
             } else {
                 isMeasuring = false;
-                StartButtonElbow.setText("Start Measuring");
+                StartButtonElbow.setText("START");
+                StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButtonElbow.setBackgroundResource(R.drawable.custom_button2);
                 SaveButtonElbow.setText("Save Measurement");
             }
@@ -106,7 +107,8 @@ public class LeftElbow extends AppCompatActivity {
             isMeasuring = true;
             bleManager.sendDataToArduino("Reset data");
             Log.d("Reset command sent", "Reset data");
-            StartButtonElbow.setText("Stop Measuring");
+            StartButtonElbow.setText("STOP");
+            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
             SaveButtonElbow.setBackgroundColor(Color.GRAY);
             SaveButtonElbow.setVisibility(View.VISIBLE);
             SaveButtonElbow.setText("Stop Measuring To Save");

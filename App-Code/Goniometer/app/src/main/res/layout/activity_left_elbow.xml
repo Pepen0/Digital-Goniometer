@@ -10,34 +10,33 @@
 
     <TextView
         android:id="@+id/TestViewLeftElbow"
-        android:layout_width="280dp"
-        android:layout_height="51dp"
-        android:text="Left Elbow ROTATION"
+        android:layout_width="262dp"
+        android:layout_height="52dp"
+        android:fontFamily="sans-serif-black"
+        android:text="LEFT ELBOW ROTATION"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102" />
+        app:layout_constraintVertical_bias="0.109"
+        tools:ignore="TextSizeCheck" />
 
     <Button
         android:id="@+id/StartButtonElbow"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="76dp"
-        android:background="@drawable/custom_button2"
-        android:text="START MEASURING"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circular_button_start"
+        android:text="START"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TestViewLeftElbow"
-        app:layout_constraintVertical_bias="0.167" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.258" />
 
     <TextView
         android:id="@+id/LeftMax"
@@ -70,11 +69,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/LiveDataWrist"
+        android:id="@+id/LiveDataElbow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
-        android:text="Live Data Wrist"
+        android:text="Live Data Elbow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -96,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LiveDataWrist"
+        app:layout_constraintTop_toBottomOf="@+id/LiveDataElbow"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
