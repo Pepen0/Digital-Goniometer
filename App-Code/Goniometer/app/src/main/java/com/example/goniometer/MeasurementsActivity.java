@@ -43,7 +43,7 @@ public class MeasurementsActivity extends AppCompatActivity {
 
             if (patientName != null) {
                 // Construct and set the patient details text
-                String patientInfo = "Name: " + patientName + "\n" + "ID: " + patientId;
+                String patientInfo = patientName + "\n" + "ID: " + patientId;
                 textViewPatientId.setText(patientInfo);
             } else {
                 textViewPatientId.setText("Patient not found");

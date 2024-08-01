@@ -85,7 +85,7 @@ public class PatientListActivity extends AppCompatActivity  {
 
                 // Set the text of the item view to display patient information
                 TextView textView = view.findViewById(android.R.id.text1);
-                textView.setText(patient.getFirstName() + " " + patient.getLastName());
+                textView.setText(patient.getFirstName() + " " + patient.getLastName()+"\nID:"+patient.getId());
 
                 return view;
             }
