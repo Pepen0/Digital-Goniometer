@@ -21,7 +21,7 @@ import java.util.Locale;
 
 public class RightArmAbduction extends AppCompatActivity {
 
-    protected Button StartButton;
+    protected Button StartButtonElbow;
     protected Button SaveButton;
     protected TextView RightAbductionM ;
     private int AbductionMax = 0;
@@ -55,7 +55,7 @@ public class RightArmAbduction extends AppCompatActivity {
     }
 
     private void setupUI() {
-        StartButton = findViewById(R.id.StartButton);
+        StartButtonElbow = findViewById(R.id.StartButtonElbow);
         SaveButton = findViewById(R.id.SaveButton);
         RightAbductionM = findViewById(R.id.RightAbductionM);
         LiveRoll = findViewById(R.id.Roll);
@@ -71,14 +71,14 @@ public class RightArmAbduction extends AppCompatActivity {
             RightAbductionM.setText("Left Abduction: " + AbductionMax);
             LiveRoll.setText("Roll: " + Roll);
         }));
-        StartButton.setOnClickListener(v -> {
+        StartButtonElbow.setOnClickListener(v -> {
             if (!isMeasuring) {
                 askForConfirmation_r();
 
             } else {
                 isMeasuring = false;
-                StartButton.setText("START");
-                StartButton.setBackgroundResource(R.drawable.circular_button_start);
+                StartButtonElbow.setText("START");
+                StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButton.setBackgroundResource(R.drawable.custom_button2);
                 SaveButton.setText("Save Measurement");
             }
@@ -119,8 +119,8 @@ public class RightArmAbduction extends AppCompatActivity {
             isMeasuring = true;
             bleManager.sendDataToArduino("Reset data");
             Log.d("Reset command sent", "Reset data");
-            StartButton.setText("STOP");
-            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+            StartButtonElbow.setText("STOP");
+            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
             SaveButton.setBackgroundColor(Color.GRAY);
             SaveButton.setVisibility(View.VISIBLE);
             SaveButton.setText("Stop Measuring To Save");

@@ -125,9 +125,7 @@ public class LeftArmAbduction extends AppCompatActivity {
             SaveButton.setVisibility(View.VISIBLE);
             SaveButton.setText("Stop Measuring To Save");
         });
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss();
-        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }

@@ -25,7 +25,7 @@ public class LeftElbow extends AppCompatActivity {
     protected Button SaveButtonElbow;
     protected TextView LeftMax;
     protected TextView RightMax;
-    protected TextView LiveDataWrist;
+    protected TextView LiveDataElbow;
     private BLEManager bleManager;
     private int maxLeftElbow = 0;
     private int maxRightElbow = 0;
@@ -59,7 +59,7 @@ public class LeftElbow extends AppCompatActivity {
         SaveButtonElbow = findViewById(R.id.SaveButtonElbow);
         LeftMax = findViewById(R.id.LeftMax);
         RightMax = findViewById(R.id.RightMax);
-        LiveDataWrist = findViewById(R.id.LiveDataWrist);
+        LiveDataElbow = findViewById(R.id.LiveDataElbow);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
@@ -75,7 +75,7 @@ public class LeftElbow extends AppCompatActivity {
           }
           LeftMax.setText("Left Rotation: " + maxLeftElbow);
           RightMax.setText("Right Rotation: " + maxRightElbow);
-          LiveDataWrist.setText("Pitch: " + Pitch);
+          LiveDataElbow.setText("Pitch: " + Pitch);
         }));
 
 
