@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,28 +31,17 @@ public class Patient_Adapter extends ArrayAdapter<Patient> {
         }
 
         TextView textViewPatientName = convertView.findViewById(R.id.textViewPatientName);
-        Button buttonDelete = convertView.findViewById(R.id.buttonDelete);
-        Button buttonAdd = convertView.findViewById(R.id.buttonAdd);
+        Button buttonOptions = convertView.findViewById(R.id.buttonOptions);
 
         final Patient patient = getItem(position);
         if (patient != null) {
             textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName());
 
-            buttonDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dbHelper.deletePatient(patient.getId());
-                    patients.remove(position);
-                    notifyDataSetChanged();
-                    Toast.makeText(context, "Patient deleted", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            buttonAdd.setOnClickListener(new View.OnClickListener() {
+            buttonOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Launch the dialog to choose an action
-                    Patient_option dialogFragment = Patient_option.newInstance(patient.getId());
+                    Patient_option dialogFragment = Patient_option.newInstance(patient, position);
                     dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "Patient_option");
                 }
             });
@@ -61,5 +49,9 @@ public class Patient_Adapter extends ArrayAdapter<Patient> {
 
         return convertView;
     }
-}
 
+    public void removePatient(int position) {
+        patients.remove(position);
+        notifyDataSetChanged();
+    }
+}

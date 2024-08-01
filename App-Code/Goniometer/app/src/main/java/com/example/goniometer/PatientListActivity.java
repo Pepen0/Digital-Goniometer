@@ -10,7 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity {
+public class PatientListActivity extends AppCompatActivity implements Patient_option.OnPatientDeletedListener {
 
     private ListView listViewPatients;
     private DatabaseHelper dbHelper;
@@ -43,7 +43,7 @@ public class PatientListActivity extends AppCompatActivity {
 
         listViewPatients.setOnItemClickListener((parent, view, position, id) -> {
             Patient selectedPatient = (Patient) parent.getItemAtPosition(position);
-            Patient_option dialogFragment = Patient_option.newInstance(selectedPatient.getId());
+            Patient_option dialogFragment = Patient_option.newInstance(selectedPatient, position);
             dialogFragment.show(getSupportFragmentManager(), "Patient_option");
         });
     }
@@ -52,5 +52,10 @@ public class PatientListActivity extends AppCompatActivity {
         List<Patient> patients = dbHelper.getAllPatients();
         adapter = new Patient_Adapter(this, patients, dbHelper);
         listViewPatients.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPatientDeleted(int position) {
+        adapter.removePatient(position);
     }
 }

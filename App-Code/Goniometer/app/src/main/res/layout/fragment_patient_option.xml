@@ -20,15 +20,21 @@
             android:gravity="center" />
 
         <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Patient" />
+
+        <Button
             android:id="@+id/buttonAssessment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Launch Assessment Activity" />
+            android:text="Add New Measurement (Assessment)" />
 
         <Button
             android:id="@+id/buttonMeasurements"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Launch Measurements Activity" />
+            android:text="See Measurements" />
     </LinearLayout>
 </FrameLayout>
