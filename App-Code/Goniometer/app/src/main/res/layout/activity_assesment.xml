@@ -12,10 +12,10 @@
 
     <TextView
         android:id="@+id/textViewSelectDesired"
-        android:layout_width="287dp"
-        android:layout_height="66dp"
+        android:layout_width="281dp"
+        android:layout_height="74dp"
         android:layout_marginTop="44dp"
-        android:text="Select the Desired Measurement:"
+        android:text="Choose Measurement Type"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -28,8 +28,8 @@
 
     <Button
         android:id="@+id/buttonHeadRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginTop="25dp"
         android:text="Head Rotation"
         android:background="@drawable/custom_button2"
@@ -42,55 +42,56 @@
 
     <Button
         android:id="@+id/buttonRightLeg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:background="@drawable/custom_button2"
         android:text="Right Leg"
         android:textColor="#FFFFFF"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.839"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RightElbow"
-        app:layout_constraintVertical_bias="0.371" />
+        app:layout_constraintVertical_bias="0.382" />
 
     <Button
         android:id="@+id/buttonLeftArm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
-        android:text="Left Arm"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Left Arm"
         android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRightArm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.003" />
 
     <Button
         android:id="@+id/buttonLeftLeg"
-        android:layout_width="109dp"
-        android:layout_height="48dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/custom_button2"
         android:text="Left Leg"
         android:textColor="#FFFFFF"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRightLeg"
-        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LeftElbow"
-        app:layout_constraintVertical_bias="0.371" />
+        app:layout_constraintVertical_bias="0.382" />
 
     <Button
         android:id="@+id/buttonRightArm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/custom_button2"
@@ -99,9 +100,10 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonLeftArm"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonHeadRotation"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.003" />
 
     <TextView
         android:id="@+id/PatientName"
@@ -126,8 +128,8 @@
 
     <Button
         android:id="@+id/RightElbow"
-        android:layout_width="165dp"
-        android:layout_height="49dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:background="@drawable/custom_button2"
         android:text="Right Elbow"
         android:textColor="#FFFFFF"
@@ -141,10 +143,10 @@
 
     <Button
         android:id="@+id/LeftElbow"
-        android:layout_width="165dp"
-        android:layout_height="49dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:background="@drawable/custom_button2"
-        android:text="LEFT ELBOW"
+        android:text="Left Elbow"
         android:textColor="#FFFFFF"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"

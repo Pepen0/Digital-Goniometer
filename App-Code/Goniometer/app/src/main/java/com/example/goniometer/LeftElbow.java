@@ -85,7 +85,8 @@ public class LeftElbow extends AppCompatActivity {
 
             } else {
                 isMeasuring = false;
-                StartButtonElbow.setText("Start Measuring");
+                StartButtonElbow.setText("START");
+                StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);
                 SaveButtonElbow.setBackgroundResource(R.drawable.custom_button2);
                 SaveButtonElbow.setText("Save Measurement");
             }
@@ -106,7 +107,8 @@ public class LeftElbow extends AppCompatActivity {
             isMeasuring = true;
             bleManager.sendDataToArduino("Reset data");
             Log.d("Reset command sent", "Reset data");
-            StartButtonElbow.setText("Stop Measuring");
+            StartButtonElbow.setText("STOP");
+            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
             SaveButtonElbow.setBackgroundColor(Color.GRAY);
             SaveButtonElbow.setVisibility(View.VISIBLE);
             SaveButtonElbow.setText("Stop Measuring To Save");
