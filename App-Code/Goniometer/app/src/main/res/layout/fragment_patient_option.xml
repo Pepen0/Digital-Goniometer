@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Patient_option">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewPatientDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient ID: "
+            android:textSize="24sp"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Patient" />
+
+        <Button
+            android:id="@+id/buttonAssessment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Measurement (Assessment)" />
+
+        <Button
+            android:id="@+id/buttonMeasurements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See Measurements" />
+    </LinearLayout>
+</FrameLayout>
