@@ -63,7 +63,7 @@ public class RightShoulderAbduction extends AppCompatActivity {
             if (Debug.equals("Reset")){
                 AbductionMax = 0;
             }
-            RightAbductionM.setText("Left Abduction: " + AbductionMax);
+            RightAbductionM.setText("Right Abduction: " + AbductionMax);
             LiveRoll.setText("Roll: " + Roll);
         }));
         StartButton.setOnClickListener(v -> {

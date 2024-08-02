@@ -10,10 +10,10 @@
 
     <TextView
         android:id="@+id/textViewRightShoulderAbduction"
-        android:layout_width="330dp"
-        android:layout_height="54dp"
+        android:layout_width="349dp"
+        android:layout_height="57dp"
         android:fontFamily="sans-serif-black"
-        android:text="RIGHT Shoulder ABDUCTION"
+        android:text="RIGHT SHOULDER ABDUCTION"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

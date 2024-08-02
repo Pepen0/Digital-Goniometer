@@ -52,7 +52,7 @@ public class LeftHipAbduction extends AppCompatActivity {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
         AbductionM = findViewById(R.id.AbductionM);
-        LiveRoll = findViewById(R.id.Roll);
+        LiveRoll = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
