@@ -40,36 +40,37 @@
 
     <Button
         android:id="@+id/SaveButton"
-        android:visibility="gone"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:text="Save Head Rotation"
-        android:textSize="20sp"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Save Head Rotation"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RRoll"
-        app:layout_constraintVertical_bias="0.371" />
+        app:layout_constraintTop_toBottomOf="@+id/Livedata"
+        app:layout_constraintVertical_bias="0.27" />
 
     <TextView
-        android:id="@+id/RightAbductionM"
+        android:id="@+id/AbductionM"
         android:layout_width="174dp"
         android:layout_height="40dp"
         android:layout_marginBottom="364dp"
         android:text="Left Rotation"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/RRoll"
+        app:layout_constraintEnd_toStartOf="@+id/rightRotation"
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StartButton"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/RRoll"
+        android:id="@+id/rightRotation"
         android:layout_width="175dp"
         android:layout_height="40dp"
         android:layout_marginBottom="364dp"
@@ -84,14 +85,15 @@
 
     <TextView
         android:id="@+id/Livedata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="144dp"
+        android:layout_height="63dp"
         android:layout_marginTop="49dp"
-        android:layout_marginBottom="296dp"
         android:text="Yaw"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.599"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RRoll" />
+        app:layout_constraintTop_toBottomOf="@+id/rightRotation"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

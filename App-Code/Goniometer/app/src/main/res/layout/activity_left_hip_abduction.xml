@@ -6,18 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient"
-    tools:context=".LeftLegRotation">
+    tools:context=".LeftHipAbduction">
 
     <TextView
-        android:id="@+id/textViewLeftLegRotation"
-        android:layout_width="197dp"
-        android:layout_height="45dp"
+        android:id="@+id/textViewLeftHipAbduction"
+        android:layout_width="278dp"
+        android:layout_height="53dp"
         android:fontFamily="sans-serif-black"
-        android:text="LEFT LEG ROTATION"
+        android:text="LEFT HIP ABDUCTION"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.109" />
@@ -35,63 +36,51 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLeftLegRotation"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLeftHipAbduction"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/SaveButton"
-        android:visibility="gone"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:text="Save Head Rotation"
-        android:textSize="20sp"
         android:background="@drawable/custom_button2"
-        app:backgroundTint="@null"
+        android:text="Save Head Rotation"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RRoll"
-        app:layout_constraintVertical_bias="0.371" />
+        app:layout_constraintTop_toBottomOf="@+id/Livedata"
+        app:layout_constraintVertical_bias="0.389" />
 
     <TextView
-        android:id="@+id/RightAbductionM"
+        android:id="@+id/AbductionM"
         android:layout_width="174dp"
         android:layout_height="40dp"
+        android:layout_marginStart="116dp"
         android:layout_marginBottom="364dp"
-        android:text="Left Rotation"
+        android:text="Abduction"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/RRoll"
-        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StartButton"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/RRoll"
-        android:layout_width="175dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="364dp"
-        android:text="Right Rotation"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.932"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StartButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.958" />
 
     <TextView
         android:id="@+id/Livedata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
-        android:layout_marginBottom="296dp"
-        android:text="Yaw"
+        android:layout_width="128dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="56dp"
+        android:text="Roll"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Roll" />
+        app:layout_constraintTop_toBottomOf="@+id/AbductionM"
+        app:layout_constraintVertical_bias="0.014" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

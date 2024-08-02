@@ -9,25 +9,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-public class LeftArmAbduction extends AppCompatActivity {
+public class RightHipAbduction extends AppCompatActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
-    protected TextView AbductionM;
-    protected TextView LiveRoll;
-    private BLEManager bleManager;
+    protected TextView rightAbductionM ;
     private int AbductionMax = 0;
     private boolean isMeasuring = false;
+    private BLEManager bleManager;
+    protected TextView LiveRoll;
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
 
@@ -35,7 +30,7 @@ public class LeftArmAbduction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_left_arm_abduction);
+        setContentView(R.layout.activity_right_hip_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,8 +52,8 @@ public class LeftArmAbduction extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        AbductionM = findViewById(R.id.AbductionM);
-        LiveRoll = findViewById(R.id.Roll);
+        rightAbductionM = findViewById(R.id.AbductionM);
+        LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
@@ -68,12 +63,25 @@ public class LeftArmAbduction extends AppCompatActivity {
             if (Debug.equals("Reset")){
                 AbductionMax = 0;
             }
-            AbductionM.setText("Left Abduction: " + AbductionMax);
+            rightAbductionM.setText("Right Abduction: " + AbductionMax);
             LiveRoll.setText("Roll: " + Roll);
         }));
         StartButton.setOnClickListener(v -> {
             if (!isMeasuring) {
-                askForConfirmation_r();
+                FunctionsController.askForConfirmation(this,
+                        "Start Measuring Confirmation",
+                        "Are you sure you want to start a new measurement?",
+                        "Yes",()-> {
+                            isMeasuring = true;
+                            bleManager.sendDataToArduino("Reset data");
+                            Log.d("Reset command sent", "Reset data");
+                            StartButton.setText("STOP");
+                            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+                            SaveButton.setBackgroundColor(Color.GRAY);
+                            SaveButton.setVisibility(View.VISIBLE);
+                            SaveButton.setText("Stop Measuring To Save");
+                        }
+                );
 
             } else {
                 isMeasuring = false;
@@ -86,47 +94,9 @@ public class LeftArmAbduction extends AppCompatActivity {
 
         SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                saveMeasurement();
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Right Hip Abduction", AbductionMax, 0, SaveButton);
             }
         });
     }
 
-    private void saveMeasurement() {
-        double AbductionAngle = AbductionMax;
-        double NotUsed = 0;
-        String measurementType = "Left Abduction";
-
-        // Format the current timestamp to include date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd @ HH:mm", Locale.getDefault()); // ISO 8601 format
-        String timestamp = sdf.format(new Date());
-
-        // Add measurement to the database
-        long id = dbHelper.addMeasurement(patientId, measurementType, AbductionAngle,NotUsed, timestamp);
-
-        // Check if the insertion was successful
-        if (id != -1) {
-            Toast.makeText(this, "Measurement saved successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed to save measurement", Toast.LENGTH_SHORT).show();
-        }
-        SaveButton.setVisibility(View.GONE);
-    }
-    private void askForConfirmation_r() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Start Measuring Confirmation");
-        builder.setMessage("Are you sure you want to start a new measurement?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            isMeasuring = true;
-            bleManager.sendDataToArduino("Reset data");
-            Log.d("Reset command sent", "Reset data");
-            StartButton.setText("STOP");
-            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
-            SaveButton.setBackgroundColor(Color.GRAY);
-            SaveButton.setVisibility(View.VISIBLE);
-            SaveButton.setText("Stop Measuring To Save");
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 }

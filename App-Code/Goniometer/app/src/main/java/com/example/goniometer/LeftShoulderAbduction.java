@@ -15,29 +15,29 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-public class LeftElbow extends AppCompatActivity {
-    protected Button StartButtonElbow;
-    protected Button SaveButtonElbow;
-    protected TextView LeftMax;
-    protected TextView RightMax;
-    protected TextView LiveDataElbow;
-    private BLEManager bleManager;
-    private int maxLeftElbow = 0;
-    private int maxRightElbow = 0;
-    private boolean isMeasuring = false;
+public class LeftShoulderAbduction extends AppCompatActivity {
 
+    protected Button StartButton;
+    protected Button SaveButton;
+    protected TextView AbductionM;
+    protected TextView LiveRoll;
+    private BLEManager bleManager;
+    private int AbductionMax = 0;
+    private boolean isMeasuring = false;
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_left_elbow);
+        setContentView(R.layout.activity_left_shoulder_abduction);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // Initialize database helper
         dbHelper = DatabaseHelper.getInstance(this);
 
@@ -46,35 +46,28 @@ public class LeftElbow extends AppCompatActivity {
         if (patientId == -1) {
             Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
+
         setupUI();
     }
-    private void setupUI() {
 
-        StartButtonElbow = findViewById(R.id.StartButton);
-        SaveButtonElbow = findViewById(R.id.SaveButtonElbow);
-        LeftMax = findViewById(R.id.LeftMax);
-        RightMax = findViewById(R.id.RightMax);
-        LiveDataElbow = findViewById(R.id.LiveDataElbow);
+    private void setupUI() {
+        StartButton = findViewById(R.id.StartButton);
+        SaveButton = findViewById(R.id.SaveButton);
+        AbductionM = findViewById(R.id.AbductionM);
+        LiveRoll = findViewById(R.id.Roll);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
-          if (Pitch < 0 && (Pitch + maxRightElbow < 0) && isMeasuring) {
-              maxRightElbow = -Pitch;
-          }
-          if (Pitch > 0 && (Pitch-maxLeftElbow > 0) && isMeasuring) {
-              maxLeftElbow = Pitch;
-          }
-          if (Debug.equals("Reset")){
-              maxLeftElbow = 0;
-              maxRightElbow = 0;
-          }
-            LeftMax.setText("Pronation: " + maxLeftElbow);
-            RightMax.setText("Supination: " + maxRightElbow);
-          LiveDataElbow.setText("Pitch: " + Pitch);
+            if (Roll < 0 && (Roll + AbductionMax < 0) && isMeasuring) {
+                AbductionMax = -Roll;
+            }
+            if (Debug.equals("Reset")){
+                AbductionMax = 0;
+            }
+            AbductionM.setText("Left Abduction: " + AbductionMax);
+            LiveRoll.setText("Roll: " + Roll);
         }));
-
-
-        StartButtonElbow.setOnClickListener(v -> {
+        StartButton.setOnClickListener(v -> {
             if (!isMeasuring) {
                 FunctionsController.askForConfirmation(this,
                         "Start Measuring Confirmation",
@@ -83,26 +76,26 @@ public class LeftElbow extends AppCompatActivity {
                             isMeasuring = true;
                             bleManager.sendDataToArduino("Reset data");
                             Log.d("Reset command sent", "Reset data");
-                            StartButtonElbow.setText("STOP");
-                            StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
-                            SaveButtonElbow.setBackgroundColor(Color.GRAY);
-                            SaveButtonElbow.setVisibility(View.VISIBLE);
-                            SaveButtonElbow.setText("Stop Measuring To Save");
+                            StartButton.setText("STOP");
+                            StartButton.setBackgroundResource(R.drawable.circular_button_stop);
+                            SaveButton.setBackgroundColor(Color.GRAY);
+                            SaveButton.setVisibility(View.VISIBLE);
+                            SaveButton.setText("Stop Measuring To Save");
                         }
                 );
 
             } else {
                 isMeasuring = false;
-                StartButtonElbow.setText("START");
-                StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);
-                SaveButtonElbow.setBackgroundResource(R.drawable.custom_button2);
-                SaveButtonElbow.setText("Save Measurement");
+                StartButton.setText("START");
+                StartButton.setBackgroundResource(R.drawable.circular_button_start);
+                SaveButton.setBackgroundResource(R.drawable.custom_button2);
+                SaveButton.setText("Save Measurement");
             }
         });
 
-        SaveButtonElbow.setOnClickListener(v -> {
+        SaveButton.setOnClickListener(v -> {
             if(!isMeasuring) {
-                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Elbow Rotation", maxLeftElbow, maxRightElbow, SaveButtonElbow);
+                FunctionsController.saveMeasurement(this, dbHelper, patientId,  "Left Shoulder Abduction", AbductionMax, 0, SaveButton);
             }
         });
     }

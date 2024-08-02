@@ -1,6 +1,5 @@
 package com.example.goniometer;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -182,7 +181,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public long addMeasurement(long patientId, String measurementType, double leftAngle, double rightAngle, String timestamp) {
+    public long addMeasurement(long patientId, String measurementType, int leftAngle, int rightAngle, String timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
         long id = -1;
         try {
@@ -284,8 +283,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     do {
                         long id = cursor.getLong(measurementIdIndex);
                         String measurementType = cursor.getString(measurementTypeIndex);
-                        double leftAngle = cursor.getDouble(leftAngleIndex);
-                        double rightAngle = cursor.getDouble(rightAngleIndex);
+                        int leftAngle = cursor.getInt(leftAngleIndex);
+                        int rightAngle = cursor.getInt(rightAngleIndex);
                         String timestamp = cursor.getString(timestampIndex);
                         Measurement measurement = new Measurement(id, patientId, measurementType, leftAngle, rightAngle, timestamp);
                         measurementList.add(measurement);

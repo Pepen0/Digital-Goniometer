@@ -52,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
             public void onConnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Connected to device", Toast.LENGTH_SHORT).show();
-                    // Intent intent = new Intent(MainActivity.this, HeadRotation.class);
-                    // startActivity(intent);
-                    // Hide the button if the device is connected
                     BluetoothButton.setVisibility(View.GONE);
                 });
             }

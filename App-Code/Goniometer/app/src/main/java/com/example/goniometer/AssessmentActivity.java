@@ -16,8 +16,8 @@ public class AssessmentActivity extends BaseActivity {
     protected Button LeftElbow;
     protected Button buttonLeftArmRotation;
     protected Button buttonRightArmRotation;
-    protected Button buttonLeftLegRotation;
-    protected Button buttonRightLegRotation;
+    protected Button buttonLeftHipAbduction;
+    protected Button buttonRightHipAbduction;
     private long patientId;
 
     @Override
@@ -43,17 +43,17 @@ public class AssessmentActivity extends BaseActivity {
         buttonHeadRotation = findViewById(R.id.buttonHeadRotation);
         buttonLeftArmRotation = findViewById(R.id.buttonLeftArm);
         buttonRightArmRotation = findViewById(R.id.buttonRightArm);
-        buttonLeftLegRotation = findViewById(R.id.buttonLeftLeg);
-        buttonRightLegRotation = findViewById(R.id.buttonRightLeg);
+        buttonLeftHipAbduction = findViewById(R.id.buttonLeftHipAbduction);
+        buttonRightHipAbduction = findViewById(R.id.buttonRightHipAbduction);
         RightElbow= findViewById(R.id.RightElbow);
         LeftElbow= findViewById(R.id.LeftElbow);
 
         // Set Click Listeners
         buttonHeadRotation.setOnClickListener(v -> goToHeadRotation());
-        buttonLeftArmRotation.setOnClickListener(v -> goToLeftArmRotation());
-        buttonRightArmRotation.setOnClickListener(v -> goToRightArmRotation());
-        buttonLeftLegRotation.setOnClickListener(v -> goToLeftLegRotation());
-        buttonRightLegRotation.setOnClickListener(v -> goToRightLegRotation());
+        buttonLeftArmRotation.setOnClickListener(v -> goToLeftShoulderAbduction());
+        buttonRightArmRotation.setOnClickListener(v -> goToRightShoulderAbduction());
+        buttonLeftHipAbduction.setOnClickListener(v -> goToLeftHipAbduction());
+        buttonRightHipAbduction.setOnClickListener(v -> goToRightHipAbduction());
         RightElbow.setOnClickListener(v -> goToRightElbow());
         LeftElbow.setOnClickListener(v -> goToLeftElbow());
 
@@ -75,26 +75,26 @@ public class AssessmentActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void goToLeftArmRotation() {
-        Intent intent = new Intent(this, LeftArmAbduction.class);
+    private void goToLeftShoulderAbduction() {
+        Intent intent = new Intent(this, LeftShoulderAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
-    private void goToRightArmRotation() {
-        Intent intent = new Intent(this, RightArmAbduction.class);
+    private void goToRightShoulderAbduction() {
+        Intent intent = new Intent(this, RightShoulderAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
-    private void goToLeftLegRotation() {
-        Intent intent = new Intent(this, LeftLegRotation.class);
+    private void goToLeftHipAbduction() {
+        Intent intent = new Intent(this, LeftHipAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
-    private void goToRightLegRotation() {
-        Intent intent = new Intent(this, RightLegRotation.class);
+    private void goToRightHipAbduction() {
+        Intent intent = new Intent(this, RightHipAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }

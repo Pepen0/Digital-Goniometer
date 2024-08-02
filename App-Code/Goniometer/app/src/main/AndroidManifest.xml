@@ -69,16 +69,16 @@
             android:exported="false">
         </activity> <!-- New activities for measurements -->
         <activity
-            android:name=".LeftArmAbduction"
+            android:name=".LeftShoulderAbduction"
             android:exported="false" />
         <activity
-            android:name=".RightArmAbduction"
+            android:name=".RightShoulderAbduction"
             android:exported="false" />
         <activity
-            android:name=".LeftLegRotation"
+            android:name=".LeftHipAbduction"
             android:exported="false" />
         <activity
-            android:name=".RightLegRotation"
+            android:name=".RightHipAbduction"
             android:exported="false" />
     </application>
 

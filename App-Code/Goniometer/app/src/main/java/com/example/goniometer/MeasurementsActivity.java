@@ -89,14 +89,29 @@ public class MeasurementsActivity extends AppCompatActivity {
                     // Set the text of the item view to display measurement details
                     TextView textView = convertView.findViewById(android.R.id.text1);
                     if (measurement != null) {
-                        textView.setText("Type: " + measurement.getMeasurementType() +"\n"+
-                                "LeftAngle: " + measurement.getLeftAngle() +"\n"+
-                                "RightAngle: " + measurement.getRightAngle() +"\n"+
-                                measurement.getTimestamp());
-                    } else {
-                        textView.setText("No data available");
-                        Log.d(TAG, "Measurement at position " + position + " is null.");
-                    }
+                        if (measurement.getMeasurementType().equals("Head Rotation") ||
+                                measurement.getMeasurementType().equals("Right Elbow Rotation") ||
+                                measurement.getMeasurementType().equals("Left Elbow Rotation")) {
+                            if(!measurement.getMeasurementType().equals("Head Rotation") ){
+                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                        "Pronation : " + measurement.getLeftAngle() + "°" + "\n" +
+                                        "Supination : " + measurement.getRightAngle()+ "°" + "\n" +
+                                        measurement.getTimestamp());
+                            }else {
+                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                        "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
+                                        "RightAngle: " + measurement.getRightAngle() + "°" + "\n" +
+                                        measurement.getTimestamp());
+                            }
+                        }else{
+                            textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
+                                    "AbductionAngle: " + measurement.getLeftAngle() +"°" + "\n" +
+                                    measurement.getTimestamp());
+                        }
+                        } else {
+                            textView.setText("No data available");
+                            Log.d(TAG, "Measurement at position " + position + " is null.");
+                        }
 
                     return convertView;
                 }
