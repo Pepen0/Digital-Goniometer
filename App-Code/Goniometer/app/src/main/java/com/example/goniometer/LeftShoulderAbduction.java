@@ -58,8 +58,8 @@ public class LeftShoulderAbduction extends AppCompatActivity {
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
-            if (Roll > 0 && (Roll - AbductionMax > 0) && isMeasuring) {
-                AbductionMax = Roll;
+            if (Roll < 0 && (Roll + AbductionMax < 0) && isMeasuring) {
+                AbductionMax = -Roll;
             }
             if (Debug.equals("Reset")){
                 AbductionMax = 0;
