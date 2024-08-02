@@ -4,6 +4,14 @@
 #include <ArduinoBLE.h>
 #include <Arduino_LSM9DS1.h>
 
+// Setup status led
+#define LED_RED 22
+#define LED_GREEN 23
+#define LED_BLUE 24
+
+// Arduino genearal variables
+unsigned long startTime = millis();
+
 // Constants for gyro sensitivity based on expected range settings
 float gyroSensitivity = 0.0175; // Adjusted to match the sensitivity for LSM9DS1 in degrees per second per LSB
 
@@ -25,11 +33,13 @@ bool isMeasuring = false;
 bool isCalibrating = false;
 bool isConnected = false;
 bool isReseting = false;
+bool isSerialMonitoringActive = false;
 
 // Ble transfer variable
 BLEService imuService("19B10000-E8F2-537E-4F6C-D104768A1214");
 BLEStringCharacteristic dataCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1214", BLENotify | BLEWrite, 512);
 
+// Arduino debug variables
 String bleAddress;
 String bleCommand = "None";
 String bleDebugMessage = "None";
@@ -54,14 +64,14 @@ void sendBleOutput()
     int PitchInt = (int)AnglePitch;
     int RollInt = (int)AngleRoll;
 
-    String data = String(YawInt) + "," + String(PitchInt) + "," + String(RollInt)+ "," + bleStatus;
+    String data = String(YawInt) + "," + String(PitchInt) + "," + String(RollInt) + "," + bleStatus;
     // update ble
 
-    if (bleStatus!=""){
-      bleStatus = "";
+    if (bleStatus != "")
+    {
+        bleStatus = "";
     }
     dataCharacteristic.writeValue(data);
-
 }
 
 void startCalibrateImu()
@@ -158,33 +168,62 @@ void printImuMeasurement()
     String imuDataPrinter = bleAddressPrinter + AngleRollPrinter + AnglePitchPrinter + AngleYawPrinter + bleCommandPrinter + bleDebugMessagePrinter;
 
     // Printint the entire data
-    Serial.println(imuDataPrinter);
+    if (isSerialMonitoringActive)
+    {
+        Serial.println(imuDataPrinter);
+    }
 }
 
 void setup()
 {
+    // Initialize LED pins
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+
+    // Turn off all LED colors initially
+    digitalWrite(LED_RED, HIGH);
+    digitalWrite(LED_GREEN, HIGH);
+    digitalWrite(LED_BLUE, HIGH);
+
     // Initialize serial communication
     Serial.begin(9600);
-    while (!Serial)
-        ;
+    while (!isSerialMonitoringActive && millis() - startTime < 5000)
+    {
+        if (Serial)
+        {
+            isSerialMonitoringActive = true;
+            digitalWrite(LED_BLUE, HIGH);
+        }
+        else
+        {
+            digitalWrite(LED_BLUE, LOW);
+        }
+        delay(10);
+    }
 
     // Initialize the IMU
-    if (!IMU.begin())
+    while (!IMU.begin())
     {
-        Serial.println("Failed to initialize IMU!");
-        while (1)
-            ;
+
+        if (isSerialMonitoringActive)
+        {
+            Serial.println("Failed to initialize IMU!");
+        }
+        digitalWrite(LED_RED, LOW);
     }
 
     // Initialize the BLE
-    if (!BLE.begin())
+    while (!BLE.begin())
     {
-        Serial.println("Failed to starting BLE!");
-        while (1)
-            ;
+        if (isSerialMonitoringActive)
+        {
+            Serial.println("Failed to start BLE!");
+        }
+        digitalWrite(LED_RED, LOW);
     }
 
-    // Setup ble
+    // Setup BLE
     BLE.setLocalName("IMU Sensor");
     BLE.setAdvertisedService(imuService);
     imuService.addCharacteristic(dataCharacteristic);
@@ -192,8 +231,11 @@ void setup()
     dataCharacteristic.writeValue("0,0,0,");
 
     BLE.advertise();
-    Serial.println("IMU initialized successfully.");
-    Serial.println("Bluetooth device active, waiting for connections...");
+    if (isSerialMonitoringActive)
+    {
+        Serial.println("IMU initialized successfully.");
+        Serial.println("Bluetooth device active, waiting for connections...");
+    }
 }
 
 void loop()
@@ -205,7 +247,14 @@ void loop()
         if (!isConnected)
         {
             isConnected = true;
-            Serial.println("Connected to device");
+            digitalWrite(LED_GREEN, LOW);
+            digitalWrite(LED_RED, HIGH);
+            digitalWrite(LED_BLUE, HIGH);
+
+            if (isSerialMonitoringActive)
+            {
+                Serial.println("Connected to device");
+            }
         }
 
         // Check if new accelerometer and gyroscope data is available
@@ -252,10 +301,16 @@ void loop()
     }
     else if (isConnected)
     {
-      isConnected = false;
-      bleDebugMessage += "Disconnected from device -";
-      bleStatus = "Disconnected";
-      Serial.println("Disconnected from device");
+        isConnected = false;
+        digitalWrite(LED_GREEN, HIGH);
+        digitalWrite(LED_RED, HIGH);
+        digitalWrite(LED_BLUE, HIGH);
+        bleDebugMessage += "Disconnected from device -";
+        bleStatus = "Disconnected";
+        if (isSerialMonitoringActive)
+        {
+            Serial.println("Disconnected from device");
+        }
     }
 
     // Maintain a loop timing of 40 milliseconds
