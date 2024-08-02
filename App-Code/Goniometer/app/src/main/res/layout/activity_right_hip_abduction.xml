@@ -57,7 +57,7 @@
         app:layout_constraintVertical_bias="0.398" />
 
     <TextView
-        android:id="@+id/leftRotation"
+        android:id="@+id/AbductionM"
         android:layout_width="174dp"
         android:layout_height="40dp"
         android:layout_marginBottom="364dp"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leftRotation"
+        app:layout_constraintTop_toBottomOf="@+id/AbductionM"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,7 @@ public class RightHipAbduction extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        rightAbductionM = findViewById(R.id.leftRotation);
+        rightAbductionM = findViewById(R.id.AbductionM);
         LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 

@@ -52,7 +52,7 @@ public class RightShoulderAbduction extends AppCompatActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        RightAbductionM = findViewById(R.id.leftRotation);
+        RightAbductionM = findViewById(R.id.AbductionM);
         LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 

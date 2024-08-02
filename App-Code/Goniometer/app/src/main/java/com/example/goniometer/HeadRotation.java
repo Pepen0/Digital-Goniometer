@@ -55,7 +55,7 @@ public class HeadRotation extends AppCompatActivity {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
         LeftM = findViewById(R.id.rightRotation);
-        RightM = findViewById(R.id.leftRotation);
+        RightM = findViewById(R.id.AbductionM);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 

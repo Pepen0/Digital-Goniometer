@@ -56,7 +56,7 @@
         app:layout_constraintVertical_bias="0.27" />
 
     <TextView
-        android:id="@+id/leftRotation"
+        android:id="@+id/AbductionM"
         android:layout_width="174dp"
         android:layout_height="40dp"
         android:layout_marginBottom="364dp"
