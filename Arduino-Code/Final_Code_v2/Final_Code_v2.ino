@@ -10,7 +10,7 @@
 #define LED_BLUE 24
 
 // Arduino genearal variables
-unsigned long startTime = millis();
+unsigned long startTime;
 
 // Constants for gyro sensitivity based on expected range settings
 float gyroSensitivity = 0.0175; // Adjusted to match the sensitivity for LSM9DS1 in degrees per second per LSB
@@ -34,6 +34,8 @@ bool isCalibrating = false;
 bool isConnected = false;
 bool isReseting = false;
 bool isSerialMonitoringActive = false;
+bool isImuInitialized = false;
+bool isBleInitialized = false;
 
 // Ble transfer variable
 BLEService imuService("19B10000-E8F2-537E-4F6C-D104768A1214");
@@ -188,6 +190,8 @@ void setup()
 
     // Initialize serial communication
     Serial.begin(9600);
+    startTime = millis();
+    isSerialMonitoringActive = false;
     while (!isSerialMonitoringActive && millis() - startTime < 5000)
     {
         if (Serial)
@@ -202,39 +206,78 @@ void setup()
         delay(10);
     }
 
-    // Initialize the IMU
-    while (!IMU.begin())
+    // Initialize the IMU with timeout
+    startTime = millis();
+    isImuInitialized = false;
+    while (!isImuInitialized && millis() - startTime < 5000)
     {
+        if (IMU.begin())
+        {
+            isImuInitialized = true;
+            digitalWrite(LED_RED, HIGH);
+        }
+        else
+        {
+            digitalWrite(LED_RED, LOW);
+            if (isSerialMonitoringActive)
+            {
+                Serial.println("Failed to initialize IMU!");
+            }
+        }
+        delay(10);
+    }
+
+    // Initialize the BLE with timeout
+    startTime = millis();
+    isBleInitialized = false;
+    while (!isBleInitialized && millis() - startTime < 5000)
+    {
+        if (BLE.begin())
+        {
+            isBleInitialized = true;
+            digitalWrite(LED_RED, HIGH);
+        }
+        else
+        {
+            digitalWrite(LED_RED, LOW); 
+            if (isSerialMonitoringActive)
+            {
+                Serial.println("Failed to start BLE!");
+            }
+        }
+        delay(10);
+    }
+
+    if (isImuInitialized && isBleInitialized)
+    {
+        // Setup BLE if both IMU and BLE are initialized
+        BLE.setLocalName("IMU Sensor");
+        BLE.setAdvertisedService(imuService);
+        imuService.addCharacteristic(dataCharacteristic);
+        BLE.addService(imuService);
+        dataCharacteristic.writeValue("0,0,0,");
+
+        BLE.advertise();
 
         if (isSerialMonitoringActive)
         {
-            Serial.println("Failed to initialize IMU!");
+            Serial.println("IMU initialized successfully.");
+            Serial.println("Bluetooth device active, waiting for connections...");
         }
-        digitalWrite(LED_RED, LOW);
-    }
 
-    // Initialize the BLE
-    while (!BLE.begin())
+        // Turn off all LEDs to indicate success
+        digitalWrite(LED_RED, HIGH);
+        digitalWrite(LED_GREEN, HIGH);
+        digitalWrite(LED_BLUE, HIGH);
+    }
+    else
     {
+        // If initialization fails, indicate by keeping the red LED on
+        digitalWrite(LED_RED, LOW); // Red LED for failure
         if (isSerialMonitoringActive)
         {
-            Serial.println("Failed to start BLE!");
+            Serial.println("Initialization failed!");
         }
-        digitalWrite(LED_RED, LOW);
-    }
-
-    // Setup BLE
-    BLE.setLocalName("IMU Sensor");
-    BLE.setAdvertisedService(imuService);
-    imuService.addCharacteristic(dataCharacteristic);
-    BLE.addService(imuService);
-    dataCharacteristic.writeValue("0,0,0,");
-
-    BLE.advertise();
-    if (isSerialMonitoringActive)
-    {
-        Serial.println("IMU initialized successfully.");
-        Serial.println("Bluetooth device active, waiting for connections...");
     }
 }
 
