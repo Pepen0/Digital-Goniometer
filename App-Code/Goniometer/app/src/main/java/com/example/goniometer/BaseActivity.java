@@ -1,6 +1,7 @@
 package com.example.goniometer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -40,8 +41,16 @@ public class BaseActivity extends AppCompatActivity {
         bluetoothStatus = findViewById(R.id.bluetooth_status);
         backButton = findViewById(R.id.Back_Button);
 
-        backButton.setOnClickListener(v -> onBackPressed());
+        if (bluetoothStatus == null) {
+            Log.e("BaseActivity", "Bluetooth status ImageView not found");
+        }
+        if (backButton == null) {
+            Log.e("BaseActivity", "Back button ImageButton not found");
+        } else {
+            backButton.setOnClickListener(v -> onBackPressed());
+        }
     }
+
 
     protected void updateUI(boolean isConnected) {
         if (isConnected) {

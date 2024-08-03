@@ -19,7 +19,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
+        app:backgroundTint="@color/white"
         android:contentDescription="@string/fab_transformation_scrim_behavior"
-        android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="@color/material_dynamic_primary80" />
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@color/cyan" />
+
 </RelativeLayout>
