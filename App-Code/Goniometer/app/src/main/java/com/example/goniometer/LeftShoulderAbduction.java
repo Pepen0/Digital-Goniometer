@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-public class LeftShoulderAbduction extends AppCompatActivity {
+public class LeftShoulderAbduction extends BaseActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
@@ -46,8 +46,13 @@ public class LeftShoulderAbduction extends AppCompatActivity {
         if (patientId == -1) {
             Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
+        // Remove action bar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         setupUI();
+        setupToolbar();
     }
 
     private void setupUI() {

@@ -28,6 +28,7 @@ public class Newpatient extends DialogFragment {
 
     @NonNull
     @Override
+
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -38,12 +39,12 @@ public class Newpatient extends DialogFragment {
         final EditText editTextLastName = dialogView.findViewById(R.id.editTextPatientlastName);
 
         // Inflate the custom title view
-        View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
+      // View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
 
-        builder.setView(dialogView)
-                .setCustomTitle(customTitleView) // Set custom title view
-                .setPositiveButton("Save", null) // Set to null initially
-                .setNegativeButton("Cancel", null); // Set to null initially
+       // builder.setView(dialogView)
+              //  .setCustomTitle(customTitleView) // Set custom title view
+              //  .setPositiveButton("Save", null) // Set to null initially
+                //.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()); // Dismiss on cancel
 
         AlertDialog dialog = builder.create();
 
@@ -53,6 +54,19 @@ public class Newpatient extends DialogFragment {
 
             if (positiveButton != null) {
                 positiveButton.setTextColor(Color.parseColor("#008B8B")); // Set text color
+                positiveButton.setOnClickListener(v -> {
+                    String firstName = editTextFirstName.getText().toString().trim();
+                    String lastName = editTextLastName.getText().toString().trim();
+
+                    if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                        if (listener != null) {
+                            listener.onNewPatient(firstName, lastName);
+                            dismiss();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Please enter both first and last name.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             if (negativeButton != null) {
@@ -62,6 +76,7 @@ public class Newpatient extends DialogFragment {
 
         return dialog;
     }
+
 
 
 }

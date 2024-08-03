@@ -14,7 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class RightHipAbduction extends AppCompatActivity {
+public class RightHipAbduction extends BaseActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
@@ -47,6 +47,12 @@ public class RightHipAbduction extends AppCompatActivity {
         }
 
         setupUI();
+        setupToolbar();
+    }
+
+    @Override
+    public void onPatientDeleted(int position) {
+
     }
 
     private void setupUI() {

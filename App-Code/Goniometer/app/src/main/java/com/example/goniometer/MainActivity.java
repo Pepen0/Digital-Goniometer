@@ -15,7 +15,6 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Toast;
-
 public class MainActivity extends AppCompatActivity {
 
     protected Button buttonPatientButton;
@@ -33,14 +32,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        setContentView(R.layout.activity_main);
+
+        // Remove action bar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         // Check and request permissions
         if (!hasPermissions()) {
             requestPermissions();
         }
         setupUI();
-
     }
 
     private void setupUI() {
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 goToPatientPage();
             }
         });
-
     }
 
     @Override
@@ -101,14 +102,13 @@ public class MainActivity extends AppCompatActivity {
         return ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-                &&
+                        Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this,
                         Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[] {
+        ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_SCAN
@@ -126,5 +126,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }

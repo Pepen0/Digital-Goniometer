@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView bluetoothStatus;
     protected BLEManager bleManager;
     protected ImageButton backButton;
@@ -65,4 +65,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onBackPressed();
         //bleManager.disconnect();
     }
+
+    public abstract void onPatientDeleted(int position);
 }
