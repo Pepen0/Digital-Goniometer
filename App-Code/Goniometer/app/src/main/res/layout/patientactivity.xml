@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_background_gradient"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/AddButton"
+        android:layout_width="159dp"
+        android:layout_height="59dp"
+        android:text="Add new Patient"
+        android:background="@drawable/custom_button2"
+        app:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <Button
+        android:id="@+id/DeletePatientbutton"
+        android:layout_width="173dp"
+        android:layout_height="64dp"
+        android:background="@drawable/custom_button2"
+        android:text="Delete existing Patient"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ViewRecordsbutton"
+        app:layout_constraintVertical_bias="0.306" />
+
+    <EditText
+        android:id="@+id/FirstNameText"
+        android:layout_width="302dp"
+        android:layout_height="57dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="enter your first name here"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.027" />
+
+    <EditText
+        android:id="@+id/LastNameText"
+        android:layout_width="307dp"
+        android:layout_height="63dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="enter your last name here"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FirstNameText"
+        app:layout_constraintVertical_bias="0.051" />
+
+    <Button
+        android:id="@+id/SelectPatientsbutton"
+        android:layout_width="160dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/custom_button2"
+        android:text="New Measurement"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AddButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/ViewRecordsbutton"
+        android:layout_width="177dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/custom_button2"
+        android:text="View All Records"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SelectPatientsbutton"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

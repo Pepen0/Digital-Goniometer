@@ -1,18 +1,3 @@
-//package com.example.goniometer;
-//
-//import android.bluetooth.BluetoothAdapter;
-//import android.bluetooth.BluetoothManager;
-//import android.content.BroadcastReceiver;
-//import android.content.Context;
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.widget.ImageButton;
-//import android.widget.Toolbar;
-//import android.bluetooth.BluetoothManager;
-//
-//
-//
-//
 package com.example.goniometer;
 
 import android.os.Bundle;
@@ -29,19 +14,24 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get the initialized BLEManager instance
+        setContentView(R.layout.activity_base); // Ensure the correct layout is set
+
+        // Initialize BLEManager
         bleManager = BLEManager.getInstance();
+
+        // Setup toolbar
+        setupToolbar();
 
         // Set up connection callback
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
             public void onConnected() {
-                runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24));
+                runOnUiThread(() -> updateUI(true));
             }
 
             @Override
             public void onDisconnected() {
-                runOnUiThread(() -> bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24));
+                runOnUiThread(() -> updateUI(false));
             }
         });
     }
@@ -51,6 +41,14 @@ public class BaseActivity extends AppCompatActivity {
         backButton = findViewById(R.id.Back_Button);
 
         backButton.setOnClickListener(v -> onBackPressed());
+    }
+
+    protected void updateUI(boolean isConnected) {
+        if (isConnected) {
+            bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24);
+        } else {
+            bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
+        }
     }
 
     @Override

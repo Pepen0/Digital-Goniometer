@@ -26,6 +26,10 @@
         android:theme="@style/Theme.Goniometer"
         tools:targetApi="31">
         <activity
+            android:name=".PatientActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Goniometer" />
+        <activity
             android:name=".LeftElbow"
             android:exported="false" />
         <activity
@@ -50,9 +54,6 @@
             android:name=".PatientListActivity"
             android:exported="false" />
         <activity
-            android:name=".PatientActivity"
-            android:exported="false" />
-        <activity
             android:name=".MeasurementsActivity"
             android:exported="false" />
         <activity
@@ -66,8 +67,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity> <!-- New activities for measurements -->
+            android:exported="false"></activity> <!-- New activities for measurements -->
         <activity
             android:name=".LeftShoulderAbduction"
             android:exported="false" />

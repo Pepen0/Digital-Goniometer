@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToPatientPage() {
-        Intent intent = new Intent(this, PatientActivity.class);
+        Intent intent = new Intent(this, PatientListActivity.class);
         startActivity(intent);
     }
 
