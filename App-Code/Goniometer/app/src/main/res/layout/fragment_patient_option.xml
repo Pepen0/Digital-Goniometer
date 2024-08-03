@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Patient_option">
+    tools:context=".Patient_option"
+    android:backgroundTint="@null">
 
     <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:backgroundTint="@null"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
 
         <TextView
             android:id="@+id/textViewPatientDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Patient ID: "
             android:textSize="24sp" />
 
         <Button
@@ -28,26 +31,31 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/custom_button2"
             android:backgroundTint="@null"
-            android:text="Add New Measurement (Assessment)" />
+            android:drawableRight="@drawable/baseline_add_24"
+            android:text="New Measurement"
+            app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/buttonMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button2"
-            android:text="See Measurements"
-            android:layout_marginTop="16dp" />
+            android:text="View Patient Records "
+            android:drawableRight="@drawable/baseline_contact_page_24"
+            android:layout_marginTop="16dp"
+            app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button2"
-            android:drawableStart="@drawable/baseline_delete_24"
+            android:drawableRight="@drawable/baseline_delete_24"
             android:drawablePadding="8dp"
-            android:text="Delete"
+            android:text="Delete Patient"
             android:textColor="@android:color/white"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            app:backgroundTint="@null"/>
 
     </LinearLayout>
 </FrameLayout>
