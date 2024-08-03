@@ -239,7 +239,7 @@ void setup()
         }
         else
         {
-            digitalWrite(LED_RED, LOW); 
+            digitalWrite(LED_RED, LOW);
             if (isSerialMonitoringActive)
             {
                 Serial.println("Failed to start BLE!");
