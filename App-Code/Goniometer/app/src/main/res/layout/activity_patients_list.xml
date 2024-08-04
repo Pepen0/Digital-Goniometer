@@ -4,14 +4,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient">
     <include
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        android:elevation="4dp"
+        />
+
+
     <ListView
         android:id="@+id/listViewPatients"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/list_item_measurement"
-        android:textColor="#FFFFFF" />
-
+        android:textColor="#FFFFFF"
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
