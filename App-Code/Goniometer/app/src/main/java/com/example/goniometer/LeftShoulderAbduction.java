@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-public class LeftShoulderAbduction extends AppCompatActivity {
+public class LeftShoulderAbduction extends BaseActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
@@ -48,6 +48,7 @@ public class LeftShoulderAbduction extends AppCompatActivity {
         }
 
         setupUI();
+        setupToolbar();
     }
 
     private void setupUI() {

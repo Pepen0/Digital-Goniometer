@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MeasurementsActivity extends AppCompatActivity {
+public class MeasurementsActivity extends BaseActivity {
 
     private static final String TAG = "MeasurementsActivity"; // Tag for logging
     private ListView listViewMeasurements;
@@ -55,6 +55,7 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
+        setupToolbar();
     }
 
 

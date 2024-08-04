@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-public class LeftElbow extends AppCompatActivity {
+public class LeftElbow extends BaseActivity {
     protected Button StartButtonElbow;
     protected Button SaveButtonElbow;
     protected TextView LeftMax;
@@ -47,6 +47,7 @@ public class LeftElbow extends AppCompatActivity {
             Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
         setupUI();
+        setupToolbar();
     }
     private void setupUI() {
 

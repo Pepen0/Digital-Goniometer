@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient">
-
+    <include
+        layout="@layout/toolbar" />
     <ListView
         android:id="@+id/listViewPatients"
         android:layout_width="match_parent"
