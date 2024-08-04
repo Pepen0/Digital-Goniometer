@@ -49,10 +49,6 @@ public class RightElbow extends BaseActivity {
         setupToolbar();
     }
 
-    @Override
-    public void onPatientDeleted(int position) {
-
-    }
 
     private void setupUI() {
 

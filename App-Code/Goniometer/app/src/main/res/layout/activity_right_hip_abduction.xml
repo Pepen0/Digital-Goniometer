@@ -8,6 +8,9 @@
     android:background="@drawable/list_background_gradient"
     tools:context=".RightHipAbduction">
 
+    <include
+        layout="@layout/toolbar" />
+
     <TextView
         android:id="@+id/textViewRightHIPAbduction"
         android:layout_width="262dp"

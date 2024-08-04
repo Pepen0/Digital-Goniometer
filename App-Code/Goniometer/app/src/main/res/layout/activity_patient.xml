@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient"
     tools:context=".MainActivity">
-
+    <include
+        layout="@layout/toolbar" />
     <Button
         android:id="@+id/AddButton"
         android:layout_width="159dp"

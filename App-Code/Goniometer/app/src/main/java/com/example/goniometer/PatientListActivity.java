@@ -1,52 +1,27 @@
 package com.example.goniometer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
-public class PatientListActivity extends BaseActivity {
-    private ListView listViewPatients;
+public class PatientListActivity extends AppCompatActivity implements Patient_option.OnPatientDeletedListener {
     private DatabaseHelper dbHelper;
     private Patient_Adapter adapter;
+    private ListView listViewPatients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patients_list);
 
+        dbHelper = DatabaseHelper.getInstance(this);
         listViewPatients = findViewById(R.id.listViewPatients);
-        dbHelper = new DatabaseHelper(this);
 
-        displayPatients();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            Newpatient dialogFragment = new Newpatient();
-            dialogFragment.setOnNewPatientListener((firstName, lastName) -> {
-                long id = dbHelper.addPatient(firstName, lastName);
-                if (id != -1) {
-                    Toast.makeText(PatientListActivity.this, "Patient added with ID: " + id, Toast.LENGTH_SHORT).show();
-                    displayPatients();
-                } else {
-                    Toast.makeText(PatientListActivity.this, "Failed to add patient", Toast.LENGTH_SHORT).show();
-                }
-            });
-            dialogFragment.show(getSupportFragmentManager(), "NewPatientDialogFragment");
-        });
-
-        listViewPatients.setOnItemClickListener((parent, view, position, id) -> {
-            Patient selectedPatient = (Patient) parent.getItemAtPosition(position);
-            Patient_option dialogFragment = Patient_option.newInstance(selectedPatient, position);
-            dialogFragment.show(getSupportFragmentManager(), "Patient_option");
-        });
-        setupToolbar();
-    }
-
-    private void displayPatients() {
         List<Patient> patients = dbHelper.getAllPatients();
         adapter = new Patient_Adapter(this, patients, dbHelper);
         listViewPatients.setAdapter(adapter);
@@ -54,6 +29,13 @@ public class PatientListActivity extends BaseActivity {
 
     @Override
     public void onPatientDeleted(int position) {
+        dbHelper.deletePatient(adapter.getItem(position).getId());
         adapter.removePatient(position);
+        Toast.makeText(this, "Patient deleted", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showPatientOptionDialog(Patient patient, int position) {
+        Patient_option patientOptionFragment = Patient_option.newInstance(patient, position);
+        patientOptionFragment.show(getSupportFragmentManager(), "PatientOptionFragment");
     }
 }

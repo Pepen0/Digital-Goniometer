@@ -50,10 +50,7 @@ public class RightShoulderAbduction extends BaseActivity {
         setupToolbar();
     }
 
-    @Override
-    public void onPatientDeleted(int position) {
 
-    }
 
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);

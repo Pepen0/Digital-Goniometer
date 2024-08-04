@@ -6,7 +6,8 @@
     android:background="@drawable/list_background_gradient"
     android:padding="16dp">
 
-
+    <include
+        layout="@layout/toolbar" />
     <!-- TextView to display the patient ID -->
     <TextView
         android:id="@+id/textViewPatientId"

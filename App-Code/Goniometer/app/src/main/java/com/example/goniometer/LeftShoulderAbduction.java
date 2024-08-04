@@ -55,6 +55,8 @@ public class LeftShoulderAbduction extends BaseActivity {
         setupToolbar();
     }
 
+
+
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);

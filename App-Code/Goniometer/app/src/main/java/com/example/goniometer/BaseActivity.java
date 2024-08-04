@@ -65,6 +65,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onBackPressed();
         //bleManager.disconnect();
     }
-
-    public abstract void onPatientDeleted(int position);
 }

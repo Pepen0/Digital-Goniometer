@@ -7,6 +7,7 @@
     tools:context=".Patient_option"
     android:backgroundTint="@null">
 
+
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
