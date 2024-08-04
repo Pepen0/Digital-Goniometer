@@ -39,12 +39,12 @@ public class Newpatient extends DialogFragment {
         final EditText editTextLastName = dialogView.findViewById(R.id.editTextPatientlastName);
 
         // Inflate the custom title view
-      // View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
+        View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
 
-       // builder.setView(dialogView)
-              //  .setCustomTitle(customTitleView) // Set custom title view
-              //  .setPositiveButton("Save", null) // Set to null initially
-                //.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()); // Dismiss on cancel
+        builder.setView(dialogView)
+                .setCustomTitle(customTitleView) // Set custom title view
+                .setPositiveButton("Save", null) // Set to null initially
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()); // Dismiss on cancel
 
         AlertDialog dialog = builder.create();
 
