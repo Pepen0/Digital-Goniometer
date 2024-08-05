@@ -74,7 +74,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // If you want to handle any BLE disconnection logic, uncomment the following line
-        // bleManager.disconnect();
+
     }
 }
