@@ -78,3 +78,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         // bleManager.disconnect();
     }
 }
+
+
