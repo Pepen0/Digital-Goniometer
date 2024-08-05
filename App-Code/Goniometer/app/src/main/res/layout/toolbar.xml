@@ -6,7 +6,6 @@
     android:background="@color/design_default_color_secondary_variant"
     android:orientation="horizontal">
 
-
     <ImageButton
         android:id="@+id/Back_Button"
         android:layout_width="30dp"
@@ -20,7 +19,5 @@
         android:layout_height="48dp"
         android:layout_gravity="right"
         android:padding="10dp"
-        android:src="@drawable/baseline_bluetooth_disabled_24" />
-
-
+        android:src="@drawable/baseline_bluetooth_24" />
 </LinearLayout>

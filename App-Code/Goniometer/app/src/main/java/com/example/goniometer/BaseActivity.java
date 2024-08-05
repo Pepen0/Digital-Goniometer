@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView bluetoothStatus;
@@ -63,11 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void updateUI(boolean isConnected) {
         if (bluetoothStatus != null) {
-            if (isConnected) {
-                bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24);
-            } else {
-                bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
-            }
+            int color = isConnected ? R.color.bluetooth_connected : R.color.bluetooth_disconnected;
+            bluetoothStatus.setColorFilter(ContextCompat.getColor(this, color));
         }
     }
 
