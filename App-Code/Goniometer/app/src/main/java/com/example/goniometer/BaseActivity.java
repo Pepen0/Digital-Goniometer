@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
         // Initialize UI based on current connection status
-        updateUI(bleManager.isConnected());
+        updateUI(false);
     }
 
     protected void setupToolbar() {
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void updateUI(boolean isConnected) {
         if (bluetoothStatus != null) {
             int color = isConnected ? R.color.bluetooth_connected : R.color.bluetooth_disconnected;
-            Log.d("BaseActivity", "Updating Bluetooth status color to: " + getResources().getColor(color));
+            Log.d("BaseActivity", "Updating Bluetooth status color to: " + (isConnected ? "Green" : "Red"));
             bluetoothStatus.setColorFilter(ContextCompat.getColor(this, color));
         } else {
             Log.e("BaseActivity", "Bluetooth status ImageView is null");
@@ -78,5 +78,3 @@ public abstract class BaseActivity extends AppCompatActivity {
         // bleManager.disconnect();
     }
 }
-
-

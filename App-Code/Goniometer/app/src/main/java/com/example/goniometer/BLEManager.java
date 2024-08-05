@@ -198,7 +198,7 @@ public class BLEManager {
         }
     }
 
-    public boolean isConnected() {
-        return isConnected;
-    }
+   // public boolean isConnected() {
+      //  return isConnected;
+    //}
 }
