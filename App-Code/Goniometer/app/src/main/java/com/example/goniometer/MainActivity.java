@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDisconnected() {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Disconnected from device", Toast.LENGTH_SHORT).show();
+                    BluetoothButton.setVisibility(View.VISIBLE);
                 });
             }
         });
