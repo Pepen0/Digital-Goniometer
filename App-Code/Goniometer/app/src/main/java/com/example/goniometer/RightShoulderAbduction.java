@@ -14,7 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class RightShoulderAbduction extends BaseActivity {
+public class RightShoulderAbduction extends BaseActivity{
 
     protected Button StartButton;
     protected Button SaveButton;
@@ -49,8 +49,6 @@ public class RightShoulderAbduction extends BaseActivity {
         setupUI();
         setupToolbar();
     }
-
-
 
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);

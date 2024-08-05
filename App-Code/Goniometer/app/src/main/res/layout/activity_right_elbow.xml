@@ -9,7 +9,6 @@
     tools:context=".RightElbow">
     <include
         layout="@layout/toolbar" />
-
     <TextView
         android:id="@+id/TestViewRightElbow"
         android:layout_width="262dp"

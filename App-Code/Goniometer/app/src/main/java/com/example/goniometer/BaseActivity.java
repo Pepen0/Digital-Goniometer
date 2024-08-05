@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView bluetoothStatus;
@@ -19,6 +20,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Initialize BLEManager
         bleManager = BLEManager.getInstance();
+        if (bleManager == null) {
+            Log.e("BaseActivity", "BLEManager not initialized");
+            return;
+        }
 
         // Setup toolbar
         setupToolbar();
@@ -27,14 +32,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
             public void onConnected() {
+                Log.d("BaseActivity", "Connected to BLE device");
                 runOnUiThread(() -> updateUI(true));
             }
 
             @Override
             public void onDisconnected() {
+                Log.d("BaseActivity", "Disconnected from BLE device");
                 runOnUiThread(() -> updateUI(false));
             }
         });
+
+        // Initialize UI based on current connection status
+        updateUI(bleManager.isConnected());
     }
 
     protected void setupToolbar() {
@@ -51,18 +61,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-
     protected void updateUI(boolean isConnected) {
-        if (isConnected) {
-            bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24);
-        } else {
-            bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
+        if (bluetoothStatus != null) {
+            if (isConnected) {
+                bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_connected_24);
+            } else {
+                bluetoothStatus.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
+            }
         }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //bleManager.disconnect();
+        // If you want to handle any BLE disconnection logic, uncomment the following line
+        // bleManager.disconnect();
     }
 }

@@ -55,10 +55,6 @@ public class MeasurementsActivity extends BaseActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
-        // Remove action bar title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
         setupToolbar();
     }
 
