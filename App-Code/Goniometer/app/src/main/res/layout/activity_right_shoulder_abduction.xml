@@ -9,7 +9,6 @@
     tools:context=".RightShoulderAbduction">
     <include
         layout="@layout/toolbar" />
-
     <TextView
         android:id="@+id/textViewRightShoulderAbduction"
         android:layout_width="349dp"
