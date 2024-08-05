@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToAssessmentActivity() {
+    private void AssessmentActivity() {
         Intent intent = new Intent(this, AssessmentActivity.class);
         startActivity(intent);
     }
