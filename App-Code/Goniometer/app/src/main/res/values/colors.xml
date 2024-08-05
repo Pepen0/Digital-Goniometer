@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cyan">#008B8B</color>
     <color name="lightgrey">#A9A9A9</color>
+    <color name="bluetooth_connected">#FF00FF00</color>
+    <color name="bluetooth_disconnected">#FFFF0000</color>
 </resources>
