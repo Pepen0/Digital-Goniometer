@@ -60,6 +60,9 @@ public class MeasurementsActivity extends AppCompatActivity {
                 measurements = new ArrayList<>();
             }
 
+            // Sort measurements by timestamp in descending order
+            measurements.sort((m1, m2) -> m2.getTimestamp().compareTo(m1.getTimestamp()));
+
             // Group measurements by type
             Map<String, List<Measurement>> groupedMeasurements = new HashMap<>();
             for (Measurement measurement : measurements) {
@@ -90,6 +93,7 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Error displaying measurements", e);
         }
     }
+
 
     private class MeasurementsAdapter extends ArrayAdapter<Object> {
 
