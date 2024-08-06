@@ -96,10 +96,6 @@ public class DataExtractionActivity extends AppCompatActivity {
 
     private void exportToCSV() {
         Cursor cursor = dbHelper.getCSVData();
-        File exportDir = new File(Environment.getExternalStorageDirectory(), "CSV Data");
-        if (!exportDir.exists()) {
-            exportDir.mkdirs();
-        }
 
         String fileName = "exportData.csv";
         Uri csvUri = createCSVFileUri(this, fileName);
