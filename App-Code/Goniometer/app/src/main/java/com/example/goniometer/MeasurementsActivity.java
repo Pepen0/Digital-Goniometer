@@ -1,27 +1,25 @@
 package com.example.goniometer;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MeasurementsActivity extends BaseActivity {
+public class MeasurementsActivity extends AppCompatActivity {
 
-    private static final String TAG = "MeasurementsActivity"; // Tag for logging
+    private static final String TAG = "MeasurementsActivity";
     private ListView listViewMeasurements;
     private DatabaseHelper dbHelper;
-    private ArrayAdapter<Measurement> adapter;
+    private MeasurementsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,20 +27,16 @@ public class MeasurementsActivity extends BaseActivity {
         setContentView(R.layout.activity_measurements);
 
         listViewMeasurements = findViewById(R.id.listViewMeasurements);
-        TextView textViewPatientId = findViewById(R.id.textViewPatientId); // Find the TextView for patient info
-        dbHelper = DatabaseHelper.getInstance(this); // Use the singleton instance
+        TextView textViewPatientId = findViewById(R.id.textViewPatientId);
+        dbHelper = DatabaseHelper.getInstance(this);
 
-        // Retrieve patient ID from intent
         long patientId = getIntent().getLongExtra("PATIENT_ID", -1);
-
         Log.d(TAG, "Patient ID: " + patientId);
 
         if (patientId != -1) {
-            // Get the patient name from the database
             String patientName = dbHelper.getPatientNameById(patientId);
 
             if (patientName != null) {
-                // Construct and set the patient details text
                 String patientInfo = "Name: " + patientName + "\n" + "ID: " + patientId;
                 textViewPatientId.setText(patientInfo);
             } else {
@@ -55,74 +49,41 @@ public class MeasurementsActivity extends BaseActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
-        setupToolbar();
     }
-
-
 
     private void displayMeasurements(long patientId) {
         try {
             Log.d(TAG, "Fetching measurements for patient ID: " + patientId);
-            // Retrieve measurements from the database
             List<Measurement> measurements = dbHelper.getMeasurementsForPatient(patientId);
 
-            // Check if the measurements list is null and initialize it if necessary
             if (measurements == null) {
-                Log.d(TAG, "Measurements list is null, initializing to empty list.");
                 measurements = new ArrayList<>();
             }
 
-            // Reverse the list to show the newest items first
-            Collections.reverse(measurements);
-
-            // Create a custom ArrayAdapter to display measurements
-            adapter = new ArrayAdapter<Measurement>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, measurements) {
-
-                @SuppressLint("SetTextI18n")
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                    if (convertView == null) {
-                        convertView = getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
-                    }
-
-                    // Get the measurement at the current position
-                    Measurement measurement = getItem(position);
-                    Log.d(TAG, "Displaying measurement at position: " + position);
-
-                    // Set the text of the item view to display measurement details
-                    TextView textView = convertView.findViewById(android.R.id.text1);
-                    if (measurement != null) {
-                        if (measurement.getMeasurementType().equals("Head Rotation") ||
-                                measurement.getMeasurementType().equals("Right Elbow Rotation") ||
-                                measurement.getMeasurementType().equals("Left Elbow Rotation")) {
-                            if(!measurement.getMeasurementType().equals("Head Rotation") ){
-                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                        "Pronation : " + measurement.getLeftAngle() + "°" + "\n" +
-                                        "Supination : " + measurement.getRightAngle()+ "°" + "\n" +
-                                        measurement.getTimestamp());
-                            } else {
-                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                        "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
-                                        "RightAngle: " + measurement.getRightAngle() + "°" + "\n" +
-                                        measurement.getTimestamp());
-                            }
-                        } else {
-                            textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                    "AbductionAngle: " + measurement.getLeftAngle() +"°" + "\n" +
-                                    measurement.getTimestamp());
-                        }
-                    } else {
-                        textView.setText("No data available");
-                        Log.d(TAG, "Measurement at position " + position + " is null.");
-                    }
-
-                    return convertView;
+            // Group measurements by type
+            Map<String, List<Measurement>> groupedMeasurements = new HashMap<>();
+            for (Measurement measurement : measurements) {
+                String type = measurement.getMeasurementType();
+                if (!groupedMeasurements.containsKey(type)) {
+                    groupedMeasurements.put(type, new ArrayList<>());
                 }
-            };
+                groupedMeasurements.get(type).add(measurement);
+            }
 
-            // Set the adapter for the ListView
+            // Flatten the grouped measurements into a single list with headers
+            List<Object> displayList = new ArrayList<>();
+            for (Map.Entry<String, List<Measurement>> entry : groupedMeasurements.entrySet()) {
+                String type = entry.getKey();
+                List<Measurement> typeMeasurements = entry.getValue();
+
+                // Add header
+                displayList.add(type);
+
+                // Add measurements for this type
+                displayList.addAll(typeMeasurements);
+            }
+
+            adapter = new MeasurementsAdapter(this, displayList);
             listViewMeasurements.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -130,4 +91,58 @@ public class MeasurementsActivity extends BaseActivity {
         }
     }
 
+    private class MeasurementsAdapter extends ArrayAdapter<Object> {
+
+        private static final int TYPE_HEADER = 0;
+        private static final int TYPE_ITEM = 1;
+
+        public MeasurementsAdapter(@NonNull MeasurementsActivity context, List<Object> items) {
+            super(context, 0, items);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Object item = getItem(position);
+            return item instanceof String ? TYPE_HEADER : TYPE_ITEM;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            int viewType = getItemViewType(position);
+
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.list_item_measurement, parent, false);
+            }
+
+            TextView textViewMeasurementType = convertView.findViewById(R.id.textViewMeasurementType);
+            TableRow tableHeaderRow = convertView.findViewById(R.id.tableHeaderRow);
+            TableRow tableRowMeasurement = convertView.findViewById(R.id.tableRowMeasurement);
+            TextView textViewLeftAngle = convertView.findViewById(R.id.textViewLeftAngle);
+            TextView textViewRightAngle = convertView.findViewById(R.id.textViewRightAngle);
+            TextView textViewTimestamp = convertView.findViewById(R.id.textViewTimestamp);
+
+            if (viewType == TYPE_HEADER) {
+                // This item is a header
+                String headerText = (String) getItem(position);
+                textViewMeasurementType.setText(headerText);
+                textViewMeasurementType.setVisibility(View.VISIBLE);
+                tableHeaderRow.setVisibility(View.VISIBLE); // Show header row for type headers
+                tableRowMeasurement.setVisibility(View.GONE); // Hide data row for headers
+            } else {
+                // This item is a measurement
+                Measurement measurement = (Measurement) getItem(position);
+                textViewMeasurementType.setVisibility(View.GONE);
+                tableHeaderRow.setVisibility(View.GONE); // Hide header row for measurements
+                tableRowMeasurement.setVisibility(View.VISIBLE);
+
+                // Populate table row with measurement details
+                textViewLeftAngle.setText(measurement.getLeftAngle() + "°");
+                textViewRightAngle.setText(measurement.getRightAngle() + "°");
+                textViewTimestamp.setText(measurement.getTimestamp());
+            }
+
+            return convertView;
+        }
+    }
 }
