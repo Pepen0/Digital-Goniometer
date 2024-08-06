@@ -141,7 +141,7 @@ public class MeasurementsActivity extends AppCompatActivity {
                 if (headerText.equals("Left Hip Abduction") || headerText.equals("Right Hip Abduction") ||
                         headerText.equals("Left Shoulder Abduction") || headerText.equals("Right Shoulder Abduction")) {
                     viewHolder.textViewLeftAngleHeader.setText("Abduction Angle");
-                    viewHolder.textViewRightAngleHeader.setVisibility(View.GONE); // Hide Right Angle column header
+                    viewHolder.textViewRightAngleHeader.setText("           ");
                 } else {
                     viewHolder.textViewLeftAngleHeader.setText("Left Angle");
                     viewHolder.textViewRightAngleHeader.setVisibility(View.VISIBLE);
@@ -161,13 +161,14 @@ public class MeasurementsActivity extends AppCompatActivity {
                 String type = measurement.getMeasurementType();
                 if (type.equals("Left Hip Abduction") || type.equals("Right Hip Abduction") ||
                         type.equals("Left Shoulder Abduction") || type.equals("Right Shoulder Abduction")) {
-                    viewHolder.textViewRightAngle.setVisibility(View.GONE);
+//
+                    viewHolder.textViewRightAngle.setText("  ");
+                    viewHolder.textViewTimestamp.setText(measurement.getTimestamp());
                 } else {
                     viewHolder.textViewRightAngle.setVisibility(View.VISIBLE);
                     viewHolder.textViewRightAngle.setText(measurement.getRightAngle() + "°");
                 }
             }
-
             return convertView;
         }
 
