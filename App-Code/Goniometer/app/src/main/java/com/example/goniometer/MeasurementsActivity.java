@@ -39,7 +39,7 @@ public class MeasurementsActivity extends AppCompatActivity {
             String patientName = dbHelper.getPatientNameById(patientId);
 
             if (patientName != null) {
-                String patientInfo = "Name: " + patientName + "\n" + "ID: " + patientId;
+                String patientInfo = patientName + "\n" + "ID: " + patientId;
                 textViewPatientId.setText(patientInfo);
             } else {
                 textViewPatientId.setText("Patient not found");
