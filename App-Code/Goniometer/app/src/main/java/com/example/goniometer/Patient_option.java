@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Patient_option extends DialogFragment {
 
@@ -57,6 +58,11 @@ public class Patient_option extends DialogFragment {
             position = getArguments().getInt(ARG_POSITION);
         }
     }
+    private boolean hasMeasurements(long patientId) {
+        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+        List<Measurement> measurements = dbHelper.getMeasurementsForPatient(patientId);
+        return measurements != null && !measurements.isEmpty();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,9 +99,14 @@ public class Patient_option extends DialogFragment {
         });
 
         buttonMeasurements.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MeasurementsActivity.class);
-            intent.putExtra("PATIENT_ID", patient.getId()); // Pass patient ID
-            startActivity(intent);
+            long patientId = patient.getId(); // Get the patient ID
+            if (hasMeasurements(patientId)) {
+                Intent intent = new Intent(getActivity(), MeasurementsActivity.class);
+                intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+                startActivity(intent);
+            } else {
+                Toast.makeText(getContext(), "Patient has no records", Toast.LENGTH_SHORT).show();
+            }
             dismiss();
         });
 

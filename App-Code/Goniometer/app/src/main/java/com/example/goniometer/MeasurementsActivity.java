@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
@@ -60,6 +62,9 @@ public class MeasurementsActivity extends AppCompatActivity {
                 measurements = new ArrayList<>();
             }
 
+            // Sort measurements by timestamp in descending order
+            measurements.sort((m1, m2) -> m2.getTimestamp().compareTo(m1.getTimestamp()));
+
             // Group measurements by type
             Map<String, List<Measurement>> groupedMeasurements = new HashMap<>();
             for (Measurement measurement : measurements) {
@@ -83,6 +88,7 @@ public class MeasurementsActivity extends AppCompatActivity {
                 displayList.addAll(typeMeasurements);
             }
 
+            // Set the adapter only if there are measurements to display
             adapter = new MeasurementsAdapter(this, displayList);
             listViewMeasurements.setAdapter(adapter);
 
