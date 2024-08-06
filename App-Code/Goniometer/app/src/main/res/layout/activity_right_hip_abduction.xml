@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_background_gradient"
+    tools:context=".RightHipAbduction">
+    <include
+        layout="@layout/toolbar" />
+    <TextView
+        android:id="@+id/textViewRightHIPAbduction"
+        android:layout_width="262dp"
+        android:layout_height="52dp"
+        android:fontFamily="sans-serif-black"
+        android:text="RIGHT HIP Abduction"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109"
+        tools:ignore="TextSizeCheck" />
+
+    <Button
+        android:id="@+id/StartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="476dp"
+        android:text="START"
+        android:textSize="18sp"
+        android:background="@drawable/circular_button_start"
+        app:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRightHIPAbduction"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/custom_button2"
+        android:text="Save Right Leg Rotation"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rightRotation"
+        app:layout_constraintVertical_bias="0.398" />
+
+    <TextView
+        android:id="@+id/AbductionM"
+        android:layout_width="174dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="364dp"
+        android:text="Abduction"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StartButton"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/rightRotation"
+        android:layout_width="94dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginBottom="276dp"
+        android:text="Roll"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AbductionM"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

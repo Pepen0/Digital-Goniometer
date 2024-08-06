@@ -2,23 +2,23 @@ package com.example.goniometer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class AssessmentActivity extends AppCompatActivity {
+public class AssessmentActivity extends BaseActivity {
 
-    protected EditText editTextAssessName;
-    protected TextView textViewSelectDesired;
     protected Button buttonHeadRotation;
+    protected Button RightElbow;
+    protected Button LeftElbow;
+    protected Button buttonLeftArmRotation;
+    protected Button buttonRightArmRotation;
+    protected Button buttonLeftHipAbduction;
+    protected Button buttonRightHipAbduction;
+    private long patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,28 +31,76 @@ public class AssessmentActivity extends AppCompatActivity {
             return insets;
         });
 
-        setupUI();
-        Toolbar toolbar =  findViewById(R.id.maintoolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Assessment Page");
+        // Retrieve patient ID
+        patientId = getIntent().getLongExtra("PATIENT_ID", -1);
 
+        setupUI();
+        setupToolbar();
     }
+
+//    @Override
+//    public void onPatientDeleted(int position) {
+//
+//    }
 
     private void setupUI() {
-
+        // Initialize Buttons
         buttonHeadRotation = findViewById(R.id.buttonHeadRotation);
-        buttonHeadRotation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToHeadRotation();
-            }
+        buttonLeftArmRotation = findViewById(R.id.buttonLeftArm);
+        buttonRightArmRotation = findViewById(R.id.buttonRightArm);
+        buttonLeftHipAbduction = findViewById(R.id.buttonLeftHipAbduction);
+        buttonRightHipAbduction = findViewById(R.id.buttonRightHipAbduction);
+        RightElbow= findViewById(R.id.RightElbow);
+        LeftElbow= findViewById(R.id.LeftElbow);
 
-        });
+        // Set Click Listeners
+        buttonHeadRotation.setOnClickListener(v -> goToHeadRotation());
+        buttonLeftArmRotation.setOnClickListener(v -> goToLeftShoulderAbduction());
+        buttonRightArmRotation.setOnClickListener(v -> goToRightShoulderAbduction());
+        buttonLeftHipAbduction.setOnClickListener(v -> goToLeftHipAbduction());
+        buttonRightHipAbduction.setOnClickListener(v -> goToRightHipAbduction());
+        RightElbow.setOnClickListener(v -> goToRightElbow());
+        LeftElbow.setOnClickListener(v -> goToLeftElbow());
+
     }
-        private void goToHeadRotation() {
-            Intent intent = new Intent(this, HeadRotation.class);
-            intent.putExtra("isGuest", true);
-            startActivity(intent);
-        }
+    private void goToRightElbow(){
+        Intent intent = new Intent(this, RightElbow.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+    private void goToLeftElbow(){
+        Intent intent = new Intent(this, LeftElbow.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToHeadRotation() {
+        Intent intent = new Intent(this, HeadRotation.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToLeftShoulderAbduction() {
+        Intent intent = new Intent(this, LeftShoulderAbduction.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToRightShoulderAbduction() {
+        Intent intent = new Intent(this, RightShoulderAbduction.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToLeftHipAbduction() {
+        Intent intent = new Intent(this, LeftHipAbduction.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
+
+    private void goToRightHipAbduction() {
+        Intent intent = new Intent(this, RightHipAbduction.class);
+        intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+        startActivity(intent);
+    }
 }

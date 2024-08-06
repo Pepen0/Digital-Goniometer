@@ -1,3 +1,7 @@
+.gradle
+.idea
+App-Code/.gradle
+App-Code/.idea
 App-Code/Goniometer/.gradle
 App-Code/Goniometer/.idea
 App-Code/Goniometer/app/.idea
@@ -5,3 +9,6 @@ App-Code/Goniometer/app/.gradle
 App-Code/Goniometer/local.properties
 App-Code/Goniometer/app/build
 .DS_Store
+Arduino-Code/.DS_Store
+App-Code/.DS_Store
+App-Code/Goniometer/.DS_Store

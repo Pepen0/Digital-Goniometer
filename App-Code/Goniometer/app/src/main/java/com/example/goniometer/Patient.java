@@ -1,6 +1,7 @@
 package com.example.goniometer;
 
-public class Patient {
+import java.io.Serializable;
+public class Patient implements Serializable {
     private final long id;
     private final String firstName;
     private final String lastName;
@@ -24,4 +25,7 @@ public class Patient {
     public String getLastName() {
         return lastName;
     }
+
+
+
 }
