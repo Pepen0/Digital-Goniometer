@@ -144,6 +144,7 @@ public class MeasurementsActivity extends AppCompatActivity {
                     viewHolder.textViewRightAngleHeader.setText("           ");
                 } else {
                     viewHolder.textViewLeftAngleHeader.setText("Left Angle");
+                    viewHolder.textViewRightAngleHeader.setText("Right Angle");
                     viewHolder.textViewRightAngleHeader.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -161,7 +162,6 @@ public class MeasurementsActivity extends AppCompatActivity {
                 String type = measurement.getMeasurementType();
                 if (type.equals("Left Hip Abduction") || type.equals("Right Hip Abduction") ||
                         type.equals("Left Shoulder Abduction") || type.equals("Right Shoulder Abduction")) {
-//
                     viewHolder.textViewRightAngle.setText("  ");
                     viewHolder.textViewTimestamp.setText(measurement.getTimestamp());
                 } else {
