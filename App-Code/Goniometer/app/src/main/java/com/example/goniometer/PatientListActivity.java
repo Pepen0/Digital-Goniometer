@@ -10,7 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity implements Patient_option.OnPatientDeletedListener {
+public class PatientListActivity extends BaseActivity implements Patient_option.OnPatientDeletedListener {
 
     private ListView listViewPatients;
     private DatabaseHelper dbHelper;
@@ -46,6 +46,7 @@ public class PatientListActivity extends AppCompatActivity implements Patient_op
             Patient_option dialogFragment = Patient_option.newInstance(selectedPatient, position);
             dialogFragment.show(getSupportFragmentManager(), "Patient_option");
         });
+        setupToolbar();
     }
 
     private void displayPatients() {

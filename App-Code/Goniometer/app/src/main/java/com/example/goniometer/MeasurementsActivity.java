@@ -13,9 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class MeasurementsActivity extends AppCompatActivity {
+public class MeasurementsActivity extends BaseActivity {
 
     private static final String TAG = "MeasurementsActivity"; // Tag for logging
     private ListView listViewMeasurements;
@@ -54,6 +55,7 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
+        setupToolbar();
     }
 
 
@@ -69,6 +71,9 @@ public class MeasurementsActivity extends AppCompatActivity {
                 Log.d(TAG, "Measurements list is null, initializing to empty list.");
                 measurements = new ArrayList<>();
             }
+
+            // Reverse the list to show the newest items first
+            Collections.reverse(measurements);
 
             // Create a custom ArrayAdapter to display measurements
             adapter = new ArrayAdapter<Measurement>(this,
@@ -97,21 +102,21 @@ public class MeasurementsActivity extends AppCompatActivity {
                                         "Pronation : " + measurement.getLeftAngle() + "°" + "\n" +
                                         "Supination : " + measurement.getRightAngle()+ "°" + "\n" +
                                         measurement.getTimestamp());
-                            }else {
+                            } else {
                                 textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
                                         "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
                                         "RightAngle: " + measurement.getRightAngle() + "°" + "\n" +
                                         measurement.getTimestamp());
                             }
-                        }else{
+                        } else {
                             textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
                                     "AbductionAngle: " + measurement.getLeftAngle() +"°" + "\n" +
                                     measurement.getTimestamp());
                         }
-                        } else {
-                            textView.setText("No data available");
-                            Log.d(TAG, "Measurement at position " + position + " is null.");
-                        }
+                    } else {
+                        textView.setText("No data available");
+                        Log.d(TAG, "Measurement at position " + position + " is null.");
+                    }
 
                     return convertView;
                 }
@@ -124,4 +129,5 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Error displaying measurements", e);
         }
     }
+
 }

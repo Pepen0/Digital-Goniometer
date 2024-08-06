@@ -10,7 +10,12 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+    // Apply the version catalog plugin
+    plugins {
+        id("org.gradle.version-catalog") version "1.0.0" apply false
+    }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,4 +26,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Goniometer"
 include(":app")
- 

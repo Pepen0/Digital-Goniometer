@@ -14,7 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class RightHipAbduction extends AppCompatActivity {
+public class RightHipAbduction extends BaseActivity {
 
     protected Button StartButton;
     protected Button SaveButton;
@@ -47,7 +47,9 @@ public class RightHipAbduction extends AppCompatActivity {
         }
 
         setupUI();
+        setupToolbar();
     }
+
 
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);

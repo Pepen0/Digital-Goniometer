@@ -1,6 +1,8 @@
 package com.example.goniometer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -62,19 +64,25 @@ public class Patient_option extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_patient_option, container, false);
 
         TextView textViewPatientDetails = view.findViewById(R.id.textViewPatientDetails);
-        textViewPatientDetails.setText("Patient ID: " + patient.getId() + "\n" +
-                "Name: " + patient.getFirstName() + " " + patient.getLastName());
+        textViewPatientDetails.setText("Patient Option                  ");
 
         Button buttonDelete = view.findViewById(R.id.buttonDelete);
         Button buttonAssessment = view.findViewById(R.id.buttonAssessment);
         Button buttonMeasurements = view.findViewById(R.id.buttonMeasurements);
 
         buttonDelete.setOnClickListener(v -> {
-            DatabaseHelper dbHelper = new DatabaseHelper(getContext());
-            dbHelper.deletePatient(patient.getId());
-            callback.onPatientDeleted(position);
-            Toast.makeText(getContext(), "Patient deleted", Toast.LENGTH_SHORT).show();
-            dismiss();
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Delete Patient")
+                    .setMessage("Are you sure you want to delete this patient?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+                        dbHelper.deletePatient(patient.getId());
+                        callback.onPatientDeleted(position);
+                        Toast.makeText(getContext(), "Patient deleted", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         });
 
         buttonAssessment.setOnClickListener(v -> {
@@ -94,3 +102,4 @@ public class Patient_option extends DialogFragment {
         return view;
     }
 }
+

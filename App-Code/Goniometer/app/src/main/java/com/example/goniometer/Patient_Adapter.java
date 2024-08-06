@@ -35,7 +35,7 @@ public class Patient_Adapter extends ArrayAdapter<Patient> {
 
         final Patient patient = getItem(position);
         if (patient != null) {
-            textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName());
+            textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName() + "\nID: " + patient.getId());
 
             buttonOptions.setOnClickListener(new View.OnClickListener() {
                 @Override

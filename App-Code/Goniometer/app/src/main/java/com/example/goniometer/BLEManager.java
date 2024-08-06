@@ -1,4 +1,5 @@
 package com.example.goniometer;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -27,6 +28,7 @@ public class BLEManager {
     private BluetoothGattCharacteristic characteristic;
     private DataCallback dataCallback;
     private ConnectionCallback connectionCallback;
+    private boolean isConnected = false; // Track connection state
 
     public interface DataCallback {
         void onDataReceived(int Yaw, int Pitch, int Roll, String Debug);
@@ -75,11 +77,13 @@ public class BLEManager {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(TAG, "Connected to GATT server.");
                 bluetoothGatt.discoverServices();
+                isConnected = true; // Update connection state
                 if (connectionCallback != null) {
                     connectionCallback.onConnected();
                 }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.d(TAG, "Disconnected from GATT server.");
+                isConnected = false; // Update connection state
                 if (connectionCallback != null) {
                     connectionCallback.onDisconnected();
                 }
@@ -107,70 +111,58 @@ public class BLEManager {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
+
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
-//                if ("Reset".equalsIgnoreCase(data)) {
-//                    ResetStatus = true;
-//                    Log.d(TAG, "Reset message received from Arduino");
-//                    if(dataCallback !=null){
-//                        dataCallback.onDataReceived(0, 0, 0, "");
-//                    }
-//                    return;
-//                }
 
-                    try {
-                        if (dataCallback != null) {
-                            String[] Variables = data.split(",");
-                            for (int i = 0; i < Variables.length; i++) {
-                                Variables[i] = Variables[i].replaceAll(",", "");
-                            }
-                            if (Variables.length == 4 || Variables.length == 3) {
-                                //separating the variables from the string into 3 integers
-                                int LiveYaw = 0;
-                                int LivePitch = 0;
-                                int LiveRoll = 0;
-                                String DebugMessage = "";
-
-                                try {
-                                    LiveYaw = Integer.parseInt(Variables[0]);
-                                } catch (NumberFormatException e) {
-                                    Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
-                                }
-                                try {
-                                    LivePitch = Integer.parseInt(Variables[1]);
-                                } catch (NumberFormatException e) {
-                                    Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
-                                }
-                                try {
-                                    LiveRoll = Integer.parseInt(Variables[2]);
-                                } catch (NumberFormatException e) {
-                                    Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
-                                }
-                                try {
-                                    if (Variables.length == 4) {
-                                        DebugMessage = Variables[3].trim();
-                                        Log.d(TAG, "Debug message: " + DebugMessage);
-                                    }
-                                } catch (NumberFormatException e) {
-                                    Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
-                                }
-
-                                dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
-//                                Log.d("data values:", String.valueOf(LivePitch) + String.valueOf(LiveRoll) + String.valueOf(LiveYaw));
-                            }
-                        } else {
-                            // Handle the case where the string doesn't contain three parts
-                            Log.d("The String does not have 3 values", data);
+                try {
+                    if (dataCallback != null) {
+                        String[] Variables = data.split(",");
+                        for (int i = 0; i < Variables.length; i++) {
+                            Variables[i] = Variables[i].replaceAll(",", "");
                         }
-                    } catch (NumberFormatException e) {
-                        // Handle any potential parsing errors
-                        Log.d("Error parsing integers: ", e.getMessage());
-                    }
-                }
+                        if (Variables.length == 4 || Variables.length == 3) {
+                            int LiveYaw = 0;
+                            int LivePitch = 0;
+                            int LiveRoll = 0;
+                            String DebugMessage = "";
 
+                            try {
+                                LiveYaw = Integer.parseInt(Variables[0]);
+                            } catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Yaw Value: " + Variables[0]);
+                            }
+                            try {
+                                LivePitch = Integer.parseInt(Variables[1]);
+                            } catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Pitch Value: " + Variables[1]);
+                            }
+                            try {
+                                LiveRoll = Integer.parseInt(Variables[2]);
+                            } catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Roll Value: " + Variables[2]);
+                            }
+                            try {
+                                if (Variables.length == 4) {
+                                    DebugMessage = Variables[3].trim();
+                                    Log.d(TAG, "Debug message: " + DebugMessage);
+                                }
+                            } catch (NumberFormatException e) {
+                                Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
+                            }
+
+                            dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
+                        }
+                    } else {
+                        Log.d("The String does not have 3 values", data);
+                    }
+                } catch (NumberFormatException e) {
+                    Log.d("Error parsing integers: ", e.getMessage());
+                }
+            }
         }
 
         @Override
@@ -188,6 +180,7 @@ public class BLEManager {
             bluetoothGatt.disconnect();
             bluetoothGatt.close();
             bluetoothGatt = null;
+            isConnected = false; // Update connection state
         }
     }
 
@@ -195,13 +188,17 @@ public class BLEManager {
         if (characteristic != null) {
             characteristic.setValue(data);
             boolean success = bluetoothGatt.writeCharacteristic(characteristic);
-            if(success){
+            if (success) {
                 Log.d(TAG, "Data sent successfully: " + data);
-            }else{
+            } else {
                 Log.e(TAG, "Failed to write characteristic");
             }
         } else {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
     }
+
+   // public boolean isConnected() {
+      //  return isConnected;
+    //}
 }
