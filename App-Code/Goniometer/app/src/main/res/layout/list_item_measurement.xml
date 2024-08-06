@@ -28,18 +28,21 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
             <TextView
+                android:id="@+id/textViewLeftAngleHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Left Angle"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/textViewRightAngleHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Right Angle"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/textViewTimestampHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -109,40 +109,78 @@ public class MeasurementsActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            ViewHolder viewHolder;
             int viewType = getItemViewType(position);
 
             if (convertView == null) {
+                viewHolder = new ViewHolder();
                 convertView = getLayoutInflater().inflate(R.layout.list_item_measurement, parent, false);
+                viewHolder.textViewMeasurementType = convertView.findViewById(R.id.textViewMeasurementType);
+                viewHolder.tableHeaderRow = convertView.findViewById(R.id.tableHeaderRow);
+                viewHolder.textViewLeftAngleHeader = convertView.findViewById(R.id.textViewLeftAngleHeader);
+                viewHolder.textViewRightAngleHeader = convertView.findViewById(R.id.textViewRightAngleHeader);
+                viewHolder.textViewTimestampHeader = convertView.findViewById(R.id.textViewTimestampHeader);
+                viewHolder.tableRowMeasurement = convertView.findViewById(R.id.tableRowMeasurement);
+                viewHolder.textViewLeftAngle = convertView.findViewById(R.id.textViewLeftAngle);
+                viewHolder.textViewRightAngle = convertView.findViewById(R.id.textViewRightAngle);
+                viewHolder.textViewTimestamp = convertView.findViewById(R.id.textViewTimestamp);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
             }
-
-            TextView textViewMeasurementType = convertView.findViewById(R.id.textViewMeasurementType);
-            TableRow tableHeaderRow = convertView.findViewById(R.id.tableHeaderRow);
-            TableRow tableRowMeasurement = convertView.findViewById(R.id.tableRowMeasurement);
-            TextView textViewLeftAngle = convertView.findViewById(R.id.textViewLeftAngle);
-            TextView textViewRightAngle = convertView.findViewById(R.id.textViewRightAngle);
-            TextView textViewTimestamp = convertView.findViewById(R.id.textViewTimestamp);
 
             if (viewType == TYPE_HEADER) {
                 // This item is a header
                 String headerText = (String) getItem(position);
-                textViewMeasurementType.setText(headerText);
-                textViewMeasurementType.setVisibility(View.VISIBLE);
-                tableHeaderRow.setVisibility(View.VISIBLE); // Show header row for type headers
-                tableRowMeasurement.setVisibility(View.GONE); // Hide data row for headers
+                viewHolder.textViewMeasurementType.setText(headerText);
+                viewHolder.textViewMeasurementType.setVisibility(View.VISIBLE);
+                viewHolder.tableHeaderRow.setVisibility(View.VISIBLE);
+                viewHolder.tableRowMeasurement.setVisibility(View.GONE);
+
+                // Update header text based on measurement type
+                if (headerText.equals("Left Hip Abduction") || headerText.equals("Right Hip Abduction") ||
+                        headerText.equals("Left Shoulder Abduction") || headerText.equals("Right Shoulder Abduction")) {
+                    viewHolder.textViewLeftAngleHeader.setText("Abduction Angle");
+                    viewHolder.textViewRightAngleHeader.setVisibility(View.GONE); // Hide Right Angle column header
+                } else {
+                    viewHolder.textViewLeftAngleHeader.setText("Left Angle");
+                    viewHolder.textViewRightAngleHeader.setVisibility(View.VISIBLE);
+                }
             } else {
                 // This item is a measurement
                 Measurement measurement = (Measurement) getItem(position);
-                textViewMeasurementType.setVisibility(View.GONE);
-                tableHeaderRow.setVisibility(View.GONE); // Hide header row for measurements
-                tableRowMeasurement.setVisibility(View.VISIBLE);
+                viewHolder.textViewMeasurementType.setVisibility(View.GONE);
+                viewHolder.tableHeaderRow.setVisibility(View.GONE);
+                viewHolder.tableRowMeasurement.setVisibility(View.VISIBLE);
 
-                // Populate table row with measurement details
-                textViewLeftAngle.setText(measurement.getLeftAngle() + "°");
-                textViewRightAngle.setText(measurement.getRightAngle() + "°");
-                textViewTimestamp.setText(measurement.getTimestamp());
+                // Populate data
+                viewHolder.textViewLeftAngle.setText(measurement.getLeftAngle() + "°");
+                viewHolder.textViewTimestamp.setText(measurement.getTimestamp());
+
+                // Check if the measurement type should hide the right angle column
+                String type = measurement.getMeasurementType();
+                if (type.equals("Left Hip Abduction") || type.equals("Right Hip Abduction") ||
+                        type.equals("Left Shoulder Abduction") || type.equals("Right Shoulder Abduction")) {
+                    viewHolder.textViewRightAngle.setVisibility(View.GONE);
+                } else {
+                    viewHolder.textViewRightAngle.setVisibility(View.VISIBLE);
+                    viewHolder.textViewRightAngle.setText(measurement.getRightAngle() + "°");
+                }
             }
 
             return convertView;
+        }
+
+        private class ViewHolder {
+            TextView textViewMeasurementType;
+            TableRow tableHeaderRow;
+            TextView textViewLeftAngleHeader;
+            TextView textViewRightAngleHeader;
+            TextView textViewTimestampHeader;
+            TableRow tableRowMeasurement;
+            TextView textViewLeftAngle;
+            TextView textViewRightAngle;
+            TextView textViewTimestamp;
         }
     }
 }
