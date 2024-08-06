@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button BluetoothButton;
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
+    protected Button ExtractCSVbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ExtractCSVbutton = findViewById(R.id.ExtractCSVbutton);
+        ExtractCSVbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { goToExtractCSVPage(); }
+        });
+
     }
 
     @Override
@@ -95,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToAssessmentActivity() {
         Intent intent = new Intent(this, AssessmentActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToExtractCSVPage() {
+        Intent intent = new Intent(this, DataExtractionActivity.class);
         startActivity(intent);
     }
 
