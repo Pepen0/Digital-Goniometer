@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -61,8 +60,8 @@ public class HeadRotation extends BaseActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.rightRotation);
-        RightM = findViewById(R.id.AbductionM);
+        LeftM = findViewById(R.id.leftRotation);
+        RightM = findViewById(R.id.rightRotation);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 

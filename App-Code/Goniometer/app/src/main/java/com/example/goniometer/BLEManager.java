@@ -153,7 +153,6 @@ public class BLEManager {
                             } catch (NumberFormatException e) {
                                 Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
                             }
-
                             dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
                         }
                     } else {

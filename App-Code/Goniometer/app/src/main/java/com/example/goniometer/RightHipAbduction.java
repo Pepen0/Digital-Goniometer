@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -54,7 +53,7 @@ public class RightHipAbduction extends BaseActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        rightAbductionM = findViewById(R.id.AbductionM);
+        rightAbductionM = findViewById(R.id.leftRotation);
         LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 

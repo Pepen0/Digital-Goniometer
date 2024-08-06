@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting up Buttons
         BluetoothButton.setOnClickListener(v -> {
-            String deviceAddress = "73:B3:B7:66:20:70";
+            String deviceAddress = "F7:93:D0:8D:99:4A";
             bleManager.connectToDevice(deviceAddress);
         });
 
