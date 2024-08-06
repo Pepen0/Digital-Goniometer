@@ -28,7 +28,7 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class DataExtractionActivity extends AppCompatActivity {
+public class DataExtractionActivity extends BaseActivity {
 
     private static final int REQUEST_CODE = 1;
     private DatabaseHelper dbHelper;
