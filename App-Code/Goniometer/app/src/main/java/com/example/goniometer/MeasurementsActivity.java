@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
@@ -86,6 +88,7 @@ public class MeasurementsActivity extends AppCompatActivity {
                 displayList.addAll(typeMeasurements);
             }
 
+            // Set the adapter only if there are measurements to display
             adapter = new MeasurementsAdapter(this, displayList);
             listViewMeasurements.setAdapter(adapter);
 
@@ -93,7 +96,6 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Error displaying measurements", e);
         }
     }
-
 
     private class MeasurementsAdapter extends ArrayAdapter<Object> {
 
