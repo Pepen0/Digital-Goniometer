@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeasurementsActivity extends AppCompatActivity {
+public class MeasurementsActivity extends BaseActivity {
 
     private static final String TAG = "MeasurementsActivity";
     private ListView listViewMeasurements;
@@ -51,6 +51,7 @@ public class MeasurementsActivity extends AppCompatActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
+    setupToolbar();
     }
 
     private void displayMeasurements(long patientId) {

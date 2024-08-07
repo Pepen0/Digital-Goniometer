@@ -78,6 +78,7 @@ public class DataExtractionActivity extends BaseActivity {
         if (textViewCSVData == null) {
             Log.e("MainActivity", "Data in TextView is null");
         }
+        setupToolbar();
 
     }
 
