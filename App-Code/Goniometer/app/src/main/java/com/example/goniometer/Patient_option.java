@@ -70,7 +70,7 @@ public class Patient_option extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_patient_option, container, false);
 
         TextView textViewPatientDetails = view.findViewById(R.id.textViewPatientDetails);
-        textViewPatientDetails.setText("Patient Option                  ");
+        textViewPatientDetails.setText("  Patient "+patient.getId()+" Option                  ");
 
         Button buttonDelete = view.findViewById(R.id.buttonDelete);
         Button buttonAssessment = view.findViewById(R.id.buttonAssessment);
