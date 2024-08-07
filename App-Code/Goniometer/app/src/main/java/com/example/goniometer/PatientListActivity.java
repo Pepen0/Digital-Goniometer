@@ -1,6 +1,8 @@
 package com.example.goniometer;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,6 +43,18 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
             dialogFragment.show(getSupportFragmentManager(), "NewPatientDialogFragment");
         });
 
+        //can you fix this for me ?
+        FloatingActionButton downloadbtn = findViewById(R.id.downloadbutton);
+        downloadbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToExtractCSVPage();
+            }
+        });
+
+
+
+
         listViewPatients.setOnItemClickListener((parent, view, position, id) -> {
             Patient selectedPatient = (Patient) parent.getItemAtPosition(position);
             Patient_option dialogFragment = Patient_option.newInstance(selectedPatient, position);
@@ -58,5 +72,9 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
     @Override
     public void onPatientDeleted(int position) {
         adapter.removePatient(position);
+    }
+    private void goToExtractCSVPage() {
+        Intent intent = new Intent(this, DataExtractionActivity.class);
+        startActivity(intent);
     }
 }

@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.opencsv.CSVWriter;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,9 +61,10 @@ public class DataExtractionActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 exportToCSV();
+                Toast.makeText(getApplicationContext(), "Patient List Download Complete", Toast.LENGTH_SHORT).show();
             }
-
         });
+
 
         Button buttonShowPatientData = findViewById(R.id.buttonShowPatientData);
         buttonShowPatientData.setOnClickListener(new View.OnClickListener() {
