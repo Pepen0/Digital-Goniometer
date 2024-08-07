@@ -1,0 +1,108 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject",
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "",
+    "removeByAnnotation": "",
+    "removeByClassPackage": "",
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true,
+    "onlyShowApplicationEntryPoints": false,
+    "useMethodCallsForStructureDiagram": "ForwardOnly"
+  },
+  "details": {
+    "aggregation": "GroupByClass",
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.goniometer.DataExtractionActivity",
+  "extensionCallbackMethod": ""
+}
+diagram meta data end '/
+
+package "Goniometer.ExtractData" {
+
+  class DataExtractionActivity {
+    - dbHelper: DatabaseHelper [0..1]
+    - textViewCSVData: TextView [0..1]
+    --
+    - createCSVFileUri(context: Context, fileName: String): Uri
+    - exportToCSV()
+    # onCreate(savedInstanceState: Bundle)
+    - showCSVPatients()
+  }
+
+  class DatabaseHelper {
+    + addMeasurement(patientId: long, measurementType: String, leftAngle: int, rightAngle: int, timestamp: String): long
+    + addPatient(firstName: String, lastName: String): long
+    + deletePatient(patientId: long)
+    + getInstance(context: Context): DatabaseHelper
+    + getMeasurementsForPatient(patientId: long): List<Measurement>
+    + getPatientNameById(patientId: long): String
+    + onCreate(db: SQLiteDatabase)
+    + onUpgrade(db: SQLiteDatabase, oldVersion: int, newVersion: int)
+  }
+
+  class BaseActivity {
+  }
+
+  BaseActivity <|-- DataExtractionActivity
+  DataExtractionActivity --> DatabaseHelper : dbHelper [0..1]
+}
+
+@enduml
