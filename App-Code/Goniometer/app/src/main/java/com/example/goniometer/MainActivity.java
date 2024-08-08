@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +71,7 @@ public class MainActivity extends AppCompatActivity {
             bleManager.connectToDevice(deviceAddress);
         });
 
-        buttonPatientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToPatientPage();
-            }
-        });
+        buttonPatientButton.setOnClickListener(v -> goToPatientPage());
 
     }
 
@@ -94,17 +88,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToAssessmentActivity() {
-        Intent intent = new Intent(this, AssessmentActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToExtractCSVPage() {
-        Intent intent = new Intent(this, DataExtractionActivity.class);
-        startActivity(intent);
-    }
-
     private boolean hasPermissions() {
+        // Checks if the user have provided the needed Permissions
         return ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this,
@@ -115,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
+        // Will Request the user to Provide the permissions in case they are not
+        // provided
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.BLUETOOTH_CONNECT,
@@ -124,12 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // Check if the user successfully provided the Permissions
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSIONS) {
             if (hasPermissions()) {
-                // Permissions granted
+                Toast.makeText(this, "Permissions Granted", Toast.LENGTH_SHORT).show();
             } else {
+                Toast.makeText(this, "Permissions Are Required To Run This Application", Toast.LENGTH_SHORT).show();
                 // Permissions not granted
+                System.exit(1);
             }
         }
     }

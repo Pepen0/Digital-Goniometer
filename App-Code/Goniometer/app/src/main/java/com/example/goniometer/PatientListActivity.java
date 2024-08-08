@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -30,7 +28,7 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            Newpatient dialogFragment = new Newpatient();
+            NewPatient dialogFragment = new NewPatient();
             dialogFragment.setOnNewPatientListener((firstName, lastName) -> {
                 long id = dbHelper.addPatient(firstName, lastName);
                 if (id != -1) {

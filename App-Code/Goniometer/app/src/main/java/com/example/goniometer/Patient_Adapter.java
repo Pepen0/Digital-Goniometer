@@ -37,13 +37,10 @@ public class Patient_Adapter extends ArrayAdapter<Patient> {
         if (patient != null) {
             textViewPatientName.setText(patient.getFirstName() + " " + patient.getLastName() + "\nID: " + patient.getId());
 
-            buttonOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Launch the dialog to choose an action
-                    Patient_option dialogFragment = Patient_option.newInstance(patient, position);
-                    dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "Patient_option");
-                }
+            buttonOptions.setOnClickListener(v -> {
+                // Launch the dialog to choose an action
+                Patient_option dialogFragment = Patient_option.newInstance(patient, position);
+                dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "Patient_option");
             });
         }
 
