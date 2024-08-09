@@ -16,6 +16,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button BluetoothButton;
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
-
+    protected ImageButton SettingsButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupUI() {
         BluetoothButton = findViewById(R.id.bluetoothButton);
         buttonPatientButton = findViewById(R.id.buttonPatientButton);
+        SettingsButton = findViewById(R.id.SettingsButton);
         bleManager = new BLEManager(this);
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonPatientButton.setOnClickListener(v -> goToPatientPage());
+        SettingsButton.setOnClickListener(v -> goToSettingsPage() );
     }
 
     @Override
@@ -85,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToPatientPage() {
         Intent intent = new Intent(this, PatientListActivity.class);
+        startActivity(intent);
+    }
+    private void goToSettingsPage(){
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
