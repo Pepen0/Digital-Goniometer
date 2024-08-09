@@ -16,17 +16,20 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeviceAddress.SetDeviceAddress {
 
     protected Button buttonPatientButton;
     protected Button BluetoothButton;
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
     protected ImageButton SettingsButton;
+    public String deviceAddress = "F7:93:D0:8D:99:4A";
+    public String InputAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupUI() {
         BluetoothButton = findViewById(R.id.bluetoothButton);
         buttonPatientButton = findViewById(R.id.buttonPatientButton);
-        SettingsButton = findViewById(R.id.SettingsButton);
         bleManager = new BLEManager(this);
         bleManager.setConnectionCallback(new BLEManager.ConnectionCallback() {
             @Override
@@ -71,12 +73,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting up Buttons
         BluetoothButton.setOnClickListener(v -> {
-            String deviceAddress = "F7:93:D0:8D:99:4A";
-            bleManager.connectToDevice(deviceAddress);
+            if(InputAddress == null){
+                DialogDeviceAddress();
+            } else if (InputAddress.equals(deviceAddress)) {
+                bleManager.connectToDevice(InputAddress);
+            }else{
+                Toast.makeText(this,"Invalid input Try Again", Toast.LENGTH_SHORT).show();
+                DialogDeviceAddress();
+            }
+
         });
 
         buttonPatientButton.setOnClickListener(v -> goToPatientPage());
-        SettingsButton.setOnClickListener(v -> goToSettingsPage() );
     }
 
     @Override
@@ -89,10 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToPatientPage() {
         Intent intent = new Intent(this, PatientListActivity.class);
-        startActivity(intent);
-    }
-    private void goToSettingsPage(){
-        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
@@ -159,5 +163,16 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         });
         builder.show();
+    }
+    private void DialogDeviceAddress(){
+        DeviceAddress deviceAddressDialog = new DeviceAddress();
+        deviceAddressDialog.SetDeviceAddress(this);
+        deviceAddressDialog.show(getSupportFragmentManager(), "DeviceAddressDialog");
+    }
+
+    @Override
+    public void OnAddressChange(String PhysicalAddress) {
+        InputAddress =PhysicalAddress;
+        Toast.makeText(this, "Device Address Changed" + PhysicalAddress, Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,25 +3,26 @@ package com.example.goniometer;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NewPatient extends DialogFragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
-    private OnNewPatientListener listener;
+public class DeviceAddress extends DialogFragment {
+    private String PhysicalAddress;
+    private DeviceAddress.SetDeviceAddress listener;
 
-    public interface OnNewPatientListener {
-        void onNewPatient(String firstName, String lastName);
+    public interface SetDeviceAddress {
+        void OnAddressChange(String PhysicalAddress);
     }
 
-    public void setOnNewPatientListener(OnNewPatientListener listener) {
+    public void SetDeviceAddress(DeviceAddress.SetDeviceAddress listener) {
         this.listener = listener;
     }
 
@@ -32,10 +33,9 @@ public class NewPatient extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.newpatient, null);
+        View dialogView = inflater.inflate(R.layout.activity_device_address, null);
 
-        final EditText editTextFirstName = dialogView.findViewById(R.id.DeviceAddressEditText);
-        final EditText editTextLastName = dialogView.findViewById(R.id.editTextPatientlastName);
+        final EditText DeviceAddressEditText = dialogView.findViewById(R.id.DeviceAddressEditText);
 
         // Inflate the custom title view
         View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
@@ -54,17 +54,17 @@ public class NewPatient extends DialogFragment {
             if (positiveButton != null) {
                 positiveButton.setTextColor(Color.parseColor("#008B8B")); // Set text color
                 positiveButton.setOnClickListener(v -> {
-                    String firstName = editTextFirstName.getText().toString().trim();
-                    String lastName = editTextLastName.getText().toString().trim();
+                    PhysicalAddress = DeviceAddressEditText.getText().toString().trim();
 
-                    if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                    if (!PhysicalAddress.isEmpty()) {
                         if (listener != null) {
-                            listener.onNewPatient(firstName, lastName);
+                            listener.OnAddressChange(PhysicalAddress);
                             dismiss();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Please enter both first and last name.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please enter The Device Address.", Toast.LENGTH_SHORT).show();
                     }
+
                 });
             }
 
@@ -79,4 +79,3 @@ public class NewPatient extends DialogFragment {
 
 
 }
-
