@@ -2,10 +2,12 @@ package com.example.goniometer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,14 +35,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        setContentView(R.layout.activity_main);
 
         // Check and request permissions
-        if (!hasPermissions()) {
+        if (hasPermissions()) {
+            setupUI();
+        } else {
             requestPermissions();
         }
-        setupUI();
-
     }
 
     private void setupUI() {
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonPatientButton.setOnClickListener(v -> goToPatientPage());
-
     }
 
     @Override
@@ -114,14 +114,42 @@ public class MainActivity extends AppCompatActivity {
         // Check if the user successfully provided the Permissions
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSIONS) {
-            if (hasPermissions()) {
+            boolean PermissionsGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    PermissionsGranted = false;
+                    break;
+                }
+            }
+            if (PermissionsGranted) {
                 Toast.makeText(this, "Permissions Granted", Toast.LENGTH_SHORT).show();
+                setupUI();
             } else {
-                Toast.makeText(this, "Permissions Are Required To Run This Application", Toast.LENGTH_SHORT).show();
                 // Permissions not granted
-                System.exit(1);
+                // Send user to application settings so the user provide the permissions
+                GoToSettingsDialog();
+
             }
         }
     }
 
+    private void GoToSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissions Confirmation");
+        builder.setMessage(
+                "Location and Bluetooth Permissions are required to make this application function well please provide both nearby devices and location permissions");
+        // implementation of Yes, No choices and what action it does
+        builder.setPositiveButton("GoToSettings", (dialog, which) -> {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(android.net.Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+            System.exit(1);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            GoToSettingsDialog();
+            Toast.makeText(MainActivity.this, "Please Provide the permission or the application wont work properly",
+                    Toast.LENGTH_SHORT).show();
+        });
+        builder.show();
+    }
 }
