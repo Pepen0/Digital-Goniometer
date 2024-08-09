@@ -2,7 +2,6 @@ package com.example.goniometer;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
-
-import java.io.Serializable;
 
 public class Patient_option extends DialogFragment {
 
@@ -58,13 +55,19 @@ public class Patient_option extends DialogFragment {
         }
     }
 
+    private boolean hasMeasurements(long patientId) {
+        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+        List<Measurement> measurements = dbHelper.getMeasurementsForPatient(patientId);
+        return measurements != null && !measurements.isEmpty();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patient_option, container, false);
 
         TextView textViewPatientDetails = view.findViewById(R.id.textViewPatientDetails);
-        textViewPatientDetails.setText("Patient Option                  ");
+        textViewPatientDetails.setText("  Patient " + patient.getId() + " Option                  ");
 
         Button buttonDelete = view.findViewById(R.id.buttonDelete);
         Button buttonAssessment = view.findViewById(R.id.buttonAssessment);
@@ -93,13 +96,17 @@ public class Patient_option extends DialogFragment {
         });
 
         buttonMeasurements.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MeasurementsActivity.class);
-            intent.putExtra("PATIENT_ID", patient.getId()); // Pass patient ID
-            startActivity(intent);
+            long patientId = patient.getId(); // Get the patient ID
+            if (hasMeasurements(patientId)) {
+                Intent intent = new Intent(getActivity(), MeasurementsActivity.class);
+                intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
+                startActivity(intent);
+            } else {
+                Toast.makeText(getContext(), "Patient has no records", Toast.LENGTH_SHORT).show();
+            }
             dismiss();
         });
 
         return view;
     }
 }
-

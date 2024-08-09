@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -61,23 +60,25 @@ public class HeadRotation extends BaseActivity {
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.rightRotation);
-        RightM = findViewById(R.id.AbductionM);
+        LeftM = findViewById(R.id.leftRotation);
+        RightM = findViewById(R.id.rightRotation);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
+            //Filter the received data according to the Angle's signal (-/+)
             if (Yaw < 0 && (Yaw + maxRight < 0) && isMeasuring) {
                 maxRight = -Yaw;
             }
             if (Yaw > 0 && (Yaw-maxLeft > 0) && isMeasuring) {
                 maxLeft = Yaw;
             }
-            if (Debug.equals("Reset")) {
+            if (Debug.equals("Reset")) { //Check if Arduino have send a command "Reset"
+                                        //To indicate the values were reset and set the textViews to 0
                 maxLeft = 0;
                 maxRight = 0;
             }
-            LeftM.setText("Left Rotation: " + maxLeft);
+            LeftM.setText("Left Rotation: " + maxLeft); //set the TextView with the maxLeft value
             RightM.setText("Right Rotation: " + maxRight);
             Livedata.setText("Yaw: "+ Yaw);
        }));
@@ -90,6 +91,7 @@ public class HeadRotation extends BaseActivity {
                         "Are you sure you want to start a new measurement?",
                         "Yes",()-> {
                             isMeasuring = true;
+                            //Send command to arduino to reset values to 0
                             bleManager.sendDataToArduino("Reset data");
                             Log.d("Reset command sent", "Reset data");
                             StartButton.setText("STOP");

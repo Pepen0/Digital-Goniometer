@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FunctionsController {
-
+//This Class will Generalize these Methods to be used in all measurements
     public static void askForConfirmation(Context context, String title, String Dialog, String yesButton, Runnable onPositive) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);

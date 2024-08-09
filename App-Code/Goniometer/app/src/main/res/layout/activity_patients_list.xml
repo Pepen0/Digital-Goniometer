@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_background_gradient">
+
     <include
         layout="@layout/toolbar"
-        android:elevation="4dp"
-        />
-
+        android:elevation="4dp" />
 
     <ListView
         android:id="@+id/listViewPatients"
@@ -21,6 +20,7 @@
         android:textColor="#FFFFFF"
         android:visibility="visible" />
 
+    <!-- First Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -31,6 +31,19 @@
         app:backgroundTint="@color/white"
         android:contentDescription="@string/fab_transformation_scrim_behavior"
         app:srcCompat="@drawable/ic_add"
+        app:tint="@color/cyan" />
+
+    <!-- Second Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/downloadbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/white"
+        android:contentDescription="@string/fab_transformation_scrim_behavior"
+        app:srcCompat="@drawable/baseline_download_24"
         app:tint="@color/cyan" />
 
 </RelativeLayout>

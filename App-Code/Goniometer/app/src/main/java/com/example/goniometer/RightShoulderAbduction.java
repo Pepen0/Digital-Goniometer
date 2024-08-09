@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -53,7 +52,7 @@ public class RightShoulderAbduction extends BaseActivity{
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        RightAbductionM = findViewById(R.id.AbductionM);
+        RightAbductionM = findViewById(R.id.leftRotation);
         LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 

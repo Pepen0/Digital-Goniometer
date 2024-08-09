@@ -236,13 +236,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
-
-
     public List<Measurement> getMeasurementsForPatient(long patientId) {
         List<Measurement> measurementList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_MEASUREMENTS + " WHERE " + KEY_PATIENT_ID + " = " + patientId;
@@ -305,6 +298,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return measurementList;
+    }
+
+    public Cursor getCSVData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PATIENTS;
+        return db.rawQuery(query, null);
     }
 
 }
