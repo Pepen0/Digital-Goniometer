@@ -1,4 +1,5 @@
 package com.example.goniometer;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MeasurementsActivity extends BaseActivity {
             Log.e(TAG, "Invalid patient ID: " + patientId);
             textViewPatientId.setText("Patient not found");
         }
-    setupToolbar();
+        setupToolbar();
     }
 
     private void displayMeasurements(long patientId) {

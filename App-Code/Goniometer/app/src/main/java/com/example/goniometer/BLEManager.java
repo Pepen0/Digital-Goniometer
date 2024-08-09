@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class BLEManager {
+    //This class will Take care of communication between arduino and our application
     private static final String TAG = "IMU Sensor";
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
@@ -43,6 +44,7 @@ public class BLEManager {
     private static BLEManager instance;
 
     public static BLEManager getInstance() {
+        //Returns the instance of BLEManager
         if (instance == null) {
             throw new IllegalStateException("BLEManager not initialized");
         }
@@ -67,6 +69,8 @@ public class BLEManager {
     }
 
     public void connectToDevice(String deviceAddress) {
+        //initiate a connection to the BLE using the bluetooth physical address of the arduino
+        // to provide a secure connection
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         bluetoothGatt = device.connectGatt(context, false, gattCallback);
     }
@@ -74,6 +78,7 @@ public class BLEManager {
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            //This Methode will handle the bluetooth changes and display it for the user
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(TAG, "Connected to GATT server.");
                 bluetoothGatt.discoverServices();
@@ -92,6 +97,7 @@ public class BLEManager {
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            //This Methode will handle service discovery and retrieve the data/notifications sent from arduino
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 BluetoothGattService service = gatt.getService(SERVICE_UUID);
                 if (service != null) {
@@ -114,6 +120,7 @@ public class BLEManager {
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            //This Methode will check for characteristic updates
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
@@ -121,6 +128,7 @@ public class BLEManager {
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
+                        //This will Parse the data and split the retrieved string data into the needed values
                         for (int i = 0; i < Variables.length; i++) {
                             Variables[i] = Variables[i].replaceAll(",", "");
                         }
@@ -166,6 +174,7 @@ public class BLEManager {
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.d(TAG, "Arduino resetting data");
             } else {
@@ -184,6 +193,8 @@ public class BLEManager {
     }
 
     public void sendDataToArduino(String data) {
+        //This Methode will send a command to reset data to arduino
+        //This will be called and provided with String "Reset data" whenever we start a new measurement
         if (characteristic != null) {
             characteristic.setValue(data);
             boolean success = bluetoothGatt.writeCharacteristic(characteristic);
@@ -196,8 +207,4 @@ public class BLEManager {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
     }
-
-   // public boolean isConnected() {
-      //  return isConnected;
-    //}
 }

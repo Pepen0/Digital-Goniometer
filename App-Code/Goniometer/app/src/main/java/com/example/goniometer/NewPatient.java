@@ -1,7 +1,6 @@
 package com.example.goniometer;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -14,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Newpatient extends DialogFragment {
+public class NewPatient extends DialogFragment {
 
     private OnNewPatientListener listener;
 
