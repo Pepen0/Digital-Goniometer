@@ -38,8 +38,8 @@ public class AssessmentActivity extends BaseActivity {
         setupToolbar();
     }
 
+    //Setup the user interface including buttons and textViews functionality
     private void setupUI() {
-        // Initialize Buttons
         buttonHeadRotation = findViewById(R.id.buttonHeadRotation);
         buttonLeftArmRotation = findViewById(R.id.buttonLeftArm);
         buttonRightArmRotation = findViewById(R.id.buttonRightArm);
@@ -58,41 +58,50 @@ public class AssessmentActivity extends BaseActivity {
         LeftElbow.setOnClickListener(v -> goToLeftElbow());
 
     }
+
+    //Navigate to RightElbow measurement
     private void goToRightElbow(){
         Intent intent = new Intent(this, RightElbow.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
+
+    //Navigate to LeftElbow measurement
     private void goToLeftElbow(){
         Intent intent = new Intent(this, LeftElbow.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
+    //Navigate to HeadRotation measurement
     private void goToHeadRotation() {
         Intent intent = new Intent(this, HeadRotation.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
+    //Navigate to LeftShoulderAbduction measurement
     private void goToLeftShoulderAbduction() {
         Intent intent = new Intent(this, LeftShoulderAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
+    //Navigate to RightShoulderAbduction measurement
     private void goToRightShoulderAbduction() {
         Intent intent = new Intent(this, RightShoulderAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
+    //Navigate to LeftHipAbduction measurement
     private void goToLeftHipAbduction() {
         Intent intent = new Intent(this, LeftHipAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID
         startActivity(intent);
     }
 
+    //Navigate to RightHipAbduction measurement
     private void goToRightHipAbduction() {
         Intent intent = new Intent(this, RightHipAbduction.class);
         intent.putExtra("PATIENT_ID", patientId); // Pass patient ID

@@ -3,6 +3,7 @@ package com.example.goniometer;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ public class DeviceAddress extends DialogFragment {
     private String PhysicalAddress;
     private DeviceAddress.SetDeviceAddress listener;
 
+    //Callback interface to handle  address changes
     public interface SetDeviceAddress {
         void OnAddressChange(String PhysicalAddress);
     }
@@ -36,7 +38,7 @@ public class DeviceAddress extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.activity_device_address, null);
 
         final EditText DeviceAddressEditText = dialogView.findViewById(R.id.DeviceAddressEditText);
-
+        DeviceAddressEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(17)});
         // Inflate the custom title view
         View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
 
@@ -56,13 +58,12 @@ public class DeviceAddress extends DialogFragment {
                 positiveButton.setOnClickListener(v -> {
                     PhysicalAddress = DeviceAddressEditText.getText().toString().trim();
 
-                    if (!PhysicalAddress.isEmpty()) {
-                        if (listener != null) {
-                            listener.OnAddressChange(PhysicalAddress);
-                            dismiss();
+                    if (validInput(PhysicalAddress)) {
+                            listener.OnAddressChange(PhysicalAddress); //Notify listener of the new address
+                            dismiss(); //close the dialog
                         }
-                    } else {
-                        Toast.makeText(getActivity(), "Please enter The Device Address.", Toast.LENGTH_SHORT).show();
+                     else {
+                        Toast.makeText(getActivity(), "Invalid address format", Toast.LENGTH_SHORT).show();
                     }
 
                 });
@@ -74,6 +75,11 @@ public class DeviceAddress extends DialogFragment {
         });
 
         return dialog;
+    }
+
+    //Check the physical address input if matches the provided pattern
+    public static boolean validInput(String address){
+        return address != null && address.matches("^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$");
     }
 
 
