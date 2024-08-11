@@ -40,8 +40,7 @@ public class DeviceAddress extends DialogFragment {
         final EditText DeviceAddressEditText = dialogView.findViewById(R.id.DeviceAddressEditText);
         DeviceAddressEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(17)});
         // Inflate the custom title view
-        View customTitleView = inflater.inflate(R.layout.custom_dialog_title, null);
-
+        View customTitleView = inflater.inflate(R.layout.custom_dialog_title2, null);
         builder.setView(dialogView)
                 .setCustomTitle(customTitleView) // Set custom title view
                 .setPositiveButton("Save", null) // Set to null initially
