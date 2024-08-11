@@ -43,7 +43,7 @@ def process_imu_data(acc_data, gyro_data, dt_data):
     roll, pitch, yaw = 0, 0, 0
 
     # Ensure dt_data is in seconds if it's not already
-    dt_data = dt_data / 1000  # Uncomment this line if dt values are in milliseconds
+    # dt_data = dt_data / 1000  # Uncomment this line if dt values are in milliseconds
 
     # Process each set of data
     for i, ((acc, gyro, dt)) in enumerate(zip(acc_data, gyro_data, dt_data)):
