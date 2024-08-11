@@ -167,7 +167,18 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
             Toast.makeText(MainActivity.this, "Please Provide the permission or the application wont work properly",
                     Toast.LENGTH_SHORT).show();
         });
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //Change the style of the buttons
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if(positiveButton != null){
+            positiveButton.setTextColor(ContextCompat.getColor(this, R.color.cyan));
+        }
+        if(negativeButton != null){
+            negativeButton.setTextColor(ContextCompat.getColor(this, R.color.cyan));
+        }
     }
 
     //show a dialog to enter the device's physical address

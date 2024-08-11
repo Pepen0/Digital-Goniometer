@@ -1,6 +1,5 @@
 package com.example.goniometer;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.List;
@@ -74,20 +74,22 @@ public class Patient_option extends DialogFragment {
         Button buttonDelete = view.findViewById(R.id.buttonDelete);
         Button buttonAssessment = view.findViewById(R.id.buttonAssessment);
         Button buttonMeasurements = view.findViewById(R.id.buttonMeasurements);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete Patient");
+        builder.setMessage("Are you sure you want to delete this patient?");
 
         buttonDelete.setOnClickListener(v -> {
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Delete Patient")
-                    .setMessage("Are you sure you want to delete this patient?")
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+            FunctionsController.askForConfirmation(getContext(),
+                    "Delete Patient",
+                    "Are you sure you want to delete this patient?",
+                    "yes", ()-> {
                         DatabaseHelper dbHelper = new DatabaseHelper(getContext());
                         dbHelper.deletePatient(patient.getId());
                         callback.onPatientDeleted(position);
                         Toast.makeText(getContext(), "Patient deleted", Toast.LENGTH_SHORT).show();
-                        dismiss();
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
+                        getDialog().dismiss();
+                    });
+
         });
 
         buttonAssessment.setOnClickListener(v -> {

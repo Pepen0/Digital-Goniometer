@@ -42,7 +42,7 @@ public class NewPatient extends DialogFragment {
 
         builder.setView(dialogView)
                 .setCustomTitle(customTitleView) // Set custom title view
-                .setPositiveButton("Save", null) // Set to null initially
+                .setPositiveButton("Add", null) // Set to null initially
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()); // Dismiss on cancel
 
         AlertDialog dialog = builder.create();
