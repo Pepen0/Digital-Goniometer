@@ -34,7 +34,7 @@ public class NewPatient extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.newpatient, null);
 
-        final EditText editTextFirstName = dialogView.findViewById(R.id.editTextPatientName);
+        final EditText editTextFirstName = dialogView.findViewById(R.id.DeviceAddressEditText);
         final EditText editTextLastName = dialogView.findViewById(R.id.editTextPatientlastName);
 
         // Inflate the custom title view

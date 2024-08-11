@@ -11,21 +11,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//This Class will provide utility Methods to be used in all measurements
 public class FunctionsController {
-//This Class will Generalize these Methods to be used in all measurements
+
+    //Displays a confirmation dialog to the user for all measurements
     public static void askForConfirmation(Context context, String title, String Dialog, String yesButton, Runnable onPositive) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(Dialog);
-        //implementation of Yes, No choices and what action it does
+
+        //Configure the positive button
         builder.setPositiveButton(yesButton, (dialog, which) -> {
             if(onPositive != null){
                 onPositive.run();
             }
         });
+
+        //Configure the negative button
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         builder.show();
     }
+
+//Save measurements to database with these specific parameters
     public static void saveMeasurement(Context context,
                                  DatabaseHelper dbHelper,
                                  long patientId,
@@ -46,6 +53,8 @@ public class FunctionsController {
         } else {
             Toast.makeText(context, "Failed to save measurement", Toast.LENGTH_SHORT).show();
         }
+
+        //Hide the save button after saving
         SaveButton.setVisibility(View.GONE);
     }
 }

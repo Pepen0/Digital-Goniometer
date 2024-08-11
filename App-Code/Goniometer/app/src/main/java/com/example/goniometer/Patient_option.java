@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
+import java.util.List;
+
 public class Patient_option extends DialogFragment {
 
     private static final String ARG_PATIENT = "patient";

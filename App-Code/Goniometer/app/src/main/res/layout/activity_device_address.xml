@@ -9,21 +9,16 @@
         android:id="@+id/DeviceAddressEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Patient Name" />
-    <EditText
-        android:id="@+id/editTextPatientlastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Patient last name" />
+        android:hint="eg. xx:xx:xx:xx:xx:xx"
+        android:textSize="14sp" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="16dp"
-        android:gravity="end">
-
+        android:gravity="end"
+        android:orientation="horizontal">
 
 
     </LinearLayout>
