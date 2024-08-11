@@ -5,13 +5,21 @@ import matplotlib.pyplot as plt
 gyroSensitivity = 0.0175
 
 
-# Simulated reading function
+# Simulation of reading sensor data from files
 def read_sensor_data(file_name):
     try:
-        data = np.loadtxt(file_name, delimiter=",")
+        # Reading the files assuming that they contain headers or unique formatting shown in the screenshots
+        if "gyroscope" in file_name or "acceleration" in file_name:
+            data = np.loadtxt(
+                file_name, delimiter=" ", usecols=(1, 3, 5)
+            )  # Adjust column indices based on your file format
+        elif "dt" in file_name:
+            data = np.loadtxt(
+                file_name, delimiter=":", usecols=[1]
+            )  # Adjust column index for dt values
         return data
     except Exception as e:
-        print(f"Failed to read {file_name}: {e}")
+        print(f"Error reading {file_name}: {e}")
         return None
 
 
