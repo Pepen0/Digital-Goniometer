@@ -2,6 +2,8 @@ package com.example.goniometer;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+
 import android.content.Context;
 
 import android.widget.Button;
@@ -29,7 +31,18 @@ public class FunctionsController {
 
         //Configure the negative button
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //Change the style of the buttons
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if(positiveButton != null){
+            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.cyan));
+        }
+        if(negativeButton != null){
+            negativeButton.setTextColor(ContextCompat.getColor(context, R.color.cyan));
+        }
     }
 
 //Save measurements to database with these specific parameters
