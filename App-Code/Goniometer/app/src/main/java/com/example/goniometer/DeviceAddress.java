@@ -58,6 +58,7 @@ public class DeviceAddress extends DialogFragment {
                     PhysicalAddress = DeviceAddressEditText.getText().toString().trim();
 
                     if (validInput(PhysicalAddress)) {
+                        MainActivity.BluetoothButton.setText("Connect to Device");
                             listener.OnAddressChange(PhysicalAddress); //Notify listener of the new address
                             dismiss(); //close the dialog
                         }

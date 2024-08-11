@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements DeviceAddress.SetDeviceAddress {
 
     protected Button buttonPatientButton;
-    protected Button BluetoothButton;
+    public static Button BluetoothButton;
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
     public String InputAddress;
@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
             // it will check for the same pattern
             if(!DeviceAddress.validInput(InputAddress)){
                 DialogDeviceAddress();
-                BluetoothButton.setText("Connect to Device");
 
             }else{
 
                 //connect to device that holds a specific physical address
+
                 bleManager.connectToDevice(InputAddress);
             }
 
