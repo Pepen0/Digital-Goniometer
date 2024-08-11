@@ -9,7 +9,7 @@
         android:id="@+id/DeviceAddressEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Device Address(Pattern xx:xx:xx:xx:xx:xx)"
+        android:hint="eg. xx:xx:xx:xx:xx:xx"
         android:textSize="14sp" />
 
 
