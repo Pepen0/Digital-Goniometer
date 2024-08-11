@@ -74,8 +74,10 @@ public class HeadRotation extends BaseActivity {
             if (Yaw > 0 && (Yaw-maxLeft > 0) && isMeasuring) {
                 maxLeft = Yaw;
             }
-            if (Debug.equals("Reset")) {  //Check if Arduino sent a "Reset" command (debug)
-                //To indicate the values were reset and set the textViews to 0
+
+            //Check if Arduino sent a "Reset" command (debug)
+            //To indicate the values were reset and set the textViews to 0
+            if (Debug.equals("Reset")) {
                 maxLeft = 0;
                 maxRight = 0;
             }

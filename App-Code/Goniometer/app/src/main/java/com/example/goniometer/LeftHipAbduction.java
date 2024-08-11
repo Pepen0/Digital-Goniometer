@@ -70,8 +70,10 @@ public class LeftHipAbduction extends BaseActivity {
             if (Roll < 0 && (Roll + AbductionMax < 0) && isMeasuring) {
                 AbductionMax = -Roll;
             }
-            if (Debug.equals("Reset")){  //Check if Arduino sent a "Reset" command (debug)
-                //To indicate the values were reset and set the textViews to 0
+
+            //Check if Arduino sent a "Reset" command (debug)
+            //To indicate the values were reset and set the textViews to 0
+            if (Debug.equals("Reset")){
                 AbductionMax = 0;
             }
 

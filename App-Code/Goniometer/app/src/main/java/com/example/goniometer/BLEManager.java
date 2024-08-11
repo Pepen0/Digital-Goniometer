@@ -42,7 +42,7 @@ public class BLEManager {
 
     public interface ConnectionCallback {
 
-        //call back for connection state changes
+        //callback for connection state changes
         void onConnected();
 
         void onDisconnected();
@@ -50,14 +50,15 @@ public class BLEManager {
 
     private static BLEManager instance;
 
+    //Returns the instance of BLEManager
     public static BLEManager getInstance() {
-        //Returns the instance of BLEManager
         if (instance == null) {
             throw new IllegalStateException("BLEManager not initialized");
         }
         return instance;
     }
 
+    //BLEManager Constructor
     public BLEManager(Context context) {
         this.context = context;
         BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -75,9 +76,8 @@ public class BLEManager {
         this.connectionCallback = callback;
     }
 
+    //initiate a connection to the BLE using the bluetooth physical address entered by the user
     public void connectToDevice(String deviceAddress) {
-        //initiate a connection to the BLE using the bluetooth physical address entered by the user
-        // to provide a secure connection
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         bluetoothGatt = device.connectGatt(context, false, gattCallback);
     }
@@ -85,7 +85,7 @@ public class BLEManager {
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
 
-        // Handle the bluetooth changes and display it for the user
+        // A method to handle the bluetooth changes and display it for the user
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -103,7 +103,7 @@ public class BLEManager {
                 }
             }
         }
-        //Handle service discovery and retrieve the data/notifications sent from arduino
+        //A method to handle service discovery and retrieve the data/notifications sent from arduino
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 
@@ -126,7 +126,7 @@ public class BLEManager {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-        //Handle characteristic value updates
+        //A method to handle characteristic value updates
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
 
@@ -138,7 +138,7 @@ public class BLEManager {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
 
-                        //This will Parse the data and split the retrieved string and removing "," from the string
+                        //This will Parse the data and split the retrieved string and remove "," from the string
                         for (int i = 0; i < Variables.length; i++) {
                             Variables[i] = Variables[i].replaceAll(",", "");
                         }
@@ -181,7 +181,7 @@ public class BLEManager {
                 }
             }
         }
-// Handle the result of a characteristic write operation
+        // A method handle the result of a characteristic write operation
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 

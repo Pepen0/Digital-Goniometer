@@ -14,14 +14,7 @@ import java.util.Locale;
 //This Class will provide utility Methods to be used in all measurements
 public class FunctionsController {
 
-    /**
-     * Displays a confirmation dialog to the user for all measurements
-     * @param context        In which context the dialog will be shown
-     * @param title          The tittle of the dialog
-     * @param Dialog         The message will be shown inside the dialog box
-     * @param yesButton      What is the positive button called
-     * @param onPositive     The action to be performed when user click on yesButton
-     */
+    //Displays a confirmation dialog to the user for all measurements
     public static void askForConfirmation(Context context, String title, String Dialog, String yesButton, Runnable onPositive) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
@@ -39,16 +32,7 @@ public class FunctionsController {
         builder.show();
     }
 
-    /**
-     * Saves measurements to the database and updates the UI
-     * @param context           In which context the toast will be shown
-     * @param dbHelper          The database helper to interact with the database
-     * @param patientId         The ID of the patient taking the measurement
-     * @param leftAngle         Left angle measurement results
-     * @param rightAngle        Right angle measurement results
-     * @param SaveButton        The button that will be hidden after saving
-
-     */
+//Save measurements to database with these specific parameters
     public static void saveMeasurement(Context context,
                                  DatabaseHelper dbHelper,
                                  long patientId,

@@ -73,8 +73,10 @@ public class LeftElbow extends BaseActivity {
           if (Pitch > 0 && (Pitch-maxLeftElbow > 0) && isMeasuring) {
               maxLeftElbow = Pitch;
           }
-          if (Debug.equals("Reset")){ //Check if Arduino sent a "Reset" command (debug)
-              //To indicate the values were reset and set the textViews to 0
+
+            //Check if Arduino sent a "Reset" command (debug)
+            //To indicate the values were reset and set the textViews to 0
+          if (Debug.equals("Reset")){
               maxLeftElbow = 0;
               maxRightElbow = 0;
           }

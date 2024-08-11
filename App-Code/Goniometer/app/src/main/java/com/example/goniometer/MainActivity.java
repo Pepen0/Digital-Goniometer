@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
     protected Button BluetoothButton;
     protected BLEManager bleManager;
     private static final int REQUEST_PERMISSIONS = 1001;
-    //public String deviceAddress = "F7:93:D0:8D:99:4A";
     public String InputAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +72,11 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
         BluetoothButton.setOnClickListener(v -> {
 
             //If address does not matches the pattern ask for correct entry
+            //This was our Arduino Bluetooth physical address "F7:93:D0:8D:99:4A". Therefore,
+            // it will check for the same pattern
             if(!DeviceAddress.validInput(InputAddress)){
                 DialogDeviceAddress();
+                BluetoothButton.setText("Connect to Device");
 
             }else{
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
         startActivity(intent);
     }
 
-    // Checks if the user have provided the needed Permissions
+    // Checks if the user have provided the necessary Permissions
     private boolean hasPermissions() {
         return ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -121,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
         }, REQUEST_PERMISSIONS);
     }
 
-//Check the result of request permission If granted the setup UI will run if not a dialog alert will force the user to go to settings and provide permissions
+//Check the result of request permission If granted the setup UI will run
+// if not a dialog alert will force the user to go to settings and provide permissions
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // Check if the user successfully provided the Permissions
@@ -146,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements DeviceAddress.Set
         }
     }
 
-//show an alert dialog to inform the user about required permissions and hold the package name to open the proper app settings
+//show an alert dialog to inform the user about required permissions and
+// hold the package name to open the proper app settings
     private void GoToSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permissions Confirmation");
