@@ -1,0 +1,546 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.goniometer.BaseActivity",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_27346463 { 
+   	label=goniometer
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   AssessmentActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AssessmentActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   LeftElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   RightElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonHeadRotation: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonLeftArmRotation: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonLeftHipAbduction: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonRightArmRotation: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonRightHipAbduction: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- goToHeadRotation()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToLeftElbow()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToLeftHipAbduction()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToLeftShoulderAbduction()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToRightElbow()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToRightHipAbduction()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToRightShoulderAbduction()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BLEManager250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BLEManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bluetoothAdapter: BluetoothAdapter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bluetoothGatt: BluetoothGatt [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   characteristic: BluetoothGattCharacteristic [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connectionCallback: ConnectionCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   context: Context [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataCallback: DataCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gattCallback: BluetoothGattCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isConnected: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ connectToDevice(deviceAddress: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ disconnect()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ sendDataToArduino(data: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BaseActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BaseActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   backButton: ImageButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   bluetoothStatus: ImageView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onBackPressed()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateUI(isConnected: boolean)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DataExtractionActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DataExtractionActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   textViewCSVData: TextView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- createCSVFileUri(context: Context, fileName: String): Uri</TD></TR>
+<TR><TD ALIGN="LEFT" >- exportToCSV()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" >- showCSVPatients()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DatabaseHelper250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DatabaseHelper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addMeasurement(patientId: long, measurementType: String, leftAngle: int, rightAngle: int, timestamp: String): long</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addPatient(firstName: String, lastName: String): long</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deletePatient(patientId: long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getInstance(context: Context): DatabaseHelper</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMeasurementsForPatient(patientId: long): List&lt;Measurement&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPatientNameById(patientId: long): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCreate(db: SQLiteDatabase)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onUpgrade(db: SQLiteDatabase, oldVersion: int, newVersion: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+FunctionsController250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)FunctionsController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ askForConfirmation(context: Context, title: String, Dialog: String, yesButton: String, onPositive: Runnable)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveMeasurement(context: Context, dbHelper: DatabaseHelper, patientId: long, measurementType: String, leftAngle: int, rightAngle: int, SaveButton: Button)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+HeadRotation250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HeadRotation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   LeftM: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   Livedata: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   RightM: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxLeft: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxRight: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+LeftElbow250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)LeftElbow</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   LeftMax: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveDataElbow: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   RightMax: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButtonElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButtonElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxLeftElbow: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxRightElbow: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+LeftHipAbduction250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)LeftHipAbduction</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   AbductionM: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   AbductionMax: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveRoll: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+LeftShoulderAbduction250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)LeftShoulderAbduction</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   AbductionM: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   AbductionMax: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveRoll: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MeasurementsActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MeasurementsActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   adapter: MeasurementsAdapter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   listViewMeasurements: ListView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- displayMeasurements(patientId: long)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MeasurementsAdapter229867270[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MeasurementsAdapter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getItemViewType(position: int): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getView(position: int, convertView: View, parent: ViewGroup): View</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Patient250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Patient</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   firstName: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   lastName: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PatientListActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PatientListActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   adapter: Patient_Adapter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   listViewPatients: ListView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- displayPatients()</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToExtractCSVPage()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPatientDeleted(position: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Patient_Adapter250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Patient_Adapter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   context: Context [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patients: List&lt;Patient&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getView(position: int, convertView: View, parent: ViewGroup): View</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removePatient(position: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Patient_option250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Patient_option</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   callback: OnPatientDeletedListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patient: Patient [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   position: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- hasMeasurements(patientId: long): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ newInstance(patient: Patient, position: int): Patient_option</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onAttach(context: Context)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RightElbow250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RightElbow</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   LeftMax: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveDataElbow: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   RightMax: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButtonElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButtonElbow: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxLeftElbow: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxRightElbow: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RightHipAbduction250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RightHipAbduction</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   AbductionMax: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveRoll: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   rightAbductionM: TextView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RightShoulderAbduction250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RightShoulderAbduction</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   AbductionMax: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   LiveRoll: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   RightAbductionM: TextView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   SaveButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   StartButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMeasuring: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   patientId: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+BaseActivity250490734 -> AssessmentActivity250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+BaseActivity250490734 -> DataExtractionActivity250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> HeadRotation250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> LeftElbow250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> LeftHipAbduction250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> LeftShoulderAbduction250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> MeasurementsActivity250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> PatientListActivity250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> RightElbow250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> RightHipAbduction250490734[arrowhead=none, arrowtail=empty, dir=both];
+BaseActivity250490734 -> RightShoulderAbduction250490734[arrowhead=none, arrowtail=empty, dir=both];
+DataExtractionActivity250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+FunctionsController250490734 -> DatabaseHelper250490734[label="saveMeasurement() -> addMeasurement()"];
+HeadRotation250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+HeadRotation250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+LeftElbow250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+LeftElbow250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+LeftHipAbduction250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+LeftHipAbduction250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+LeftShoulderAbduction250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+LeftShoulderAbduction250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+MeasurementsActivity250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+MeasurementsActivity250490734 -> MeasurementsAdapter229867270[label="adapter
+[0..1]"];
+PatientListActivity250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+PatientListActivity250490734 -> Patient_Adapter250490734[label="adapter
+[0..1]"];
+PatientListActivity250490734 -> Patient_option250490734[label="onCreate() -> newInstance()"];
+Patient_Adapter250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+Patient_Adapter250490734 -> Patient250490734[label="patients
+[0..*]"];
+Patient_Adapter250490734 -> Patient_option250490734[label="getView() -> newInstance()"];
+Patient_option250490734 -> FunctionsController250490734[label="onCreateView() -> askForConfirmation()"];
+Patient_option250490734 -> Patient250490734[label="patient
+[0..1]"];
+Patient_option250490734 -> PatientListActivity250490734[arrowhead=none];
+Patient_option250490734 -> PatientListActivity250490734[label="callback
+[0..1]", arrowhead=none];
+RightElbow250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+RightElbow250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+RightHipAbduction250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+RightHipAbduction250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+RightShoulderAbduction250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+RightShoulderAbduction250490734 -> DatabaseHelper250490734[label="dbHelper
+[0..1]"];
+    
+}
+@enduml
