@@ -17,8 +17,12 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+//This class will Take care of communication between arduino and our application
 public class BLEManager {
-    private static final String TAG = "IMU Sensor";
+
+    private static final String TAG = "IMU Sensor"; //Tag for logging purposes
+
+    //UUIDs for the bluetooth service and characteristics
     private static final UUID SERVICE_UUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CHARACTERISTIC_UUID = UUID.fromString("19B10005-E8F2-537E-4F6C-D104768A1214");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
@@ -31,10 +35,14 @@ public class BLEManager {
     private boolean isConnected = false; // Track connection state
 
     public interface DataCallback {
+
+        //Call back for receiving data
         void onDataReceived(int Yaw, int Pitch, int Roll, String Debug);
     }
 
     public interface ConnectionCallback {
+
+        //callback for connection state changes
         void onConnected();
 
         void onDisconnected();
@@ -42,6 +50,7 @@ public class BLEManager {
 
     private static BLEManager instance;
 
+    //Returns the instance of BLEManager
     public static BLEManager getInstance() {
         if (instance == null) {
             throw new IllegalStateException("BLEManager not initialized");
@@ -49,6 +58,7 @@ public class BLEManager {
         return instance;
     }
 
+    //BLEManager Constructor
     public BLEManager(Context context) {
         this.context = context;
         BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -66,12 +76,16 @@ public class BLEManager {
         this.connectionCallback = callback;
     }
 
+    //initiate a connection to the BLE using the bluetooth physical address entered by the user
     public void connectToDevice(String deviceAddress) {
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         bluetoothGatt = device.connectGatt(context, false, gattCallback);
     }
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
+
+
+        // A method to handle the bluetooth changes and display it for the user
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -89,9 +103,10 @@ public class BLEManager {
                 }
             }
         }
-
+        //A method to handle service discovery and retrieve the data/notifications sent from arduino
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 BluetoothGattService service = gatt.getService(SERVICE_UUID);
                 if (service != null) {
@@ -111,9 +126,10 @@ public class BLEManager {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
-
+        //A method to handle characteristic value updates
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+
             if (CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 ByteBuffer buffer = ByteBuffer.wrap(characteristic.getValue()).order(ByteOrder.LITTLE_ENDIAN);
                 String data = StandardCharsets.UTF_8.decode(buffer).toString();
@@ -121,6 +137,8 @@ public class BLEManager {
                 try {
                     if (dataCallback != null) {
                         String[] Variables = data.split(",");
+
+                        //This will Parse the data and split the retrieved string and remove "," from the string
                         for (int i = 0; i < Variables.length; i++) {
                             Variables[i] = Variables[i].replaceAll(",", "");
                         }
@@ -153,7 +171,6 @@ public class BLEManager {
                             } catch (NumberFormatException e) {
                                 Log.d(TAG, "Invalid Debug Message Value: " + Variables[3].trim());
                             }
-
                             dataCallback.onDataReceived(LiveYaw, LivePitch, LiveRoll, DebugMessage);
                         }
                     } else {
@@ -164,9 +181,10 @@ public class BLEManager {
                 }
             }
         }
-
+        // A method handle the result of a characteristic write operation
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.d(TAG, "Arduino resetting data");
             } else {
@@ -174,7 +192,7 @@ public class BLEManager {
             }
         }
     };
-
+    //Disconnect from Gatt server and close the connection
     public void disconnect() {
         if (bluetoothGatt != null) {
             bluetoothGatt.disconnect();
@@ -184,6 +202,8 @@ public class BLEManager {
         }
     }
 
+    // Send a command to the Arduino to reset data
+    //This will be called and provided with String "Reset data" whenever we start a new measurement
     public void sendDataToArduino(String data) {
         if (characteristic != null) {
             characteristic.setValue(data);
@@ -196,9 +216,7 @@ public class BLEManager {
         } else {
             Log.e(TAG, "BluetoothGatt or dataCharacteristic is null. Have you connected to the device?");
         }
+
     }
 
-   // public boolean isConnected() {
-      //  return isConnected;
-    //}
 }

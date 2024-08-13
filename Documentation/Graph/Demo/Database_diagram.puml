@@ -1,0 +1,197 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.goniometer.HeadRotation",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=Goniometer
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_27346463 { 
+   	label=Database
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+
+    PatientListActivity [
+        label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+        <TR><TD ALIGN="LEFT" >(C)PatientListActivity</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >-   adapter: Patient_Adapter [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   listViewPatients: ListView [0..1]</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >- displayPatients()</TD></TR>
+        <TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onPatientDeleted(position: int)</TD></TR>
+        </TABLE>>
+        style=filled
+        margin=0
+        shape=plaintext
+        fillcolor="#FFFFFF"
+    ];
+
+    Patient_Adapter [
+        label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+        <TR><TD ALIGN="LEFT" >(C)Patient_Adapter</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >-   context: Context [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   dbHelper: DatabaseHelper [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   patients: List&lt;Patient&gt; [0..*]</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >+ getView(position: int, convertView: View, parent: ViewGroup): View</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ removePatient(position: int)</TD></TR>
+        </TABLE>>
+        style=filled
+        margin=0
+        shape=plaintext
+        fillcolor="#FFFFFF"
+    ];
+
+    Patient_option [
+        label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+        <TR><TD ALIGN="LEFT" >(C)Patient_option</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >-   callback: OnPatientDeletedListener [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   patient: Patient [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   position: int [1]</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >- hasMeasurements(patientId: long): boolean</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ newInstance(patient: Patient, position: int): Patient_option</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onAttach(context: Context)</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onCreate(savedInstanceState: Bundle)</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View</TD></TR>
+        </TABLE>>
+        style=filled
+        margin=0
+        shape=plaintext
+        fillcolor="#FFFFFF"
+    ];
+
+    Patient [
+        label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+        <TR><TD ALIGN="LEFT" >(C)Patient</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >-   firstName: String [0..1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   id: long [1]</TD></TR>
+        <TR><TD ALIGN="LEFT" >-   lastName: String [0..1]</TD></TR>
+        </TABLE>>
+        style=filled
+        margin=0
+        shape=plaintext
+        fillcolor="#FFFFFF"
+    ];
+
+    DatabaseHelper [
+        label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+        <TR><TD ALIGN="LEFT" >(C)DatabaseHelper</TD></TR>
+        <HR/>
+        <TR><TD ALIGN="LEFT" >+ addMeasurement(patientId: long, measurementType: String, leftAngle: int, rightAngle: int, timestamp: String): long</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ addPatient(firstName: String, lastName: String): long</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ deletePatient(patientId: long)</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ getInstance(context: Context): DatabaseHelper</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ getMeasurementsForPatient(patientId: long): List&lt;Measurement&gt;</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ getPatientNameById(patientId: long): String</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onCreate(db: SQLiteDatabase)</TD></TR>
+        <TR><TD ALIGN="LEFT" >+ onUpgrade(db: SQLiteDatabase, oldVersion: int, newVersion: int)</TD></TR>
+        </TABLE>>
+        style=filled
+        margin=0
+        shape=plaintext
+        fillcolor="#FFFFFF"
+    ];
+  } 
+} 
+
+'edges    
+PatientListActivity -> DatabaseHelper [label="dbHelper [0..1]"];
+PatientListActivity -> Patient_Adapter [label="adapter [0..1]"];
+PatientListActivity -> Patient_option [label="onCreate() -> newInstance()"];
+Patient_Adapter -> DatabaseHelper [label="dbHelper [0..1]"];
+Patient_Adapter -> Patient [label="patients [0..*]"];
+Patient_Adapter -> Patient_option [label="getView() -> newInstance()"];
+Patient_option -> Patient [label="patient [0..1]"];
+Patient_option -> PatientListActivity [arrowhead=none];
+Patient_option -> PatientListActivity [label="callback [0..1]", arrowhead=none];
+
+}
+@enduml

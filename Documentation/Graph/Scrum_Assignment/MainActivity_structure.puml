@@ -1,0 +1,172 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.goniometer.MainActivity",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_27346463 { 
+   	label=goniometer
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   BLEManager250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BLEManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bluetoothAdapter: BluetoothAdapter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bluetoothGatt: BluetoothGatt [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   characteristic: BluetoothGattCharacteristic [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connectionCallback: ConnectionCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   context: Context [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataCallback: DataCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gattCallback: BluetoothGattCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isConnected: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ connectToDevice(deviceAddress: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ disconnect()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ sendDataToArduino(data: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DeviceAddress250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DeviceAddress</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   PhysicalAddress: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   listener: SetDeviceAddress [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ SetDeviceAddress(listener: SetDeviceAddress)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCreateDialog(savedInstanceState: Bundle): Dialog</TD></TR>
+<TR><TD ALIGN="LEFT" >+ validInput(address: String): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MainActivity250490734[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MainActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   InputAddress: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   bleManager: BLEManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   buttonPatientButton: Button [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- DialogDeviceAddress()</TD></TR>
+<TR><TD ALIGN="LEFT" >- GoToSettingsDialog()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ OnAddressChange(PhysicalAddress: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- goToPatientPage()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onDestroy()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onRequestPermissionsResult(requestCode: int, permissions: String[], grantResults: int[])</TD></TR>
+<TR><TD ALIGN="LEFT" >- requestPermissions()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+DeviceAddress250490734 -> MainActivity250490734[arrowhead=none];
+DeviceAddress250490734 -> MainActivity250490734[label="listener
+[0..1]", arrowhead=none];
+MainActivity250490734 -> BLEManager250490734[label="bleManager
+[0..1]"];
+MainActivity250490734 -> DeviceAddress250490734[label="DialogDeviceAddress() -> SetDeviceAddress()"];
+    
+}
+@enduml

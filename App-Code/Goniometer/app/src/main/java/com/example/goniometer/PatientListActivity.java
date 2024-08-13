@@ -1,10 +1,10 @@
 package com.example.goniometer;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,7 +28,7 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            Newpatient dialogFragment = new Newpatient();
+            NewPatient dialogFragment = new NewPatient();
             dialogFragment.setOnNewPatientListener((firstName, lastName) -> {
                 long id = dbHelper.addPatient(firstName, lastName);
                 if (id != -1) {
@@ -40,6 +40,18 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
             });
             dialogFragment.show(getSupportFragmentManager(), "NewPatientDialogFragment");
         });
+
+        //can you fix this for me ?
+        FloatingActionButton downloadbtn = findViewById(R.id.downloadbutton);
+        downloadbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToExtractCSVPage();
+            }
+        });
+
+
+
 
         listViewPatients.setOnItemClickListener((parent, view, position, id) -> {
             Patient selectedPatient = (Patient) parent.getItemAtPosition(position);
@@ -58,5 +70,9 @@ public class PatientListActivity extends BaseActivity implements Patient_option.
     @Override
     public void onPatientDeleted(int position) {
         adapter.removePatient(position);
+    }
+    private void goToExtractCSVPage() {
+        Intent intent = new Intent(this, DataExtractionActivity.class);
+        startActivity(intent);
     }
 }

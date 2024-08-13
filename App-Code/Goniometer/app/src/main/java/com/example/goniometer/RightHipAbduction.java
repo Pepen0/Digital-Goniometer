@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,8 +18,8 @@ public class RightHipAbduction extends BaseActivity {
     protected Button StartButton;
     protected Button SaveButton;
     protected TextView rightAbductionM ;
-    private int AbductionMax = 0;
-    private boolean isMeasuring = false;
+    private int AbductionMax = 0;    //Maximum abduction angle
+    private boolean isMeasuring = false;    //indicate whether measurement is ongoing
     private BLEManager bleManager;
     protected TextView LiveRoll;
     private DatabaseHelper dbHelper;
@@ -47,24 +46,29 @@ public class RightHipAbduction extends BaseActivity {
         }
 
         setupUI();
-        setupToolbar();
+        setupToolbar(); //Setup the toolbar
     }
 
 
+    //Setup the user interface including buttons and TextViews functionality
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        rightAbductionM = findViewById(R.id.AbductionM);
+        rightAbductionM = findViewById(R.id.leftRotation);
         LiveRoll = findViewById(R.id.rightRotation);
         bleManager = BLEManager.getInstance();
 
+        //Filter the received data according to the positive Angle's and update maximum abduction value based on received Roll value
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
             if (Roll > 0 && (Roll - AbductionMax > 0) && isMeasuring) {
                 AbductionMax = Roll;
             }
-            if (Debug.equals("Reset")){
+            if (Debug.equals("Reset")){ //Check if Arduino sent a "Reset" command (debug)
+                //To indicate the values were reset and set the textViews to 0
                 AbductionMax = 0;
             }
+
+            //Update TextViews with the current max values
             rightAbductionM.setText("Right Abduction: " + AbductionMax);
             LiveRoll.setText("Roll: " + Roll);
         }));
@@ -75,8 +79,12 @@ public class RightHipAbduction extends BaseActivity {
                         "Are you sure you want to start a new measurement?",
                         "Yes",()-> {
                             isMeasuring = true;
+
+                            //Send command to arduino to reset values to 0
                             bleManager.sendDataToArduino("Reset data");
                             Log.d("Reset command sent", "Reset data");
+
+                            //Updates button state and visibility
                             StartButton.setText("STOP");
                             StartButton.setBackgroundResource(R.drawable.circular_button_stop);
                             SaveButton.setBackgroundColor(Color.GRAY);
@@ -86,6 +94,8 @@ public class RightHipAbduction extends BaseActivity {
                 );
 
             } else {
+
+                //Updates button state and visibility
                 isMeasuring = false;
                 StartButton.setText("START");
                 StartButton.setBackgroundResource(R.drawable.circular_button_start);

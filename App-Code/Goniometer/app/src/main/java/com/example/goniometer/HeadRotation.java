@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,9 +21,9 @@ public class HeadRotation extends BaseActivity {
     protected TextView Livedata;
     private BLEManager bleManager;
 
-    private int maxLeft = 0;
-    private int maxRight = 0;
-    private boolean isMeasuring = false;
+    private int maxLeft = 0; //Maximum left rotation angle
+    private int maxRight = 0; //Maximum right rotation angle
+    private boolean isMeasuring = false; //indicate whether measurement is ongoing
 
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
@@ -53,31 +52,38 @@ public class HeadRotation extends BaseActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         setupUI();
-        setupToolbar();
+        setupToolbar(); //Setup the toolbar
     }
 
 
-
+    //Setup the user interface including buttons and TextViews functionality
     private void setupUI() {
         StartButton = findViewById(R.id.StartButton);
         SaveButton = findViewById(R.id.SaveButton);
-        LeftM = findViewById(R.id.rightRotation);
-        RightM = findViewById(R.id.AbductionM);
+        LeftM = findViewById(R.id.leftRotation);
+        RightM = findViewById(R.id.rightRotation);
         Livedata = findViewById(R.id.Livedata);
         bleManager = BLEManager.getInstance();
 
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
+
+            //Filter the received data according to the Angle's signal (-/+) and update maximum rotation value based on received Yaw value
             if (Yaw < 0 && (Yaw + maxRight < 0) && isMeasuring) {
                 maxRight = -Yaw;
             }
             if (Yaw > 0 && (Yaw-maxLeft > 0) && isMeasuring) {
                 maxLeft = Yaw;
             }
+
+            //Check if Arduino sent a "Reset" command (debug)
+            //To indicate the values were reset and set the textViews to 0
             if (Debug.equals("Reset")) {
                 maxLeft = 0;
                 maxRight = 0;
             }
-            LeftM.setText("Left Rotation: " + maxLeft);
+
+            //Update TextViews with the current max values
+            LeftM.setText("Left Rotation: " + maxLeft); //set the TextView with the maxLeft value
             RightM.setText("Right Rotation: " + maxRight);
             Livedata.setText("Yaw: "+ Yaw);
        }));
@@ -90,8 +96,12 @@ public class HeadRotation extends BaseActivity {
                         "Are you sure you want to start a new measurement?",
                         "Yes",()-> {
                             isMeasuring = true;
+
+                            //Send command to arduino to reset values to 0
                             bleManager.sendDataToArduino("Reset data");
                             Log.d("Reset command sent", "Reset data");
+
+                            //Updates button state and visibility
                             StartButton.setText("STOP");
                             StartButton.setBackgroundResource(R.drawable.circular_button_stop);
                             SaveButton.setBackgroundColor(Color.GRAY);
@@ -100,6 +110,8 @@ public class HeadRotation extends BaseActivity {
                         }
                 );
             } else {
+
+                //Updates button state and visibility
                 isMeasuring = false;
                 StartButton.setText("START");
                 StartButton.setBackgroundResource(R.drawable.circular_button_start);

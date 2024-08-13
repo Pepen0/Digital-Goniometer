@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,9 +20,9 @@ public class RightElbow extends BaseActivity {
     protected TextView RightMax;
     protected TextView LiveDataElbow;
     private BLEManager bleManager;
-    private int maxLeftElbow = 0;
-    private int maxRightElbow = 0;
-    private boolean isMeasuring = false;
+    private int maxLeftElbow = 0;   //Maximum left elbow rotation angle
+    private int maxRightElbow = 0;  //Maximum right elbow rotation angle
+    private boolean isMeasuring = false;   //indicate whether measurement is ongoing
 
     private DatabaseHelper dbHelper;
     private long patientId; // This should be passed from the previous activity
@@ -46,10 +45,11 @@ public class RightElbow extends BaseActivity {
             Toast.makeText(this, "Passing as a Guest", Toast.LENGTH_SHORT).show();
         }
         setupUI();
-        setupToolbar();
+        setupToolbar(); //Setup the toolbar
     }
 
 
+    //Setup the user interface including buttons and TextViews functionality
     private void setupUI() {
 
         StartButtonElbow = findViewById(R.id.StartButton);
@@ -59,6 +59,7 @@ public class RightElbow extends BaseActivity {
         LiveDataElbow = findViewById(R.id.LiveDataElbow);
         bleManager = BLEManager.getInstance();
 
+        //Filter the received data according to the Angle's signal (-/+) and update maximum rotation value based on received Pitch value
         bleManager.setDataCallback((Yaw, Pitch, Roll, Debug) -> runOnUiThread(() -> {
             if (Pitch < 0 && (Pitch + maxRightElbow < 0) && isMeasuring) {
                 maxRightElbow = -Pitch;
@@ -66,10 +67,13 @@ public class RightElbow extends BaseActivity {
             if (Pitch > 0 && (Pitch - maxLeftElbow > 0) && isMeasuring) {
                 maxLeftElbow = Pitch;
             }
-            if (Debug.equals("Reset")) {
+            if (Debug.equals("Reset")) { //Check if Arduino sent a "Reset" command (debug)
+                //To indicate the values were reset and set the textViews to 0
                 maxLeftElbow = 0;
                 maxRightElbow = 0;
             }
+
+            //Update TextViews with the current max values
             LeftMax.setText("Pronation: " + maxLeftElbow);
             RightMax.setText("Supination: " + maxRightElbow);
             LiveDataElbow.setText("Pitch: " + Pitch);
@@ -83,8 +87,12 @@ public class RightElbow extends BaseActivity {
                         "Are you sure you want to start a new measurement?",
                         "Yes",()-> {
                             isMeasuring = true;
+
+                            //Send command to arduino to reset values to 0
                             bleManager.sendDataToArduino("Reset data");
                             Log.d("Reset command sent", "Reset data");
+
+                            //Updates button state and visibility
                             StartButtonElbow.setText("STOP");
                             StartButtonElbow.setBackgroundResource(R.drawable.circular_button_stop);
                             SaveButtonElbow.setBackgroundColor(Color.GRAY);
@@ -94,6 +102,8 @@ public class RightElbow extends BaseActivity {
                 );
 
             } else {
+
+                //Updates button state and visibility
                 isMeasuring = false;
                 StartButtonElbow.setText("START");
                 StartButtonElbow.setBackgroundResource(R.drawable.circular_button_start);

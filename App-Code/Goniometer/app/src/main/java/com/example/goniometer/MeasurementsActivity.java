@@ -1,27 +1,28 @@
 package com.example.goniometer;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MeasurementsActivity extends BaseActivity {
 
-    private static final String TAG = "MeasurementsActivity"; // Tag for logging
+    private static final String TAG = "MeasurementsActivity";
     private ListView listViewMeasurements;
     private DatabaseHelper dbHelper;
-    private ArrayAdapter<Measurement> adapter;
+    private MeasurementsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +30,17 @@ public class MeasurementsActivity extends BaseActivity {
         setContentView(R.layout.activity_measurements);
 
         listViewMeasurements = findViewById(R.id.listViewMeasurements);
-        TextView textViewPatientId = findViewById(R.id.textViewPatientId); // Find the TextView for patient info
-        dbHelper = DatabaseHelper.getInstance(this); // Use the singleton instance
+        TextView textViewPatientId = findViewById(R.id.textViewPatientId);
+        dbHelper = DatabaseHelper.getInstance(this);
 
-        // Retrieve patient ID from intent
         long patientId = getIntent().getLongExtra("PATIENT_ID", -1);
-
         Log.d(TAG, "Patient ID: " + patientId);
 
         if (patientId != -1) {
-            // Get the patient name from the database
             String patientName = dbHelper.getPatientNameById(patientId);
 
             if (patientName != null) {
-                // Construct and set the patient details text
-                String patientInfo = "Name: " + patientName + "\n" + "ID: " + patientId;
+                String patientInfo = patientName + "\n" + "ID: " + patientId;
                 textViewPatientId.setText(patientInfo);
             } else {
                 textViewPatientId.setText("Patient not found");
@@ -58,71 +55,43 @@ public class MeasurementsActivity extends BaseActivity {
         setupToolbar();
     }
 
-
-
     private void displayMeasurements(long patientId) {
         try {
             Log.d(TAG, "Fetching measurements for patient ID: " + patientId);
-            // Retrieve measurements from the database
             List<Measurement> measurements = dbHelper.getMeasurementsForPatient(patientId);
 
-            // Check if the measurements list is null and initialize it if necessary
             if (measurements == null) {
-                Log.d(TAG, "Measurements list is null, initializing to empty list.");
                 measurements = new ArrayList<>();
             }
 
-            // Reverse the list to show the newest items first
-            Collections.reverse(measurements);
+            // Sort measurements by timestamp in descending order
+            measurements.sort((m1, m2) -> m2.getTimestamp().compareTo(m1.getTimestamp()));
 
-            // Create a custom ArrayAdapter to display measurements
-            adapter = new ArrayAdapter<Measurement>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, measurements) {
-
-                @SuppressLint("SetTextI18n")
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                    if (convertView == null) {
-                        convertView = getLayoutInflater().inflate(android.R.layout.simple_list_item_1, parent, false);
-                    }
-
-                    // Get the measurement at the current position
-                    Measurement measurement = getItem(position);
-                    Log.d(TAG, "Displaying measurement at position: " + position);
-
-                    // Set the text of the item view to display measurement details
-                    TextView textView = convertView.findViewById(android.R.id.text1);
-                    if (measurement != null) {
-                        if (measurement.getMeasurementType().equals("Head Rotation") ||
-                                measurement.getMeasurementType().equals("Right Elbow Rotation") ||
-                                measurement.getMeasurementType().equals("Left Elbow Rotation")) {
-                            if(!measurement.getMeasurementType().equals("Head Rotation") ){
-                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                        "Pronation : " + measurement.getLeftAngle() + "°" + "\n" +
-                                        "Supination : " + measurement.getRightAngle()+ "°" + "\n" +
-                                        measurement.getTimestamp());
-                            } else {
-                                textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                        "LeftAngle: " + measurement.getLeftAngle() + "°" + "\n" +
-                                        "RightAngle: " + measurement.getRightAngle() + "°" + "\n" +
-                                        measurement.getTimestamp());
-                            }
-                        } else {
-                            textView.setText("Type: " + measurement.getMeasurementType() + "\n" +
-                                    "AbductionAngle: " + measurement.getLeftAngle() +"°" + "\n" +
-                                    measurement.getTimestamp());
-                        }
-                    } else {
-                        textView.setText("No data available");
-                        Log.d(TAG, "Measurement at position " + position + " is null.");
-                    }
-
-                    return convertView;
+            // Group measurements by type
+            Map<String, List<Measurement>> groupedMeasurements = new HashMap<>();
+            for (Measurement measurement : measurements) {
+                String type = measurement.getMeasurementType();
+                if (!groupedMeasurements.containsKey(type)) {
+                    groupedMeasurements.put(type, new ArrayList<>());
                 }
-            };
+                groupedMeasurements.get(type).add(measurement);
+            }
 
-            // Set the adapter for the ListView
+            // Flatten the grouped measurements into a single list with headers
+            List<Object> displayList = new ArrayList<>();
+            for (Map.Entry<String, List<Measurement>> entry : groupedMeasurements.entrySet()) {
+                String type = entry.getKey();
+                List<Measurement> typeMeasurements = entry.getValue();
+
+                // Add header
+                displayList.add(type);
+
+                // Add measurements for this type
+                displayList.addAll(typeMeasurements);
+            }
+
+            // Set the adapter only if there are measurements to display
+            adapter = new MeasurementsAdapter(this, displayList);
             listViewMeasurements.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -130,4 +99,97 @@ public class MeasurementsActivity extends BaseActivity {
         }
     }
 
+    private class MeasurementsAdapter extends ArrayAdapter<Object> {
+
+        private static final int TYPE_HEADER = 0;
+        private static final int TYPE_ITEM = 1;
+
+        public MeasurementsAdapter(@NonNull MeasurementsActivity context, List<Object> items) {
+            super(context, 0, items);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Object item = getItem(position);
+            return item instanceof String ? TYPE_HEADER : TYPE_ITEM;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            ViewHolder viewHolder;
+            int viewType = getItemViewType(position);
+
+            if (convertView == null) {
+                viewHolder = new ViewHolder();
+                convertView = getLayoutInflater().inflate(R.layout.list_item_measurement, parent, false);
+                viewHolder.textViewMeasurementType = convertView.findViewById(R.id.textViewMeasurementType);
+                viewHolder.tableHeaderRow = convertView.findViewById(R.id.tableHeaderRow);
+                viewHolder.textViewLeftAngleHeader = convertView.findViewById(R.id.textViewLeftAngleHeader);
+                viewHolder.textViewRightAngleHeader = convertView.findViewById(R.id.textViewRightAngleHeader);
+                viewHolder.textViewTimestampHeader = convertView.findViewById(R.id.textViewTimestampHeader);
+                viewHolder.tableRowMeasurement = convertView.findViewById(R.id.tableRowMeasurement);
+                viewHolder.textViewLeftAngle = convertView.findViewById(R.id.textViewLeftAngle);
+                viewHolder.textViewRightAngle = convertView.findViewById(R.id.textViewRightAngle);
+                viewHolder.textViewTimestamp = convertView.findViewById(R.id.textViewTimestamp);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            if (viewType == TYPE_HEADER) {
+                // This item is a header
+                String headerText = (String) getItem(position);
+                viewHolder.textViewMeasurementType.setText(headerText);
+                viewHolder.textViewMeasurementType.setVisibility(View.VISIBLE);
+                viewHolder.tableHeaderRow.setVisibility(View.VISIBLE);
+                viewHolder.tableRowMeasurement.setVisibility(View.GONE);
+
+                // Update header text based on measurement type
+                if (headerText.equals("Left Hip Abduction") || headerText.equals("Right Hip Abduction") ||
+                        headerText.equals("Left Shoulder Abduction") || headerText.equals("Right Shoulder Abduction")) {
+                    viewHolder.textViewLeftAngleHeader.setText("Abduction Angle");
+                    viewHolder.textViewRightAngleHeader.setText("           ");
+                } else {
+                    viewHolder.textViewLeftAngleHeader.setText("Left Angle");
+                    viewHolder.textViewRightAngleHeader.setText("Right Angle");
+                    viewHolder.textViewRightAngleHeader.setVisibility(View.VISIBLE);
+                }
+            } else {
+                // This item is a measurement
+                Measurement measurement = (Measurement) getItem(position);
+                viewHolder.textViewMeasurementType.setVisibility(View.GONE);
+                viewHolder.tableHeaderRow.setVisibility(View.GONE);
+                viewHolder.tableRowMeasurement.setVisibility(View.VISIBLE);
+
+                // Populate data
+                viewHolder.textViewLeftAngle.setText(measurement.getLeftAngle() + "°");
+                viewHolder.textViewTimestamp.setText(measurement.getTimestamp());
+
+                // Check if the measurement type should hide the right angle column
+                String type = measurement.getMeasurementType();
+                if (type.equals("Left Hip Abduction") || type.equals("Right Hip Abduction") ||
+                        type.equals("Left Shoulder Abduction") || type.equals("Right Shoulder Abduction")) {
+                    viewHolder.textViewRightAngle.setText("  ");
+                    viewHolder.textViewTimestamp.setText(measurement.getTimestamp());
+                } else {
+                    viewHolder.textViewRightAngle.setVisibility(View.VISIBLE);
+                    viewHolder.textViewRightAngle.setText(measurement.getRightAngle() + "°");
+                }
+            }
+            return convertView;
+        }
+
+        private class ViewHolder {
+            TextView textViewMeasurementType;
+            TableRow tableHeaderRow;
+            TextView textViewLeftAngleHeader;
+            TextView textViewRightAngleHeader;
+            TextView textViewTimestampHeader;
+            TableRow tableRowMeasurement;
+            TextView textViewLeftAngle;
+            TextView textViewRightAngle;
+            TextView textViewTimestamp;
+        }
+    }
 }
